@@ -2,7 +2,7 @@
 
 > **Version:** 1.0
 > **Date:** {date}
-> **Source:** wf-specify (Phase 3)
+> **Source:** aid-specify (Phase 3)
 > **Input:** REQUIREMENTS.md v{n} + knowledge/ (KB)
 
 > **Note:** This spec is grounded in the Knowledge Base. Every architectural decision references existing code patterns — it doesn't invent new ones. Agents implementing from this spec should read the referenced KB documents before writing a single line of code.
@@ -152,4 +152,4 @@ public interface I{Feature}Service
 
 | Rev | Date | Source | Description |
 |-----|------|--------|-------------|
-| 1.0 | {date} | wf-specify | Initial specification |
+| 1.0 | {date} | aid-specify | Initial specification |

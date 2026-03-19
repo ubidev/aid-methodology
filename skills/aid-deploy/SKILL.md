@@ -21,7 +21,7 @@ Before starting deployment:
 
 - [ ] All tasks in the delivery are status "Complete."
 - [ ] All tasks passed review with grade A- or above.
-- [ ] Testing phase (wf-test) passed — TEST-REPORT.md is green.
+- [ ] Testing phase (aid-test) passed — TEST-REPORT.md is green.
 - [ ] No open IMPEDIMENT.md files blocking this delivery.
 - [ ] No open GAP.md files blocking this delivery.
 
@@ -51,7 +51,7 @@ If final verification fails:
 2. Determine if it's a regression (existing test broke) or integration issue (tasks conflict).
 3. Fix on the feature branch.
 4. Re-run full verification.
-5. If the fix is non-trivial, loop back to wf-review for the fix.
+5. If the fix is non-trivial, loop back to aid-review for the fix.
 
 ### Step 2: Delivery Summary
 
@@ -85,7 +85,7 @@ Generate a summary of what this delivery contains:
 ## KB Updates During Delivery
 | Document | Change | Source |
 |----------|--------|--------|
-| coding-standards.md | Added FluentValidation convention | wf-review |
+| coding-standards.md | Added FluentValidation convention | aid-review |
 
 ## Known Issues
 {Any P3+ issues deferred to next delivery}
@@ -165,7 +165,7 @@ After the PR is merged:
 2. **Tag/release** — if this delivery is a release milestone.
 3. **Notify stakeholders** — share the delivery summary.
 4. **Plan next delivery** — if more deliveries remain in the spec.
-5. **Trigger wf-track** — begin production monitoring.
+5. **Trigger aid-track** — begin production monitoring.
 
 ## Quality Checklist
 

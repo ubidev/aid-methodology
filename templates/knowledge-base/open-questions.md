@@ -1,7 +1,7 @@
 # Open Questions
 
-> **Source:** wf-discover (Phase 1)
-> **Status:** Active — feeds directly into wf-interview
+> **Source:** aid-discover (Phase 1)
+> **Status:** Active — feeds directly into aid-interview
 > **Last Updated:** {date}
 
 > Questions that code analysis alone could not answer. These drive the interview phase. Every item here is something an AI agent would have to guess about — guessing creates specs that don't match reality.
@@ -59,7 +59,7 @@
 
 | # | Question | Answer | Source | Date |
 |---|----------|--------|--------|------|
-| OQ-00n | {question} | {answer} | {wf-interview Q7 / stakeholder email / code comment} | {date} |
+| OQ-00n | {question} | {answer} | {aid-interview Q7 / stakeholder email / code comment} | {date} |
 
 ---
 
@@ -78,4 +78,4 @@
 
 | Rev | Date | Source | Description |
 |-----|------|--------|-------------|
-| 1.0 | {date} | wf-discover | Initial open questions from code analysis |
+| 1.0 | {date} | aid-discover | Initial open questions from code analysis |

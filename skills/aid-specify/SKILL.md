@@ -34,8 +34,8 @@ Check for conflicts between requirements and existing architecture:
 - Do two requirements contradict each other? Flag for stakeholder decision.
 
 If conflicts require more information:
-- **KB gap** → generate GAP.md with `discovery-needed`, trigger wf-discover.
-- **Requirements gap** → generate GAP.md with `needs-interview`, trigger wf-interview.
+- **KB gap** → generate GAP.md with `discovery-needed`, trigger aid-discover.
+- **Requirements gap** → generate GAP.md with `needs-interview`, trigger aid-interview.
 - **Architectural tension** → document in the spec as a decision point.
 
 ### Step 3: Write SPEC.md
@@ -144,7 +144,7 @@ Before finalizing:
 ## Revision History
 | Rev | Date | Source | Description |
 |-----|------|--------|-------------|
-| 1.0 | {date} | wf-specify | Initial specification |
+| 1.0 | {date} | aid-specify | Initial specification |
 ```
 
 ## Output
@@ -153,10 +153,10 @@ Before finalizing:
 
 ## Spec Revision (Re-entry)
 
-When triggered by a GAP.md from wf-plan, wf-detail, or wf-review:
+When triggered by a GAP.md from aid-plan, aid-detail, or aid-review:
 
 1. Read the GAP.md to understand the ambiguity or contradiction.
-2. If `needs-interview` → trigger targeted wf-interview first, get the answer.
+2. If `needs-interview` → trigger targeted aid-interview first, get the answer.
 3. Revise the specific section of SPEC.md.
 4. Add revision history entry referencing the GAP.
 5. Report completion to the calling phase.
@@ -169,7 +169,7 @@ When triggered by a GAP.md from wf-plan, wf-detail, or wf-review:
 
 **Example:** Specifying a feature that touches the auth module, but `knowledge/security-model.md` is marked Partial.
 
-**Protocol:** Pause → GAP.md with `discovery-needed` → trigger wf-discover → KB updated → resume specification.
+**Protocol:** Pause → GAP.md with `discovery-needed` → trigger aid-discover → KB updated → resume specification.
 
 ### ← Plan / Review (Loops 4, 6)
 

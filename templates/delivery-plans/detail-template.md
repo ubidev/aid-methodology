@@ -2,7 +2,7 @@
 
 > **Version:** 1.0
 > **Date:** {date}
-> **Source:** wf-detail (Phase 5)
+> **Source:** aid-detail (Phase 5)
 > **Inputs:** PLAN.md + SPEC.md + knowledge/
 
 ---
@@ -123,4 +123,4 @@ TASK-004, TASK-005 → TASK-006
 
 | Rev | Date | Source | Description |
 |-----|------|--------|-------------|
-| 1.0 | {date} | wf-detail | Initial decomposition |
+| 1.0 | {date} | aid-detail | Initial decomposition |

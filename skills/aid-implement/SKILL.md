@@ -78,7 +78,7 @@ If the agent reports that assumptions don't hold:
 1. Agent generates `IMPEDIMENT.md`:
    ```markdown
    # IMPEDIMENT: IMP-{id}
-   **Source:** wf-implement, TASK-{task-id}
+   **Source:** aid-implement, TASK-{task-id}
    **Type:** wrong-assumption | missing-dependency | architecture-conflict | kb-gap
    **Description:** {What's wrong}
    **KB Impact:** {Which KB document needs revision, if any}
@@ -89,7 +89,7 @@ If the agent reports that assumptions don't hold:
    **Recommendation:** {Which option and why}
    **Blocking:** TASK-{task-id}
    ```
-2. If `kb-gap` → trigger targeted wf-discover, update KB.
+2. If `kb-gap` → trigger targeted aid-discover, update KB.
 3. If resolvable within task scope → resolve, document in commit message.
 4. If requires plan/spec change → pause, escalate to human.
 
@@ -97,7 +97,7 @@ If the agent reports that assumptions don't hold:
 
 ## Multi-Agent Parallel Execution
 
-When the plan (wf-plan) identifies independent tasks, execute them in parallel:
+When the plan (aid-plan) identifies independent tasks, execute them in parallel:
 
 ### Prerequisites for Parallel Execution
 
@@ -135,8 +135,8 @@ When the plan (wf-plan) identifies independent tasks, execute them in parallel:
 **Trigger:** Implementation reveals assumptions don't hold.
 
 **Protocol:**
-- `kb-gap` → targeted wf-discover → KB updated → resume or re-plan.
-- `wrong-assumption` about the spec → GAP.md → wf-specify revision → resume.
+- `kb-gap` → targeted aid-discover → KB updated → resume or re-plan.
+- `wrong-assumption` about the spec → GAP.md → aid-specify revision → resume.
 - `architecture-conflict` → escalate to human with options.
 - Resolvable locally → resolve, document, continue.
 

@@ -1,6 +1,6 @@
 # API Contracts
 
-> **Source:** wf-discover (Phase 1) + wf-interview (Phase 2)
+> **Source:** aid-discover (Phase 1) + aid-interview (Phase 2)
 > **Status:** {✅ Complete | ⚠️ Partial | ❌ Missing}
 > **Last Updated:** {date}
 
@@ -107,4 +107,4 @@
 
 | Rev | Date | Source | Description |
 |-----|------|--------|-------------|
-| 1.0 | {date} | wf-discover | Initial API surface mapping |
+| 1.0 | {date} | aid-discover | Initial API surface mapping |

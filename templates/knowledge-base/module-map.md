@@ -1,6 +1,6 @@
 # Module Map
 
-> **Source:** wf-discover (Phase 1)
+> **Source:** aid-discover (Phase 1)
 > **Status:** {✅ Complete | ⚠️ Partial | ❌ Missing}
 > **Last Updated:** {date}
 
@@ -87,4 +87,4 @@ Infrastructure.Messaging → Core.Application
 
 | Rev | Date | Source | Description |
 |-----|------|--------|-------------|
-| 1.0 | {date} | wf-discover | Initial discovery |
+| 1.0 | {date} | aid-discover | Initial discovery |

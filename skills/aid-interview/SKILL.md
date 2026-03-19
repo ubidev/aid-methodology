@@ -10,7 +10,7 @@ Gather requirements from a human stakeholder through adaptive, one-question-at-a
 ## When to Use
 
 - **Full interview:** New project. No REQUIREMENTS.md exists.
-- **Targeted interview:** A GAP.md from wf-plan, wf-detail, or wf-specify identifies a `needs-interview` requirement gap. Ask only about the specific gap.
+- **Targeted interview:** A GAP.md from aid-plan, aid-detail, or aid-specify identifies a `needs-interview` requirement gap. Ask only about the specific gap.
 
 ## Inputs
 
@@ -123,7 +123,7 @@ Goal: Move all remaining `assumed` fields to `known`. Catch misunderstandings be
 Each answer may:
 - **Answer the question** → mark field as `known`, select next `unknown` field.
 - **Reveal something unexpected** → add new fields to the model, adjust question order.
-- **Contradict the KB** → flag the contradiction, trigger wf-discover for targeted update.
+- **Contradict the KB** → flag the contradiction, trigger aid-discover for targeted update.
 - **Be vague** → ask a follow-up to sharpen the answer. Don't accept "it depends" without knowing what it depends on.
 
 ### Tone
@@ -160,7 +160,7 @@ Key sections:
 **Protocol:**
 1. Note the discrepancy: "You mentioned Redis caching, but our codebase analysis didn't find it."
 2. Pause the interview.
-3. Trigger targeted wf-discover on the specific area.
+3. Trigger targeted aid-discover on the specific area.
 4. KB updated → interview resumes with corrected understanding → better questions from here.
 
 ## Targeted Interview (Re-entry)

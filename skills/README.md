@@ -8,38 +8,38 @@ Each skill is a self-contained `SKILL.md` file — a complete set of instruction
 
 | Skill | Phase | When to Use |
 |-------|-------|-------------|
-| [wf-discover](wf-discover/SKILL.md) | Phase 1: Discover | Analyzing an existing codebase to build the Knowledge Base |
-| [wf-interview](wf-interview/SKILL.md) | Phase 2: Interview | Gathering requirements from a human stakeholder |
+| [aid-discover](aid-discover/SKILL.md) | Phase 1: Discover | Analyzing an existing codebase to build the Knowledge Base |
+| [aid-interview](aid-interview/SKILL.md) | Phase 2: Interview | Gathering requirements from a human stakeholder |
 
 ### Group 2: Planning
 
 | Skill | Phase | When to Use |
 |-------|-------|-------------|
-| [wf-specify](wf-specify/SKILL.md) | Phase 3: Specify | Transforming requirements into a grounded SPEC.md |
-| [wf-plan](wf-plan/SKILL.md) | Phase 4: Plan | Defining MVP scope, modules, and deliverables |
-| [wf-detail](wf-detail/SKILL.md) | Phase 5: Detail | Decomposing the plan into executable tasks |
+| [aid-specify](aid-specify/SKILL.md) | Phase 3: Specify | Transforming requirements into a grounded SPEC.md |
+| [aid-plan](aid-plan/SKILL.md) | Phase 4: Plan | Defining MVP scope, modules, and deliverables |
+| [aid-detail](aid-detail/SKILL.md) | Phase 5: Detail | Decomposing the plan into executable tasks |
 
 ### Group 3: Implementation
 
 | Skill | Phase | When to Use |
 |-------|-------|-------------|
-| [wf-implement](wf-implement/SKILL.md) | Phase 6: Implement | Executing a task with an AI coding agent |
-| [wf-review](wf-review/SKILL.md) | Phase 7: Review | Spec-anchored code review with grading |
-| [wf-test](wf-test/SKILL.md) | Phase 8: Test | Staging validation before deploy |
+| [aid-implement](aid-implement/SKILL.md) | Phase 6: Implement | Executing a task with an AI coding agent |
+| [aid-review](aid-review/SKILL.md) | Phase 7: Review | Spec-anchored code review with grading |
+| [aid-test](aid-test/SKILL.md) | Phase 8: Test | Staging validation before deploy |
 
 ### Group 4: Production
 
 | Skill | Phase | When to Use |
 |-------|-------|-------------|
-| [wf-deploy](wf-deploy/SKILL.md) | Phase 9: Deploy | Packaging and shipping a completed delivery |
-| [wf-track](wf-track/SKILL.md) | Phase 10: Track | Monitoring production telemetry |
+| [aid-deploy](aid-deploy/SKILL.md) | Phase 9: Deploy | Packaging and shipping a completed delivery |
+| [aid-track](aid-track/SKILL.md) | Phase 10: Track | Monitoring production telemetry |
 
 ### Group 5: Maintenance
 
 | Skill | Phase | When to Use |
 |-------|-------|-------------|
-| [wf-triage](wf-triage/SKILL.md) | Phase 11: Triage | Classifying production findings and routing them |
-| [wf-correct](wf-correct/SKILL.md) | Phase 12: Correct | Root cause analysis and patch scope definition |
+| [aid-triage](aid-triage/SKILL.md) | Phase 11: Triage | Classifying production findings and routing them |
+| [aid-correct](aid-correct/SKILL.md) | Phase 12: Correct | Root cause analysis and patch scope definition |
 
 ---
 
@@ -69,8 +69,8 @@ The human approves every phase transition. The pipeline never auto-advances.
 
 ```
 Is there existing code?
-  YES → Start with wf-discover (Phase 1)
-  NO  → Start with wf-interview (Phase 2)
+  YES → Start with aid-discover (Phase 1)
+  NO  → Start with aid-interview (Phase 2)
 ```
 
 **Brownfield path:** Discover → Interview → Specify → Plan → Detail → Implement → Review → Test → Deploy → Track → Triage

@@ -94,5 +94,5 @@ Be specific — "mobile app" not "anything else."}
 
 | Rev | Date | Source | Description |
 |-----|------|--------|-------------|
-| 1.0 | {date} | wf-interview | Initial requirements from stakeholder interview |
+| 1.0 | {date} | aid-interview | Initial requirements from stakeholder interview |
 ```

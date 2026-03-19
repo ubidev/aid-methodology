@@ -91,7 +91,7 @@
 
 **Blocking issues:** {List if FAIL, "None" if PASS.}
 
-**Notes for deploy:** {Anything wf-deploy needs to know.}
+**Notes for deploy:** {Anything aid-deploy needs to know.}
 
 ---
 
@@ -99,5 +99,5 @@
 
 | Rev | Date | Source | Description |
 |-----|------|--------|-------------|
-| 1.0 | {date} | wf-test | Initial test report |
+| 1.0 | {date} | aid-test | Initial test report |
 ```

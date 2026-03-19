@@ -138,7 +138,7 @@ Based on the grade:
 
 | Grade Range | Recommendation |
 |-------------|---------------|
-| A+ to A- | **Test.** Proceed to wf-test for staging validation. |
+| A+ to A- | **Test.** Proceed to aid-test for staging validation. |
 | B+ to B | **Rework (minor).** Fix identified issues, re-review. |
 | B- to C+ | **Rework (major).** Significant cleanup needed. |
 | C to D | **Re-implement.** Start the task over with corrected context. |
@@ -181,9 +181,9 @@ Issues tagged by source trigger upstream action:
 
 - **CODE** → fix in this review cycle (auto-fix for P1/P2).
 - **TASK** → update TASK.md, flag for re-implementation of affected scope.
-- **SPEC** → generate GAP.md, trigger wf-specify revision.
+- **SPEC** → generate GAP.md, trigger aid-specify revision.
 - **KB** → update the relevant KB document. No pipeline pause needed.
-- **ARCHITECTURE** → trigger targeted wf-discover to correct KB architecture.md.
+- **ARCHITECTURE** → trigger targeted aid-discover to correct KB architecture.md.
 
 For SPEC and ARCHITECTURE issues: pause the delivery pipeline and escalate to human.
 

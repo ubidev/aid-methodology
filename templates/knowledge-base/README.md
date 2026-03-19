@@ -6,19 +6,19 @@ The Knowledge Base (`knowledge/`) is the gravitational center of every AID proje
 
 | Template | Purpose | Source |
 |----------|---------|--------|
-| [architecture.md](architecture.md) | Patterns, layers, module boundaries, data flow | wf-discover |
-| [module-map.md](module-map.md) | Every module: purpose, dependencies, size, coverage | wf-discover |
-| [technology-stack.md](technology-stack.md) | Languages, frameworks, versions, runtime | wf-discover |
-| [coding-standards.md](coding-standards.md) | Naming conventions, error handling, patterns | wf-discover |
-| [data-model.md](data-model.md) | Schema, entities, relationships, migrations | wf-discover |
-| [api-contracts.md](api-contracts.md) | APIs consumed/exposed, auth models, rate limits | wf-discover + wf-interview |
-| [integration-map.md](integration-map.md) | Message queues, caches, third-party services | wf-discover + wf-interview |
-| [domain-glossary.md](domain-glossary.md) | Business terms, domain language, entity definitions | wf-interview |
-| [test-landscape.md](test-landscape.md) | Test frameworks, coverage, CI/CD pipeline | wf-discover |
-| [security-model.md](security-model.md) | Auth/authz, secrets, compliance | wf-interview + wf-discover |
-| [tech-debt.md](tech-debt.md) | Known debt items with file refs and risk ratings | wf-discover |
-| [infrastructure.md](infrastructure.md) | Hosting, networking, environments, deployment | wf-discover + wf-interview |
-| [open-questions.md](open-questions.md) | What code alone can't tell us | wf-discover |
+| [architecture.md](architecture.md) | Patterns, layers, module boundaries, data flow | aid-discover |
+| [module-map.md](module-map.md) | Every module: purpose, dependencies, size, coverage | aid-discover |
+| [technology-stack.md](technology-stack.md) | Languages, frameworks, versions, runtime | aid-discover |
+| [coding-standards.md](coding-standards.md) | Naming conventions, error handling, patterns | aid-discover |
+| [data-model.md](data-model.md) | Schema, entities, relationships, migrations | aid-discover |
+| [api-contracts.md](api-contracts.md) | APIs consumed/exposed, auth models, rate limits | aid-discover + aid-interview |
+| [integration-map.md](integration-map.md) | Message queues, caches, third-party services | aid-discover + aid-interview |
+| [domain-glossary.md](domain-glossary.md) | Business terms, domain language, entity definitions | aid-interview |
+| [test-landscape.md](test-landscape.md) | Test frameworks, coverage, CI/CD pipeline | aid-discover |
+| [security-model.md](security-model.md) | Auth/authz, secrets, compliance | aid-interview + aid-discover |
+| [tech-debt.md](tech-debt.md) | Known debt items with file refs and risk ratings | aid-discover |
+| [infrastructure.md](infrastructure.md) | Hosting, networking, environments, deployment | aid-discover + aid-interview |
+| [open-questions.md](open-questions.md) | What code alone can't tell us | aid-discover |
 
 ## Top-Level README Template
 
@@ -29,25 +29,25 @@ The KB root `README.md` tracks completeness across all documents:
 
 **Created:** {date}
 **Last Updated:** {date}
-**Source:** wf-discover
+**Source:** aid-discover
 
 ## Documents
 
 | Document | Status | Last Updated | Source |
 |----------|--------|-------------|--------|
-| architecture.md | ✅ Complete | {date} | wf-discover |
-| module-map.md | ✅ Complete | {date} | wf-discover |
-| technology-stack.md | ✅ Complete | {date} | wf-discover |
-| coding-standards.md | ⚠️ Partial | {date} | wf-discover (inferred) |
-| data-model.md | ✅ Complete | {date} | wf-discover |
+| architecture.md | ✅ Complete | {date} | aid-discover |
+| module-map.md | ✅ Complete | {date} | aid-discover |
+| technology-stack.md | ✅ Complete | {date} | aid-discover |
+| coding-standards.md | ⚠️ Partial | {date} | aid-discover (inferred) |
+| data-model.md | ✅ Complete | {date} | aid-discover |
 | api-contracts.md | ❌ Missing | — | Needs interview |
 | integration-map.md | ❌ Missing | — | Needs interview |
 | domain-glossary.md | ❌ Missing | — | Needs interview |
-| test-landscape.md | ✅ Complete | {date} | wf-discover |
+| test-landscape.md | ✅ Complete | {date} | aid-discover |
 | security-model.md | ❌ Missing | — | Needs interview |
-| tech-debt.md | ✅ Complete | {date} | wf-discover |
+| tech-debt.md | ✅ Complete | {date} | aid-discover |
 | infrastructure.md | ❌ Missing | — | Needs interview |
-| open-questions.md | ✅ Complete | {date} | wf-discover |
+| open-questions.md | ✅ Complete | {date} | aid-discover |
 
 **Status key:** ✅ Complete | ⚠️ Partial | ❌ Missing
 ```
@@ -70,7 +70,7 @@ Every KB update should be logged in a `revision-log.md` file:
 
 | Date | Source Phase | Document | Change Description |
 |------|------------|----------|-------------------|
-| {date} | wf-discover | All | Initial Knowledge Base creation |
-| {date} | wf-plan (GAP-001) | module-map.md | Added 8 missing service consumers |
-| {date} | wf-implement (IMP-003) | architecture.md | Corrected async model for RecordingService |
+| {date} | aid-discover | All | Initial Knowledge Base creation |
+| {date} | aid-plan (GAP-001) | module-map.md | Added 8 missing service consumers |
+| {date} | aid-implement (IMP-003) | architecture.md | Corrected async model for RecordingService |
 ```

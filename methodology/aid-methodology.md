@@ -141,9 +141,9 @@ The `README.md` at the root of the Knowledge Base tracks what exists and what's 
 
 | Document | Status | Last Updated | Source |
 |----------|--------|-------------|--------|
-| codebase-overview.md | ✅ Complete | Mar 16 | wf-discover |
-| architecture.md | ✅ Complete | Mar 16 | wf-discover |
-| coding-standards.md | ⚠️ Partial | Mar 16 | wf-discover (inferred) |
+| codebase-overview.md | ✅ Complete | Mar 16 | aid-discover |
+| architecture.md | ✅ Complete | Mar 16 | aid-discover |
+| coding-standards.md | ⚠️ Partial | Mar 16 | aid-discover (inferred) |
 | domain-glossary.md | ❌ Missing | — | Needs interview |
 | security-model.md | ❌ Missing | — | Needs interview |
 ```
@@ -177,7 +177,7 @@ AID organizes twelve phases into five groups. The pipeline is linear with feedba
 
 ---
 
-#### Phase 1: Discover (`wf-discover`)
+#### Phase 1: Discover (`aid-discover`)
 
 **Purpose:** Understand the existing system. Produce the Knowledge Base.
 
@@ -201,7 +201,7 @@ AID organizes twelve phases into five groups. The pipeline is linear with feedba
 
 **When to re-enter:** Any downstream phase discovers the KB is wrong or incomplete. Re-entry is always *targeted* — fill the specific gap, not redo full discovery.
 
-#### Phase 2: Interview (`wf-interview`)
+#### Phase 2: Interview (`aid-interview`)
 
 **Purpose:** Gather requirements from the human stakeholder. Produce REQUIREMENTS.md.
 
@@ -235,7 +235,7 @@ The interview is driven by a **knowledge model** — a structured map of what a 
 
 ---
 
-#### Phase 3: Specify (`wf-specify`)
+#### Phase 3: Specify (`aid-specify`)
 
 **Purpose:** Transform requirements into a formal specification grounded in the Knowledge Base.
 
@@ -255,7 +255,7 @@ The interview is driven by a **knowledge model** — a structured map of what a 
 
 **Feedback to Discovery:** If writing the spec exposes insufficient understanding, generate a `GAP.md` and trigger targeted discovery.
 
-#### Phase 4: Plan (`wf-plan`)
+#### Phase 4: Plan (`aid-plan`)
 
 **Purpose:** Define the high-level roadmap — MVP scope, modules, deliverables, test scenarios.
 
@@ -277,7 +277,7 @@ The interview is driven by a **knowledge model** — a structured map of what a 
 - If planning reveals KB gaps → `GAP.md` with `discovery-needed`, trigger targeted discovery.
 - If the spec is ambiguous → `GAP.md` with `ambiguity`, trigger spec revision or targeted interview.
 
-#### Phase 5: Detail (`wf-detail`)
+#### Phase 5: Detail (`aid-detail`)
 
 **Purpose:** Decompose the plan into sprint-ready user stories, executable tasks, and execution order.
 
@@ -298,7 +298,7 @@ The interview is driven by a **knowledge model** — a structured map of what a 
 - `TASK-{id}.md` files — One per task with objective, interface contracts, acceptance criteria, test requirements.
 
 **Feedback loops:**
-- If the plan is too vague → return to wf-plan for revision.
+- If the plan is too vague → return to aid-plan for revision.
 - If KB gaps are found → trigger targeted discovery.
 - If spec is ambiguous → trigger spec revision.
 
@@ -310,7 +310,7 @@ The interview is driven by a **knowledge model** — a structured map of what a 
 
 ---
 
-#### Phase 6: Implement (`wf-implement`)
+#### Phase 6: Implement (`aid-implement`)
 
 **Purpose:** Execute a task using an AI coding agent, with full context from the Knowledge Base.
 
@@ -329,7 +329,7 @@ The interview is driven by a **knowledge model** — a structured map of what a 
 
 **Output:** Code changes + tests on a feature branch. Build green. Test green.
 
-#### Phase 7: Review (`wf-review`)
+#### Phase 7: Review (`aid-review`)
 
 **Purpose:** Static code review — verify implementation quality against task spec, project spec, and KB standards.
 
@@ -352,7 +352,7 @@ The interview is driven by a **knowledge model** — a structured map of what a 
 
 **Output:** `REVIEW.md` — issues found, grade, suggested fixes.
 
-#### Phase 8: Test (`wf-test`)
+#### Phase 8: Test (`aid-test`)
 
 **Purpose:** Dynamic validation in staging — E2E tests, integration tests, manual testing.
 
@@ -375,8 +375,8 @@ The interview is driven by a **knowledge model** — a structured map of what a 
 **Output:** `TEST-REPORT.md` — test results, coverage, verdict.
 
 **Feedback loops:**
-- Test failure → wf-implement (fix the bug, then re-review, re-test).
-- Test reveals spec gap → wf-specify (revise spec, update tasks, re-implement).
+- Test failure → aid-implement (fix the bug, then re-review, re-test).
+- Test reveals spec gap → aid-specify (revise spec, update tasks, re-implement).
 
 ---
 
@@ -386,7 +386,7 @@ The interview is driven by a **knowledge model** — a structured map of what a 
 
 ---
 
-#### Phase 9: Deploy (`wf-deploy`)
+#### Phase 9: Deploy (`aid-deploy`)
 
 **Purpose:** Package, verify, and ship the completed delivery to production.
 
@@ -405,7 +405,7 @@ The interview is driven by a **knowledge model** — a structured map of what a 
 - KB updated with any new discoveries.
 - Delivery summary for stakeholder communication.
 
-#### Phase 10: Track (`wf-track`)
+#### Phase 10: Track (`aid-track`)
 
 **Purpose:** Monitor production. Interpret telemetry, error logs, issue trackers, and performance metrics.
 
@@ -433,15 +433,15 @@ The interview is driven by a **knowledge model** — a structured map of what a 
 
 ---
 
-#### Phase 11: Triage (`wf-triage`)
+#### Phase 11: Triage (`aid-triage`)
 
 **Purpose:** Classify what Track found. Route it to the right path.
 
 **Input:** `TRACK-REPORT.md` + `knowledge/` + `SPEC.md`.
 
 **Classification:**
-- **BUG** — Code doesn't match spec. Route to wf-correct (short path).
-- **Change Request** — Spec is wrong or incomplete. Route to wf-discover (new cycle).
+- **BUG** — Code doesn't match spec. Route to aid-correct (short path).
+- **Change Request** — Spec is wrong or incomplete. Route to aid-discover (new cycle).
 - **Infrastructure** — Not a code issue. Escalate to ops.
 - **No Action** — False positive, expected behavior, or below threshold.
 
@@ -449,7 +449,7 @@ The interview is driven by a **knowledge model** — a structured map of what a 
 
 **Output:** `TRIAGE.md` — classification, evidence, severity, routing decision.
 
-#### Phase 12: Correct (`wf-correct`)
+#### Phase 12: Correct (`aid-correct`)
 
 **Purpose:** Map the fix for a bug. Root cause analysis, patch scope, handoff to implementation.
 
@@ -460,7 +460,7 @@ The interview is driven by a **knowledge model** — a structured map of what a 
 2. **Impact mapping** — What else does this affect? Check module consumers, test coverage.
 3. **Patch scope** — Define exactly what changes. Minimal surface area.
 4. **Regression check** — What existing tests should catch this?
-5. **Generate CORRECTION.md** — A surgical task spec for wf-implement.
+5. **Generate CORRECTION.md** — A surgical task spec for aid-implement.
 
 **The short path:** Correct → Implement → Review → Test → Deploy. Five phases, not twelve. The correction skips problem mapping, planning, and detail because the spec is already correct — the code just doesn't match it.
 
@@ -522,7 +522,7 @@ The pipeline is sequential by default. But real engineering isn't linear. Assump
 
 **Trigger:** Tests fail due to implementation bugs discovered in staging.
 
-**Protocol:** Failures documented in TEST-REPORT.md → route back to wf-implement for fix → wf-review (quick review) → wf-test (re-run).
+**Protocol:** Failures documented in TEST-REPORT.md → route back to aid-implement for fix → aid-review (quick review) → aid-test (re-run).
 
 #### Post-Production Loops (9-11)
 
@@ -542,7 +542,7 @@ The pipeline is sequential by default. But real engineering isn't linear. Assump
 
 **Trigger:** Triage classifies a finding as Change Request.
 
-**Protocol:** Triage produces TRIAGE.md with CR classification → new project cycle starts at wf-discover (or wf-interview for greenfield) → full pipeline.
+**Protocol:** Triage produces TRIAGE.md with CR classification → new project cycle starts at aid-discover (or aid-interview for greenfield) → full pipeline.
 
 ### The Revision Trail
 
@@ -553,9 +553,9 @@ Every change to an upstream artifact is tracked at the bottom of the artifact:
 
 | Rev | Date | Source | Description |
 |-----|------|--------|-------------|
-| 1.0 | Mar 1 | wf-specify | Initial spec |
-| 1.1 | Mar 5 | GAP-001 (wf-plan) | Added latency requirements |
-| 1.2 | Mar 8 | IMP-003 (wf-implement) | Changed sync model |
+| 1.0 | Mar 1 | aid-specify | Initial spec |
+| 1.1 | Mar 5 | GAP-001 (aid-plan) | Added latency requirements |
+| 1.2 | Mar 8 | IMP-003 (aid-implement) | Changed sync model |
 ```
 
 ### Feedback Loop Artifacts
@@ -564,7 +564,7 @@ Every change to an upstream artifact is tracked at the bottom of the artifact:
 
 ```markdown
 # GAP: GAP-001
-**Source:** wf-plan, Deliverable 2
+**Source:** aid-plan, Deliverable 2
 **Type:** discovery-needed | ambiguity | contradiction
 **Description:** Module map shows 3 consumers of SearchService, but grep reveals 11.
 **KB Gap:** module-map.md (incomplete)
@@ -576,7 +576,7 @@ Every change to an upstream artifact is tracked at the bottom of the artifact:
 
 ```markdown
 # IMPEDIMENT: IMP-003
-**Source:** wf-implement, TASK-F3a
+**Source:** aid-implement, TASK-F3a
 **Type:** wrong-assumption | missing-dependency | architecture-conflict | kb-gap
 **Description:** RecordingService is synchronous, not async as KB states.
 **KB Impact:** architecture.md needs revision
@@ -887,8 +887,8 @@ Ship to Test | Rework (minor) | Rework (major) | Re-implement
 {Why this classification. Reference SPEC.md for expected behavior.}
 
 ## Routing
-- **BUG →** wf-correct (short path: correct → implement → review → test → deploy)
-- **CR →** wf-discover (new cycle)
+- **BUG →** aid-correct (short path: correct → implement → review → test → deploy)
+- **CR →** aid-discover (new cycle)
 - **Infrastructure →** ops escalation
 - **No Action →** closed with justification
 ```
@@ -936,27 +936,27 @@ Ship to Test | Rework (minor) | Rework (major) | Re-implement
              │              │              │
              ▼              │              │
    ┌─ PROBLEM MAPPING ─────┤              │
-   │     wf-discover ───────┤              │
+   │     aid-discover ───────┤              │
    │      → knowledge/*     │              │
    │          │              │              │
    │          ├──────────────┼──────────────┘
    │                        │
    │                        ▼
-   │     wf-interview ◄─── GAP (needs-interview)
+   │     aid-interview ◄─── GAP (needs-interview)
    │      → REQUIREMENTS.md
    └────────────────────────┤
                             │
    ┌─ PLANNING ─────────────┤
    │                        ▼
-   │     wf-specify ◄──── GAP (ambiguity/contradiction)
+   │     aid-specify ◄──── GAP (ambiguity/contradiction)
    │      → SPEC.md
    │          │
    │          ▼
-   │     wf-plan ◄─────── GAP (KB gap)
+   │     aid-plan ◄─────── GAP (KB gap)
    │      → PLAN.md
    │          │
    │          ▼
-   │     wf-detail ◄───── GAP (plan too vague)
+   │     aid-detail ◄───── GAP (plan too vague)
    │      → DETAIL.md
    │      → TASK-{id}.md (×N)
    └────────────────────────┤
@@ -964,45 +964,45 @@ Ship to Test | Rework (minor) | Rework (major) | Re-implement
    ┌─ IMPLEMENTATION ──────┤
    │            ┌───────────┤
    │            │           ▼
-   │            │     wf-implement ◄── IMPEDIMENT
+   │            │     aid-implement ◄── IMPEDIMENT
    │            │      → code + tests
    │            │           │
    │            │           ▼
-   │            │     wf-review ◄───── issue (KB/SPEC/ARCH)
+   │            │     aid-review ◄───── issue (KB/SPEC/ARCH)
    │            │      → REVIEW.md
    │            │           │
    │            │           ▼
-   │            │     wf-test ◄─────── test failure → fix
+   │            │     aid-test ◄─────── test failure → fix
    │            │      → TEST-REPORT.md
    └────────────┤──────────┤
                 │          │
    ┌─ PRODUCTION ──────────┤
    │            │          ▼
-   │            │     wf-deploy
+   │            │     aid-deploy
    │            │      → PR + summary
    │            │          │
    │            │          ▼
-   │            │     wf-track ◄────── deployment / schedule / alert
+   │            │     aid-track ◄────── deployment / schedule / alert
    │            │      → TRACK-REPORT.md
    └────────────┤─────────┤
                 │         │
    ┌─ MAINTENANCE ────────┤
    │            │         ▼
-   │            │     wf-triage
+   │            │     aid-triage
    │            │      → TRIAGE.md
    │            │         │
    │            │    ┌────┴─────┐
    │            │    │          │
    │            │ BUG ↓      CR ↓
    │            │    │          │
-   │            │    ▼          └──→ wf-discover (new cycle)
-   │            │ wf-correct
+   │            │    ▼          └──→ aid-discover (new cycle)
+   │            │ aid-correct
    │            │  → CORRECTION.md
    │            │    │
-   │            └────┘ (back to wf-implement)
+   │            └────┘ (back to aid-implement)
    └────────────────────
 
- ─── ANY PHASE ──→ wf-discover (targeted) ──→ knowledge/* ──→ resume
+ ─── ANY PHASE ──→ aid-discover (targeted) ──→ knowledge/* ──→ resume
 ```
 
 ### The Two Post-Production Paths
@@ -1122,22 +1122,22 @@ SDD is not wrong. It's incomplete. AID is SDD + Discovery + Feedback Loops + Two
 
 ### Starting with an Existing Project (Brownfield)
 
-1. Run `wf-discover` on the codebase. This produces your Knowledge Base.
+1. Run `aid-discover` on the codebase. This produces your Knowledge Base.
 2. Review the KB. Fill gaps with human knowledge.
-3. For the next feature request, run `wf-interview` with the stakeholder.
-4. Run `wf-specify` with REQUIREMENTS.md + KB as input.
-5. Run `wf-plan` to define the roadmap.
-6. Run `wf-detail` to decompose into tasks.
-7. Run `wf-implement` for each task.
-8. Run `wf-review` after each task.
-9. Run `wf-test` to validate in staging.
-10. Run `wf-deploy` to package and ship.
+3. For the next feature request, run `aid-interview` with the stakeholder.
+4. Run `aid-specify` with REQUIREMENTS.md + KB as input.
+5. Run `aid-plan` to define the roadmap.
+6. Run `aid-detail` to decompose into tasks.
+7. Run `aid-implement` for each task.
+8. Run `aid-review` after each task.
+9. Run `aid-test` to validate in staging.
+10. Run `aid-deploy` to package and ship.
 
 ### Starting a New Project (Greenfield)
 
-1. Run `wf-interview` with the stakeholder. This is your starting point.
+1. Run `aid-interview` with the stakeholder. This is your starting point.
 2. A minimal KB is populated from interview answers.
-3. Run `wf-specify` with REQUIREMENTS.md + minimal KB.
+3. Run `aid-specify` with REQUIREMENTS.md + minimal KB.
 4. Continue with Plan → Detail → Implement → Review → Test → Deploy.
 5. The KB grows organically as the codebase develops.
 

@@ -168,7 +168,7 @@ Spikes are separate TASK files with `**Type:** Spike` in the header. Their outpu
 
 **Protocol:**
 1. Document what's missing: "PLAN.md defines 'search module' but doesn't specify which search features go in MVP vs. v2."
-2. Return to wf-plan for revision with the specific gap identified.
+2. Return to aid-plan for revision with the specific gap identified.
 3. Revised PLAN.md → resume detailing.
 
 ### → Discovery (KB gaps)
@@ -177,7 +177,7 @@ Spikes are separate TASK files with `**Type:** Spike` in the header. Their outpu
 
 **Protocol:**
 1. Generate GAP.md with `discovery-needed`.
-2. Trigger targeted wf-discover.
+2. Trigger targeted aid-discover.
 3. KB updated → resume detailing with corrected data.
 
 ### → Specify (Spec ambiguity)
@@ -186,7 +186,7 @@ Spikes are separate TASK files with `**Type:** Spike` in the header. Their outpu
 
 **Protocol:**
 1. Generate GAP.md with `ambiguity`.
-2. Trigger wf-specify revision (possibly with targeted interview).
+2. Trigger aid-specify revision (possibly with targeted interview).
 3. Updated spec → resume detailing.
 
 ### ← Implement / Review (Loops from downstream)

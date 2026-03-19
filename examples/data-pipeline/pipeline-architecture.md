@@ -1,6 +1,6 @@
 # Pipeline Architecture: E-commerce Analytics
 
-*Produced by AID wf-discover + wf-specify phases*
+*Produced by AID aid-discover + aid-specify phases*
 
 ## Overview
 

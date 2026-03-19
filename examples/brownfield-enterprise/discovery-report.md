@@ -1,6 +1,6 @@
 # Discovery Report: Enterprise Java Platform — Search Engine Subsystem
 
-*Produced by AID wf-discover phase*
+*Produced by AID aid-discover phase*
 
 ## Executive Summary
 

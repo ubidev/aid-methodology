@@ -61,7 +61,7 @@ If the existing test suite has no coverage in the affected area (check `knowledg
 
 ### Step 5: Generate CORRECTION.md
 
-Produce the correction document using the [template](references/correction-template.md). This is the task spec for `wf-implement` — it must contain everything the implementing agent needs:
+Produce the correction document using the [template](references/correction-template.md). This is the task spec for `aid-implement` — it must contain everything the implementing agent needs:
 
 - Root cause (so the agent understands *why*, not just *what*).
 - Files to touch (so the agent knows the scope).
@@ -70,17 +70,17 @@ Produce the correction document using the [template](references/correction-templ
 
 ### Step 6: Hand Off to Implement
 
-The CORRECTION.md goes to `wf-implement` as a task. From there, the standard pipeline applies:
+The CORRECTION.md goes to `aid-implement` as a task. From there, the standard pipeline applies:
 
 ```
-wf-correct → wf-implement → wf-review → wf-test → wf-deploy
+aid-correct → aid-implement → aid-review → aid-test → aid-deploy
 ```
 
 Five phases. The correction skips discover, interview, specify, plan, and detail because the spec is already correct — the code just doesn't match it.
 
 ## What Correct Is NOT
 
-**Not re-specification.** The spec was right; the code was wrong. If the spec needs to change, that's a CR — route through `wf-discover`.
+**Not re-specification.** The spec was right; the code was wrong. If the spec needs to change, that's a CR — route through `aid-discover`.
 
 **Not re-planning.** No delivery decomposition. A bug fix is a single task, not a delivery increment.
 
@@ -94,16 +94,16 @@ See [Correction Template](references/correction-template.md) for the full templa
 
 ## Triggers
 
-### → wf-implement (Loop 8)
+### → aid-implement (Loop 8)
 
-CORRECTION.md is handed to `wf-implement` as a task spec. The implementing agent:
+CORRECTION.md is handed to `aid-implement` as a task spec. The implementing agent:
 1. Reads CORRECTION.md for scope and root cause context.
 2. Loads relevant KB documents.
 3. Implements the fix.
 4. Runs the fix verification test (must pass).
 5. Runs the full test suite (no regressions).
 
-After implementation: `wf-review` → `wf-test` → `wf-deploy`. Standard quality gates apply.
+After implementation: `aid-review` → `aid-test` → `aid-deploy`. Standard quality gates apply.
 
 ## Quality Checklist
 

@@ -9,7 +9,7 @@ Deploy to staging, run E2E and integration tests, support manual testing, produc
 
 ## Inputs
 
-- Feature branch with reviewed code (grade A- or above from wf-review).
+- Feature branch with reviewed code (grade A- or above from aid-review).
 - `DELIVERY-{id}.md` — delivery scope and success criteria.
 - `DETAIL.md` — user stories and acceptance criteria.
 - `SPEC.md` — expected behavior and non-functional requirements.
@@ -121,8 +121,8 @@ See [Test Report Template](references/test-report-template.md) for the full temp
 
 **Protocol:**
 1. Document failures in TEST-REPORT.md with reproduction steps.
-2. Route back to wf-implement for targeted fix.
-3. Fix → wf-review (quick review of the fix) → wf-test (re-run failed tests + regression).
+2. Route back to aid-implement for targeted fix.
+3. Fix → aid-review (quick review of the fix) → aid-test (re-run failed tests + regression).
 
 ### → Review (test reveals review miss)
 
@@ -130,7 +130,7 @@ See [Test Report Template](references/test-report-template.md) for the full temp
 
 **Protocol:**
 1. Document in TEST-REPORT.md.
-2. Update wf-review checklist with the new pattern to check for.
+2. Update aid-review checklist with the new pattern to check for.
 3. Fix → re-review → re-test.
 
 ### → Specify (spec gap in staging)
@@ -139,7 +139,7 @@ See [Test Report Template](references/test-report-template.md) for the full temp
 
 **Protocol:**
 1. Generate GAP.md with `ambiguity`.
-2. Trigger wf-specify revision.
+2. Trigger aid-specify revision.
 3. Updated spec → update tasks → implement → review → test again.
 
 ## Quality Checklist
@@ -151,7 +151,7 @@ See [Test Report Template](references/test-report-template.md) for the full temp
 - [ ] Manual testing completed (if applicable).
 - [ ] All failures documented with reproduction steps.
 - [ ] TEST-REPORT.md produced with clear verdict.
-- [ ] Verdict is PASS before proceeding to wf-deploy.
+- [ ] Verdict is PASS before proceeding to aid-deploy.
 
 ## See Also
 

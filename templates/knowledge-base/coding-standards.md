@@ -1,6 +1,6 @@
 # Coding Standards
 
-> **Source:** wf-discover (Phase 1) — inferred from code analysis
+> **Source:** aid-discover (Phase 1) — inferred from code analysis
 > **Status:** {✅ Complete | ⚠️ Partial | ❌ Missing}
 > **Last Updated:** {date}
 
@@ -115,4 +115,4 @@
 
 | Rev | Date | Source | Description |
 |-----|------|--------|-------------|
-| 1.0 | {date} | wf-discover | Initial conventions inferred from code |
+| 1.0 | {date} | aid-discover | Initial conventions inferred from code |

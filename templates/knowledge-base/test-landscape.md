@@ -1,6 +1,6 @@
 # Test Landscape
 
-> **Source:** wf-discover (Phase 1)
+> **Source:** aid-discover (Phase 1)
 > **Status:** {✅ Complete | ⚠️ Partial | ❌ Missing}
 > **Last Updated:** {date}
 
@@ -85,7 +85,7 @@
 
 ## Known Test Gaps
 
-> Areas with insufficient test coverage — important for wf-implement to know what to add.
+> Areas with insufficient test coverage — important for aid-implement to know what to add.
 
 | Area | Gap | Risk | Recommendation |
 |------|-----|------|----------------|
@@ -108,4 +108,4 @@
 
 | Rev | Date | Source | Description |
 |-----|------|--------|-------------|
-| 1.0 | {date} | wf-discover | Initial test landscape analysis |
+| 1.0 | {date} | aid-discover | Initial test landscape analysis |

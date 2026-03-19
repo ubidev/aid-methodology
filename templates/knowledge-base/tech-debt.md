@@ -1,6 +1,6 @@
 # Tech Debt
 
-> **Source:** wf-discover (Phase 1)
+> **Source:** aid-discover (Phase 1)
 > **Status:** {✅ Complete | ⚠️ Partial | ❌ Missing}
 > **Last Updated:** {date}
 
@@ -115,4 +115,4 @@
 
 | Rev | Date | Source | Description |
 |-----|------|--------|-------------|
-| 1.0 | {date} | wf-discover | Initial debt audit |
+| 1.0 | {date} | aid-discover | Initial debt audit |

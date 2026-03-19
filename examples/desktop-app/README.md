@@ -27,9 +27,9 @@ This project demonstrates the **Plan→Detail→Implement→Review→Test→Depl
 
 ### How Plan→Detail Works
 
-**Plan (wf-plan):** Defines delivery scope — e.g., "Delivery 2d: Import & Diarization" with two features (F9: File Import, F10: Speaker Diarization).
+**Plan (aid-plan):** Defines delivery scope — e.g., "Delivery 2d: Import & Diarization" with two features (F9: File Import, F10: Speaker Diarization).
 
-**Detail (wf-detail):** Breaks each feature into task specs with:
+**Detail (aid-detail):** Breaks each feature into task specs with:
 - Interfaces to implement
 - Models and migrations needed
 - UI changes with element specifications
@@ -38,8 +38,8 @@ This project demonstrates the **Plan→Detail→Implement→Review→Test→Depl
 
 ### Quality Gates
 
-- **Review (wf-review):** Every delivery reviewed before merge. Graded A+ to F. P1/P2 issues fixed inline, P3+ documented.
-- **Test (wf-test):** Three-tier E2E testing:
+- **Review (aid-review):** Every delivery reviewed before merge. Graded A+ to F. P1/P2 issues fixed inline, P3+ documented.
+- **Test (aid-test):** Three-tier E2E testing:
   - **Mock:** All services mocked, CI-safe, fast (~80 tests)
   - **Integration:** Real data services + filesystem, hardware mocked (~67 tests)
   - **Full:** Real models, requires hardware (`[Trait("Requires", "Whisper")]`)

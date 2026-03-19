@@ -31,8 +31,8 @@ AID contains SDD (Spec-Driven Development). SDD is the spec→code layer. AID is
 **Want to use the skills right now?**
 ```
 skills/
-├── wf-discover/SKILL.md     ← Start here for brownfield projects
-├── wf-interview/SKILL.md    ← Start here for greenfield projects
+├── aid-discover/SKILL.md     ← Start here for brownfield projects
+├── aid-interview/SKILL.md    ← Start here for greenfield projects
 └── ...                      ← Each phase is a self-contained SKILL.md
 ```
 
@@ -61,34 +61,34 @@ examples/
 ### Group 1: Problem Mapping
 | Phase | Skill | What It Does |
 |-------|-------|-------------|
-| 1. Discover | `wf-discover` | Analyzes an existing codebase; produces the Knowledge Base (13 documents) |
-| 2. Interview | `wf-interview` | Adaptive one-question-at-a-time requirements gathering; produces REQUIREMENTS.md |
+| 1. Discover | `aid-discover` | Analyzes an existing codebase; produces the Knowledge Base (13 documents) |
+| 2. Interview | `aid-interview` | Adaptive one-question-at-a-time requirements gathering; produces REQUIREMENTS.md |
 
 ### Group 2: Planning
 | Phase | Skill | What It Does |
 |-------|-------|-------------|
-| 3. Specify | `wf-specify` | Transforms requirements into a grounded SPEC.md anchored in the KB |
-| 4. Plan | `wf-plan` | Defines MVP scope, modules, deliverables, test scenarios — strategy, not tactics |
-| 5. Detail | `wf-detail` | Decomposes the plan into user stories, executable tasks, and precedence order |
+| 3. Specify | `aid-specify` | Transforms requirements into a grounded SPEC.md anchored in the KB |
+| 4. Plan | `aid-plan` | Defines MVP scope, modules, deliverables, test scenarios — strategy, not tactics |
+| 5. Detail | `aid-detail` | Decomposes the plan into user stories, executable tasks, and precedence order |
 
 ### Group 3: Implementation
 | Phase | Skill | What It Does |
 |-------|-------|-------------|
-| 6. Implement | `wf-implement` | Spawns a coding agent with full KB context; mandatory build verification |
-| 7. Review | `wf-review` | Spec-anchored code review with A+ to F grading; auto-fixes P1/P2 issues |
-| 8. Test | `wf-test` | Staging validation — E2E, integration, manual; the gate before deploy |
+| 6. Implement | `aid-implement` | Spawns a coding agent with full KB context; mandatory build verification |
+| 7. Review | `aid-review` | Spec-anchored code review with A+ to F grading; auto-fixes P1/P2 issues |
+| 8. Test | `aid-test` | Staging validation — E2E, integration, manual; the gate before deploy |
 
 ### Group 4: Production
 | Phase | Skill | What It Does |
 |-------|-------|-------------|
-| 9. Deploy | `wf-deploy` | Final verification, PR creation, KB update, delivery summary |
-| 10. Track | `wf-track` | Interprets production telemetry — doesn't just collect, understands |
+| 9. Deploy | `aid-deploy` | Final verification, PR creation, KB update, delivery summary |
+| 10. Track | `aid-track` | Interprets production telemetry — doesn't just collect, understands |
 
 ### Group 5: Maintenance
 | Phase | Skill | What It Does |
 |-------|-------|-------------|
-| 11. Triage | `wf-triage` | Classifies findings as BUG, CR, Infrastructure, or No Action; routes accordingly |
-| 12. Correct | `wf-correct` | Root cause analysis, patch scope definition, hands off to Implement via CORRECTION.md |
+| 11. Triage | `aid-triage` | Classifies findings as BUG, CR, Infrastructure, or No Action; routes accordingly |
+| 12. Correct | `aid-correct` | Root cause analysis, patch scope definition, hands off to Implement via CORRECTION.md |
 
 ---
 

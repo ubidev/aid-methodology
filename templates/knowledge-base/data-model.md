@@ -1,6 +1,6 @@
 # Data Model
 
-> **Source:** wf-discover (Phase 1)
+> **Source:** aid-discover (Phase 1)
 > **Status:** {✅ Complete | ⚠️ Partial | ❌ Missing}
 > **Last Updated:** {date}
 
@@ -105,4 +105,4 @@ erDiagram
 
 | Rev | Date | Source | Description |
 |-----|------|--------|-------------|
-| 1.0 | {date} | wf-discover | Initial schema extraction |
+| 1.0 | {date} | aid-discover | Initial schema extraction |

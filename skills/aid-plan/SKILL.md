@@ -1,11 +1,11 @@
 
 # High-Level Roadmap
 
-Take SPEC.md and produce a strategic roadmap: MVP definition, module identification, deliverable scoping, test scenario definition, and risk assessment. Plan answers "what do we build and in what order?" Detail (wf-detail) answers "how do we build it?"
+Take SPEC.md and produce a strategic roadmap: MVP definition, module identification, deliverable scoping, test scenario definition, and risk assessment. Plan answers "what do we build and in what order?" Detail (aid-detail) answers "how do we build it?"
 
 ## Core Principle
 
-**Plan is strategy. Detail is tactics.** Plan identifies what the MVP is, what modules exist, what deliverables make sense, and what test scenarios prove the system works. It does NOT decompose features into individual tasks or define execution waves — that's wf-detail's job. A good plan gives the Detail phase enough structure to work with, but doesn't micromanage.
+**Plan is strategy. Detail is tactics.** Plan identifies what the MVP is, what modules exist, what deliverables make sense, and what test scenarios prove the system works. It does NOT decompose features into individual tasks or define execution waves — that's aid-detail's job. A good plan gives the Detail phase enough structure to work with, but doesn't micromanage.
 
 ## Inputs
 
@@ -166,14 +166,14 @@ Spikes are documented in PLAN.md and executed before the Detail phase.
 1. Generate GAP.md:
    ```markdown
    # GAP: GAP-{id}
-   **Source:** wf-plan, Deliverable {id}
+   **Source:** aid-plan, Deliverable {id}
    **Type:** discovery-needed
    **Description:** {What's missing from the KB}
    **KB Gap:** {Which document(s) need updating}
    **Blocking:** {Which deliverables can't be scoped}
    **Resolution:** discovery
    ```
-2. Trigger targeted wf-discover.
+2. Trigger targeted aid-discover.
 3. KB updated → resume planning with corrected data.
 
 ### → Specify (Loop 4)
@@ -184,21 +184,21 @@ Spikes are documented in PLAN.md and executed before the Detail phase.
 1. Generate GAP.md:
    ```markdown
    # GAP: GAP-{id}
-   **Source:** wf-plan, Deliverable {id}
+   **Source:** aid-plan, Deliverable {id}
    **Type:** ambiguity | contradiction
    **Description:** {What's unclear in the spec}
    **Blocking:** {Which deliverables can't be scoped}
    **Resolution:** needs-interview | spec-revision
    ```
-2. If `needs-interview` → trigger targeted wf-interview.
-3. If `spec-revision` → trigger wf-specify revision.
+2. If `needs-interview` → trigger targeted aid-interview.
+3. If `spec-revision` → trigger aid-specify revision.
 4. Updated spec → resume planning.
 
 ### ← Detail (plan too vague)
 
 If the Detail phase can't decompose the plan into tasks because deliverables are too broad or modules are unclear:
 
-1. Receive feedback from wf-detail identifying the gap.
+1. Receive feedback from aid-detail identifying the gap.
 2. Revise the specific section of PLAN.md.
 3. Detail resumes with corrected plan.
 

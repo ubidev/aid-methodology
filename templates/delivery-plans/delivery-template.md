@@ -1,7 +1,7 @@
 # DELIVERY-{id}: {Name}
 
 > **Status:** Not Started | In Progress | Testing | Complete
-> **Source:** wf-plan (Phase 4) + wf-detail (Phase 5)
+> **Source:** aid-plan (Phase 4) + aid-detail (Phase 5)
 > **PLAN.md reference:** Deliverable {n}
 
 ---

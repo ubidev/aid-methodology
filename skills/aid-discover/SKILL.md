@@ -6,7 +6,7 @@ Analyze an existing codebase and produce a structured Knowledge Base (`knowledge
 ## When to Use
 
 - **Full discovery:** New brownfield project. No KB exists yet.
-- **Targeted discovery:** A downstream phase (wf-interview, wf-specify, wf-plan, wf-detail, wf-implement, wf-review, wf-test) generated a GAP.md with `discovery-needed`. Only analyze the specific area identified in the gap.
+- **Targeted discovery:** A downstream phase (aid-interview, aid-specify, aid-plan, aid-detail, aid-implement, aid-review, aid-test) generated a GAP.md with `discovery-needed`. Only analyze the specific area identified in the gap.
 
 ## Inputs
 
@@ -152,7 +152,7 @@ Document what you couldn't determine from code alone:
 - Data flows that require human explanation.
 - Security model details (auth config, secrets management).
 
-Record in `knowledge/open-questions.md`. These feed directly into wf-interview.
+Record in `knowledge/open-questions.md`. These feed directly into aid-interview.
 
 ### Step 11: KB Index
 
@@ -163,9 +163,9 @@ Create `knowledge/README.md` with completeness tracking:
 
 | Document | Status | Last Updated | Source |
 |----------|--------|-------------|--------|
-| codebase-overview.md | ✅ Complete | {date} | wf-discover |
-| architecture.md | ✅ Complete | {date} | wf-discover |
-| coding-standards.md | ⚠️ Partial | {date} | wf-discover (inferred) |
+| codebase-overview.md | ✅ Complete | {date} | aid-discover |
+| architecture.md | ✅ Complete | {date} | aid-discover |
+| coding-standards.md | ⚠️ Partial | {date} | aid-discover (inferred) |
 | domain-glossary.md | ❌ Missing | — | Needs interview |
 ```
 

@@ -31,17 +31,17 @@ Apply this decision tree:
 Does the code do what SPEC.md says it should?
 ├── NO → BUG
 │     The spec is right. The code is wrong.
-│     Route to wf-correct (short path).
+│     Route to aid-correct (short path).
 │
 ├── YES, but the spec doesn't cover this case → BUG (spec gap)
 │     The spec didn't specify edge case behavior.
-│     If the correct behavior is obvious → wf-correct.
+│     If the correct behavior is obvious → aid-correct.
 │     If the correct behavior needs requirements input → CR.
 │
 ├── YES, and the spec is now wrong → CHANGE REQUEST
 │     Business rules changed. Users need different behavior.
 │     The system works as designed; the design needs to change.
-│     Route to wf-discover (new cycle).
+│     Route to aid-discover (new cycle).
 │
 ├── NOT A CODE ISSUE → INFRASTRUCTURE
 │     Server misconfiguration, scaling limits, third-party outage.
@@ -65,10 +65,10 @@ Does the code do what SPEC.md says it should?
 
 Based on classification:
 
-**BUG → wf-correct (short path)**
+**BUG → aid-correct (short path)**
 The bug enters the correction phase. Correct does root cause analysis and maps the patch. Then: Implement → Review → Test → Deploy. Five phases total. No re-specification, no re-planning.
 
-**Change Request → wf-discover (new cycle)**
+**Change Request → aid-discover (new cycle)**
 The CR enters as a new project. If the system has an existing KB, discovery is targeted (update what changed). If it's a significant feature, it runs the full pipeline: Discover → Interview → Specify → Plan → Detail → Implement → Review → Test → Deploy.
 
 **Infrastructure → ops escalation**
@@ -110,11 +110,11 @@ See [Triage Template](references/triage-template.md) for the full template.
 
 ## Triggers
 
-### → wf-correct (Loop 8)
-When classification is BUG, produce TRIAGE.md and hand off to `wf-correct` for root cause analysis and patch mapping.
+### → aid-correct (Loop 8)
+When classification is BUG, produce TRIAGE.md and hand off to `aid-correct` for root cause analysis and patch mapping.
 
-### → wf-discover (Loop 9)
-When classification is Change Request, produce TRIAGE.md and route to `wf-discover` as a new project cycle. The CR becomes the input to discovery (or interview, for greenfield).
+### → aid-discover (Loop 9)
+When classification is Change Request, produce TRIAGE.md and route to `aid-discover` as a new project cycle. The CR becomes the input to discovery (or interview, for greenfield).
 
 ## Quality Checklist
 

@@ -100,16 +100,16 @@ Not every anomaly triggers triage. Default thresholds (adjust per project):
 
 ## When to Run
 
-- **Post-deployment:** After every `wf-deploy` ships. Check that what was deployed works.
+- **Post-deployment:** After every `aid-deploy` ships. Check that what was deployed works.
 - **Scheduled:** Daily or weekly depending on project activity. Catches slow-burn issues.
 - **Alert-triggered:** When monitoring tools fire alerts above configured thresholds.
 - **On-demand:** When a stakeholder asks "how's production doing?"
 
 ## Triggers
 
-### → wf-triage (Loop 7)
+### → aid-triage (Loop 7)
 
-When findings exceed severity thresholds, produce TRACK-REPORT.md and hand off to `wf-triage` for classification and routing.
+When findings exceed severity thresholds, produce TRACK-REPORT.md and hand off to `aid-triage` for classification and routing.
 
 ## Quality Checklist
 

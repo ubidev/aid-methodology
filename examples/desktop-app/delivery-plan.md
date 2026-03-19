@@ -1,6 +1,6 @@
 # Delivery Plan: Import & Diarization (Delivery 2d)
 
-*Produced by AID wf-plan phase*
+*Produced by AID aid-plan phase*
 
 ## Overview
 

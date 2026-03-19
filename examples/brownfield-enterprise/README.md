@@ -14,7 +14,7 @@ A 21GB Java/OSGi enterprise monorepo containing:
 
 ## AID Phases Applied
 
-### 1. Discovery (wf-discover)
+### 1. Discovery (aid-discover)
 
 The AI agent systematically explored the repository structure, build system, and key subsystems. Output: a 15-section architecture report and initial Knowledge Base documents.
 
@@ -34,7 +34,7 @@ The AI agent systematically explored the repository structure, build system, and
 | domain-glossary.md | ⚠️ Partial | Domain terms extracted from code |
 | open-questions.md | ✅ Complete | 8 questions requiring human input |
 
-### 2. Interview (wf-interview)
+### 2. Interview (aid-interview)
 
 Targeted questions to the lead developer filled KB gaps. Key findings:
 - Queue naming follows PascalCase convention (not dot-notation)

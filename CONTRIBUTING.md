@@ -6,7 +6,7 @@ AID is an open methodology — it improves through use. If you've run these phas
 
 ### New Skills
 - A skill for a phase variant not yet covered
-- A specialized version of an existing skill (e.g., a wf-discover variant for monorepos, or for Python projects specifically)
+- A specialized version of an existing skill (e.g., a aid-discover variant for monorepos, or for Python projects specifically)
 - Skills that extend the methodology to edge cases (multi-repo, microservices, data science workflows)
 
 ### Improved Templates
@@ -36,7 +36,7 @@ AID is an open methodology — it improves through use. If you've run these phas
 
 1. **Fork the repo** and create a branch: `git checkout -b your-contribution`
 
-2. **For skill improvements:** Edit the relevant `skills/wf-*/SKILL.md`. Keep the same structure (Core Principle, Inputs, Process, Output, Feedback Loops). Don't add tool-specific CLI commands that only work in one environment.
+2. **For skill improvements:** Edit the relevant `skills/aid-*/SKILL.md`. Keep the same structure (Core Principle, Inputs, Process, Output, Feedback Loops). Don't add tool-specific CLI commands that only work in one environment.
 
 3. **For new templates:** Add to the appropriate `templates/` subdirectory. Templates must include guidance comments explaining *why* each section exists, not just *what* to fill in.
 

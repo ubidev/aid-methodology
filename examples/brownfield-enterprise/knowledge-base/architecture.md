@@ -1,6 +1,6 @@
 # Architecture — Enterprise Java Platform
 
-*KB Document — produced by wf-discover, updated by wf-interview*
+*KB Document — produced by aid-discover, updated by aid-interview*
 
 ## Overview
 

@@ -1,6 +1,6 @@
 # Task Specification: F9 — File Import
 
-*Produced by AID wf-detail phase*
+*Produced by AID aid-detail phase*
 
 ## Summary
 

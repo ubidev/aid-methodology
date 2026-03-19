@@ -1,6 +1,6 @@
 # Domain Glossary
 
-> **Source:** wf-interview (Phase 2) — captured from stakeholder language
+> **Source:** aid-interview (Phase 2) — captured from stakeholder language
 > **Status:** {✅ Complete | ⚠️ Partial | ❌ Missing}
 > **Last Updated:** {date}
 
@@ -97,4 +97,4 @@
 
 | Rev | Date | Source | Description |
 |-----|------|--------|-------------|
-| 1.0 | {date} | wf-interview | Initial glossary from stakeholder interview |
+| 1.0 | {date} | aid-interview | Initial glossary from stakeholder interview |
