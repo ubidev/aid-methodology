@@ -52,6 +52,24 @@ What can't be determined from code alone. Record in `knowledge/open-questions.md
 ### 11. KB Index
 Create `knowledge/README.md` with completeness tracking table and revision history section.
 
+### 12. Context Index
+Generate `knowledge/INDEX.md` — a lightweight summary (2-3 lines each) of every KB document produced. This file is included in every task context so agents can self-serve additional context on demand. Format:
+
+```markdown
+# Knowledge Base Index — {Project Name}
+
+Use this index to find the right document before making assumptions.
+If your task touches an area covered here, read the relevant document first.
+
+| Document | Summary |
+|----------|---------|
+| architecture.md | {2-3 line summary of what it covers and key patterns found} |
+| coding-standards.md | {2-3 line summary of key conventions} |
+| ... | ... |
+```
+
+Regenerate INDEX.md on every discovery run (full or targeted).
+
 ## Targeted Discovery (Re-entry)
 
 1. Read the GAP/IMPEDIMENT to understand exactly what's missing
@@ -62,7 +80,7 @@ Create `knowledge/README.md` with completeness tracking table and revision histo
 
 ## Output
 
-`knowledge/` directory with up to 13 documents plus README.md index: architecture, module-map, technology-stack, coding-standards, data-model, api-contracts, integration-map, domain-glossary, test-landscape, security-model, tech-debt, infrastructure, open-questions.
+`knowledge/` directory with up to 13 documents plus README.md index and INDEX.md context map: architecture, module-map, technology-stack, coding-standards, data-model, api-contracts, integration-map, domain-glossary, test-landscape, security-model, tech-debt, infrastructure, open-questions.
 
 ## Quality Checklist
 
@@ -71,3 +89,4 @@ Create `knowledge/README.md` with completeness tracking table and revision histo
 - [ ] Inferred info marked as inferred
 - [ ] open-questions.md captures everything needing human input
 - [ ] README.md reflects completeness status
+- [ ] INDEX.md generated with 2-3 line summaries of every KB document

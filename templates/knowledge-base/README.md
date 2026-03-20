@@ -6,6 +6,7 @@ The Knowledge Base (`knowledge/`) is the gravitational center of every AID proje
 
 | Template | Purpose | Source |
 |----------|---------|--------|
+| INDEX.md | Lightweight context map — 2-3 line summaries per doc, included in every task | aid-discover |
 | [architecture.md](architecture.md) | Patterns, layers, module boundaries, data flow | aid-discover |
 | [module-map.md](module-map.md) | Every module: purpose, dependencies, size, coverage | aid-discover |
 | [technology-stack.md](technology-stack.md) | Languages, frameworks, versions, runtime | aid-discover |

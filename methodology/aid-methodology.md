@@ -152,6 +152,44 @@ The Discovery phase assesses the project and generates what's relevant:
 - **Enterprise monorepo?** All 13.
 - **Greenfield?** Only `technology-stack.md`, `coding-standards.md`, and `domain-glossary.md` — populated from the interview, not from code.
 
+### Context Feeding Strategy
+
+The Knowledge Base is the project's memory. But memory only works if agents know where to look.
+
+A common failure mode: an agent receives a task spec and the project spec, implements something technically correct — and violates a convention documented in `coding-standards.md` that it never saw. The agent didn't know the document existed. The fix goes through review, gets rejected, comes back, gets redone. Waste.
+
+**AID solves this with the KB Index — a lightweight map of the entire Knowledge Base.**
+
+The Discovery phase generates `knowledge/INDEX.md` as its final step. This file contains a 2-3 line summary of each KB document — what it covers, when to consult it. It costs almost nothing to include in an agent's context, but it gives the agent the ability to self-serve.
+
+```markdown
+# Knowledge Base Index — {Project Name}
+
+Use this index to find the right document before making assumptions.
+If your task touches an area covered here, read the relevant document first.
+
+| Document | Summary |
+|----------|---------|
+| architecture.md | MVVM + Clean Architecture layers. Service registration in ServiceCollectionExtensions.cs. Navigation via INavigationService. |
+| coding-standards.md | PascalCase for public, _camelCase for fields. Result<T> for error handling. No exceptions for flow control. Async suffix on all async methods. |
+| data-model.md | SQLite via EF Core. 8 entities. Soft deletes on Recording and Transcript. Migrations in /Migrations. |
+| module-map.md | 12 modules. Core (services), UI (views/viewmodels), Infrastructure (data access), Tests. Module dependency diagram. |
+| ... | ... |
+```
+
+**The feeding protocol:**
+
+1. **Every task receives INDEX.md.** Always. It's the map. Cost: ~200-500 tokens. Value: the agent knows where to look.
+2. **The orchestrator selects 2-4 relevant KB docs** based on the task's domain (data work → data-model.md, API work → api-contracts.md).
+3. **The task template includes a search instruction:** "If you need context not provided, consult `knowledge/INDEX.md` and read the relevant document before making assumptions."
+4. **Review validates context usage.** One review criterion: did the agent use available KB context, or did it guess?
+
+This is RAG by convention — not embeddings and vector databases, but predictable file structure and an index that agents can navigate. The agent has filesystem access. It can read on demand. It just needs to know the menu.
+
+**Why not a vector database?** Because the KB is small enough (13 documents, typically 2-20KB each) that convention beats infrastructure. The agent can read any document in milliseconds. The bottleneck isn't retrieval speed — it's knowing what exists. The INDEX solves that.
+
+**When does the INDEX update?** Every time Discovery runs — either full or targeted. The INDEX is regenerated from the current state of the KB. It's never manually maintained.
+
 ### The KB Outlives the Project
 
 The Knowledge Base is institutional memory. It outlives any individual session, sprint, or developer. When a new team member joins — human or AI — they read the KB and have the project's full context. When a feature request arrives six months later, the KB tells you what the system looks like now, not what the spec said it should look like.
@@ -190,8 +228,9 @@ AID organizes twelve phases into five groups. The pipeline is linear with feedba
 8. **Test landscape** — Frameworks, coverage metrics, test types, CI/CD pipeline.
 9. **Tech debt audit** — Large files, circular dependencies, missing tests, outdated packages.
 10. **Gap identification** — What we couldn't determine from code alone → feeds into Interview.
+11. **Context Index generation** — Generate `knowledge/INDEX.md` with a 2-3 line summary of every KB document produced. This lightweight index is included in every task context so agents know what's available and can self-serve additional context on demand. See [Context Feeding Strategy](#context-feeding-strategy).
 
-**Output:** `knowledge/` directory — the project's Knowledge Base.
+**Output:** `knowledge/` directory — the project's Knowledge Base, including INDEX.md.
 
 **When to skip:** Pure greenfield projects with no existing code. Interview populates a minimal KB instead.
 
@@ -310,12 +349,12 @@ The interview is driven by a **knowledge model** — a structured map of what a 
 
 **Purpose:** Execute a task using an AI coding agent, with full context from the Knowledge Base.
 
-**Input:** `TASK-{id}.md` + `SPEC.md` + relevant KB documents.
+**Input:** `TASK-{id}.md` + `SPEC.md` + `knowledge/INDEX.md` + relevant KB documents.
 
 **Process:**
 1. Load task spec as the primary prompt.
-2. Load SPEC.md + KB coding standards + architecture as context.
-3. Spawn coding agent with this context.
+2. Load SPEC.md + KB INDEX.md + coding standards + architecture as context.
+3. Spawn coding agent with this context. The agent can read additional KB documents on demand using the INDEX as a map.
 4. Agent implements the task, creating/modifying files and adding tests.
 5. **Build verification is mandatory.** "Done" means green build, not "I wrote some code."
 
@@ -335,10 +374,11 @@ The interview is driven by a **knowledge model** — a structured map of what a 
 1. Check against TASK acceptance criteria.
 2. Check against SPEC architectural constraints.
 3. Check against KB coding standards.
-4. Run automated checks: build, tests, lint.
-5. Grade the implementation: A+ through F.
-6. Tag each issue by source: CODE, TASK, SPEC, KB, ARCHITECTURE.
-7. P1/P2 CODE issues: auto-fix. Everything else: escalate.
+4. **Check context usage** — did the agent consult relevant KB documents, or did it guess? Violations traceable to ignored KB context are tagged KB, not CODE.
+5. Run automated checks: build, tests, lint.
+6. Grade the implementation: A+ through F.
+7. Tag each issue by source: CODE, TASK, SPEC, KB, ARCHITECTURE.
+8. P1/P2 CODE issues: auto-fix. Everything else: escalate.
 
 **Grading scale:**
 - **A+ / A / A-**: Ship-ready. Proceed to testing.
@@ -589,6 +629,7 @@ Every change to an upstream artifact is tracked at the bottom of the artifact:
 | Artifact | Produced By | Consumed By | Lifecycle |
 |----------|------------|-------------|-----------|
 | `knowledge/` (KB) | Discover | All phases | Living — updated throughout project |
+| `knowledge/INDEX.md` | Discover | Implement, Review | Regenerated on every discovery run |
 | `REQUIREMENTS.md` | Interview | Specify | Frozen after verification (rev-tracked) |
 | `SPEC.md` | Specify | Plan, Detail, Implement, Review, Test, Triage, Correct | Living — rev-tracked |
 | `PLAN.md` | Plan | Detail | Living — rev-tracked |
@@ -1159,6 +1200,7 @@ You don't need to use all twelve phases from day one:
 - **Skipping Review.** "The tests pass" is not enough. Spec-anchored review catches issues that tests can't.
 - **Skipping Test.** Review catches what code looks like. Test catches what code does. Both are necessary.
 - **Not maintaining the KB.** A stale KB is worse than no KB. Every phase should update it when new knowledge is acquired.
+- **Sending agents blind.** Including TASK + SPEC without the KB INDEX means the agent doesn't know what context exists. It will guess instead of look. Always include INDEX.md.
 - **Auto-advancing between phases.** The human approves every transition. That's the checkpoint that keeps the methodology safe.
 
 ---

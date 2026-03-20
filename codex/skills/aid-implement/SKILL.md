@@ -20,12 +20,13 @@ Agents don't improvise. They receive task spec + project spec + KB context. When
 
 - `TASK-{id}.md` — primary prompt
 - `SPEC.md` — architectural constraints
+- `knowledge/INDEX.md` — always included. The agent's map of the full KB for on-demand self-service.
 - `knowledge/`: Always coding-standards.md + architecture.md. Add data-model.md (DB work), api-contracts.md (API work), integration-map.md (integrations), test-landscape.md (test-heavy).
 
 ## Process
 
 ### 1. Prepare Context
-Assemble: TASK content + relevant SPEC sections + 2-4 most relevant KB docs.
+Assemble: TASK content + relevant SPEC sections + KB INDEX.md + 2-4 most relevant KB docs. The INDEX lets the agent read additional KB documents on demand.
 
 ### 2. Spawn Agent
 Agent prompt includes: task spec, project spec sections, coding standards, architecture context, and rules:
@@ -66,7 +67,7 @@ Do NOT parallelize when: shared DB migrations, same interfaces modified, output/
 
 ## Quality Checklist
 
-- [ ] Agent received TASK + SPEC + relevant KB docs
+- [ ] Agent received TASK + SPEC + INDEX.md + relevant KB docs
 - [ ] Build passes (zero errors, zero warnings)
 - [ ] All tests pass (new and existing)
 - [ ] Files changed match expected scope

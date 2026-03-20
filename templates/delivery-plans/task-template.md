@@ -19,11 +19,13 @@
 ## Context
 
 > Critical context the agent needs before starting. Don't assume the agent has read everything — tell it what matters.
+> **Always include `knowledge/INDEX.md`** — the agent's map of the full Knowledge Base. If you need context not listed below, consult the INDEX and read the relevant document before making assumptions.
 
 **Architecture reference:** {KB architecture.md section this task extends}
 **Coding standards:** {KB coding-standards.md section most relevant}
 **Data model:** {KB data-model.md tables this task touches}
 **Related existing code:** {path/to/similar/existing/code — "follow this pattern"}
+**KB Index:** `knowledge/INDEX.md` — consult for additional context on demand
 
 ---
 
