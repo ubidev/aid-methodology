@@ -278,9 +278,15 @@ Dispatch **discovery-reviewer** subagent with ALL KB documents as context.
 Print: `[Review 1/2] Reviewing Knowledge Base quality...`
 
 Prompt to pass to the subagent:
-> Review every document in knowledge/ for quality. For each document, assess:
+> Review every document in knowledge/ for quality. Be AGGRESSIVE — a lenient review is worse
+> than useless because it lets bad docs through the quality gate.
+>
+> For each document, assess:
 > 1. **Completeness** — Does it cover what it should? Are there obvious gaps?
-> 2. **Accuracy** — Cross-reference claims against actual code. Are file paths real? Are version numbers correct?
+> 2. **Accuracy (MOST IMPORTANT)** — Do NOT trust what the document says. Verify claims against
+>    actual source files. Check version numbers against pom.xml, package.json, MANIFEST.MF,
+>    lib/*.jar filenames, lockfiles. Check file paths exist. Check if a "class" is actually an
+>    interface. Any factual error is [CRITICAL]. Any "TBD" when the data is extractable is [HIGH].
 > 3. **Depth** — Is it surface-level listing or does it show understanding of patterns and relationships?
 > 4. **Usefulness** — Would an agent working on this codebase find this document helpful?
 > 5. **Evidence** — Are claims grounded in code (file paths, class names) or generic?
@@ -288,11 +294,14 @@ Prompt to pass to the subagent:
 > Grade each document: A+ (exceptional), A (thorough), B+ (good with minor gaps), B (adequate),
 > B- (shallow), C+ (significant gaps), C (barely useful), D (misleading or wrong), F (missing/empty).
 >
+> **Grade caps:** Any [CRITICAL] issue → max C+. Two+ [HIGH] → max B. Err on harsh, not lenient.
+>
 > All issues MUST have severity: [CRITICAL], [HIGH], or [MEDIUM].
 >
-> Minimum 10 spot-checks (verify claims against actual code).
+> **Minimum 15 spot-checks** (verify claims against actual code). At least 5 must be version verifications.
 >
 > Also review AGENTS.md and CLAUDE.md — are the discovered values accurate and useful?
+> Check for error propagation: if one doc has a wrong version, check if other docs repeat it.
 >
 > Write the full review to knowledge/DISCOVERY-GRADE.md using the DISCOVERY-GRADE.md template format.
 

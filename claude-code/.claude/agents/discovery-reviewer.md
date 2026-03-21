@@ -40,12 +40,21 @@ For each document:
 - Compare against the expected content (see Document Expectations below)
 - Flag missing sections
 
-### 2. Accuracy Spot-Check
-- Pick 3-5 specific claims per document
-- Verify them against actual source code using `Grep`, `Glob`, and `Read`
-- Record: claim, document, verified (✅/❌), evidence
+### 2. Accuracy Spot-Check (AGGRESSIVE — This Is The Most Important Step)
 
-**Minimum 10 total spot-checks across all documents.**
+**Do NOT trust what the document says. Verify it against the actual files.**
+
+- Pick 3-5 specific claims per document — prioritize version numbers, file paths, and class names
+- Verify EVERY claim against actual source code using `Grep`, `Glob`, and `Read`
+- **For version claims:** ALWAYS check the actual source file (`pom.xml`, `package.json`, `*.jar` filenames, `MANIFEST.MF`, `build.gradle`, `*.csproj`, lockfiles). NEVER accept "TBD" or "in manifest" if the file is readable.
+- **For path claims:** Verify the file actually exists at the stated path
+- **For class/interface claims:** Verify it's actually a class vs interface vs abstract class
+- **Cross-document consistency:** If doc A says "React 17" but `package.json` says "^19.2.0", that's [CRITICAL]
+- Record: claim, document, verified (✅/❌), evidence (exact file path + what you found)
+
+**Minimum 15 total spot-checks across all documents.** At least 5 must be version verifications.
+
+**The previous review missed React 19 being reported as React 17, and Struts 6.4.0 being reported as unknown. These are the EXACT kind of errors you must catch.**
 
 ### 3. Depth Assessment
 - Is it a list of names, or does it explain patterns and relationships?
@@ -57,8 +66,11 @@ For each document:
 - Would this document help you do it correctly? Or would you need to re-discover?
 
 ### 5. Grade Assignment
-Use the grading scale strictly:
-- **A+**: Exceptional — I'd trust this completely
+
+Use the grading scale strictly. **Err on the side of being too harsh, not too lenient.**
+A generous review is worse than useless — it lets bad docs through the quality gate.
+
+- **A+**: Exceptional — I'd trust this completely, every claim verified
 - **A**: Thorough — solid, evidence-rich, covers the scope
 - **B+**: Good — minor gaps that don't block work
 - **B**: Adequate — basics covered but depth lacking in important areas
@@ -67,6 +79,14 @@ Use the grading scale strictly:
 - **C**: Barely useful — would need to re-discover most info
 - **D**: Misleading — contains wrong info
 - **F**: Missing or empty
+
+**Automatic grade caps (hard rules):**
+- Any [CRITICAL] issue → document CANNOT be graded above C+
+- Two or more [HIGH] issues → document CANNOT be graded above B
+- Version marked "TBD" when extractable from source → automatic [HIGH] per occurrence
+- Factual error (wrong version, wrong class type, wrong path) → automatic [CRITICAL]
+- Content that largely duplicates another document → automatic [HIGH]
+- Placeholder/template text left in → automatic [HIGH]
 
 ### 6. Issue Severity
 **Every issue MUST have a severity level:**
@@ -160,10 +180,11 @@ Must have: accurate project description, KB reference, conventions summary.
 ## Cross-Cutting Checks
 
 After reviewing individual documents:
-1. **Consistency** — Do documents contradict each other?
-2. **Duplication** — Is the same information in multiple places?
+1. **Consistency** — Do documents contradict each other? If doc A says version X but the actual file says version Y, and doc B propagates the error — that's [CRITICAL] on BOTH docs.
+2. **Duplication** — Is the same information in multiple places without the second doc adding value?
 3. **Misplacement** — Is information in the wrong document?
 4. **Coverage** — Are there aspects of the codebase NOT covered by any document?
+5. **Error propagation** — Does one wrong claim cascade into other docs (e.g., INDEX.md summarizing a wrong version from technology-stack.md)? Flag each propagation as a separate [HIGH] issue.
 
 ## Output
 
