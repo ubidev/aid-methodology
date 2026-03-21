@@ -144,7 +144,9 @@ DISCOVERY-GRADE.md exists but overall grade < minimum.
    - Read issues from DISCOVERY-GRADE.md
    - Read source code, fix the KB doc with evidence
    - **REMOVE fixed issue lines** from Issues Found section
-3. **MANDATORY Re-Review:** After ALL fixes, re-review every document from scratch.
+3. **Verify 5 meta-documents** (in order): open-questions.md → INDEX.md → README.md → CLAUDE.md → AGENTS.md.
+   Fixes to primary docs can invalidate these. Update any that are stale.
+4. **MANDATORY Re-Review:** After ALL fixes, re-review every document from scratch.
    Do NOT self-evaluate — re-run the full review process, re-verify claims against source.
    Apply the same grade caps. Overwrite DISCOVERY-GRADE.md with fresh assessment.
    Preserve Review History entries.

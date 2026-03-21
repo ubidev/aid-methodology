@@ -319,6 +319,21 @@ Review History table.
 
 ---
 
+### Step 2b: Verify Meta-Documents (MANDATORY after every fix pass)
+
+Fixes to primary KB documents can invalidate derived/meta documents. After ALL primary fixes,
+verify and update the following 5 meta-documents **in this order:**
+
+1. **open-questions.md** — Remove answered questions, add newly discovered unknowns.
+2. **INDEX.md** — Update any stale summaries to match fixed document content.
+3. **README.md** — Update completeness table statuses/gaps if changed.
+4. **CLAUDE.md** — Update conventions, gotchas, or architecture summaries if stale.
+5. **AGENTS.md** — Update build commands, architecture, or conventions summaries if stale.
+
+Print: `[Fix] Verifying 5 meta-documents...`
+
+---
+
 ### Step 3: Re-Review (MANDATORY — Do NOT Self-Evaluate)
 
 **After fixing all documents, you MUST review them again from scratch.**

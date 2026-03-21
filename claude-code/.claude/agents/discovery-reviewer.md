@@ -196,9 +196,19 @@ architecture summary. No remaining `(pending discovery)` placeholders.
 Must have: accurate project description, KB reference, conventions summary.
 **Red flags**: Placeholder text still present. Missing key gotchas for agents.
 
+## Meta-Document Consistency (MANDATORY)
+
+These 5 documents are derived from the 13 primary KB docs. **ALWAYS verify them against the primary docs' current content, even if they have no issues of their own.** Review in this order:
+
+1. **open-questions.md** — Are all questions still unanswered? Did any primary doc already resolve one? An answered question left in = [MEDIUM].
+2. **INDEX.md** — Does every summary match the actual document content? A stale summary (e.g., says "versions TBD" when they've been resolved) = [HIGH].
+3. **README.md** — Does the completeness table accurately reflect each document's status and gaps? A "✅ Complete" on a doc with known gaps = [HIGH].
+4. **CLAUDE.md** — Do conventions, gotchas, and architecture summaries match what the primary docs say? Stale or contradictory content = [MEDIUM].
+5. **AGENTS.md** — Do build commands, architecture, and conventions match reality? Wrong or outdated commands = [HIGH]. Stale summary = [MEDIUM].
+
 ## Cross-Cutting Checks
 
-After reviewing individual documents:
+After reviewing individual documents AND meta-documents:
 1. **Consistency** — Do documents contradict each other? If doc A says version X but the actual file says version Y, and doc B propagates the error — that's [CRITICAL] on BOTH docs.
 2. **Duplication** — Is the same information in multiple places without the second doc adding value?
 3. **Misplacement** — Is information in the wrong document?

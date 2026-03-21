@@ -367,6 +367,24 @@ Review History table.
 
 ---
 
+### Step 2b: Verify Meta-Documents (MANDATORY after every fix pass)
+
+Fixes to primary KB documents can invalidate derived/meta documents. After ALL primary fixes,
+verify and update the following 5 meta-documents **in this order:**
+
+1. **open-questions.md** — Do any fixed issues resolve open questions? Remove answered ones. Did fixes reveal new unknowns? Add them.
+2. **INDEX.md** — Do summaries still match the updated document content? Update any stale summaries.
+3. **README.md** — Does the completeness table (status/gaps) still reflect reality? Update statuses.
+4. **CLAUDE.md** — Did fixes change conventions, gotchas, or architecture summaries? Update if stale.
+5. **AGENTS.md** — Did fixes change build commands, architecture, or conventions summaries? Update if stale.
+
+Print: `[Fix] Verifying 5 meta-documents...`
+
+For each meta-doc, read it, compare against the fixes just made, and update if needed.
+If no update is needed, skip silently. If updated, print: `[Fix] Updated {document}`
+
+---
+
 ### Step 3: Re-Review (MANDATORY — Do NOT Self-Evaluate)
 
 **After fixing all documents, you MUST dispatch the `discovery-reviewer` subagent again.**
