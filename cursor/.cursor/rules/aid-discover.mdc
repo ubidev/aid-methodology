@@ -1,25 +1,54 @@
 ---
-description: "Brownfield codebase analysis. Produces a structured Knowledge Base (knowledge/ directory). Orchestrates 5 specialized discovery areas for resilient, resumable analysis. Use for new brownfield projects (full discovery) or when a downstream phase generates a GAP.md with discovery-needed (targeted discovery)."
+description: "Brownfield codebase discovery with built-in quality gate. Generates KB, reviews it, and fixes issues — one step per run. State-machine: GENERATE → REVIEW → FIX → DONE."
 alwaysApply: false
 ---
 
 # Brownfield Codebase Discovery
 
 Analyze an existing codebase and produce a structured `knowledge/` directory.
+Includes a built-in quality gate that reviews, grades, and fixes KB documents.
 
 > **Note:** Cursor does not support subagents. All document generation is handled directly
 > in this session, one area at a time. The skill is organized around 5 discovery areas
 > matching the AID discovery pipeline used in Claude Code. Checkpoint/resume logic
 > skips existing files so the skill is safe to re-run after interruption.
 
-## Inputs
+**State machine — each run does ONE step and exits.**
 
-- Codebase access (local path, git URL, or archive)
-- For targeted discovery: GAP.md or IMPEDIMENT.md that triggered re-entry
+## Arguments
 
-## Discovery Areas
+| Argument | Effect |
+|----------|--------|
+| `--grade X` | Minimum acceptable grade. Format: `[A-F][-+]?`. Default: `A`. Persists in DISCOVERY-GRADE.md. |
+| `--reset` | Clear `knowledge/` and restart. |
 
-The 5 discovery areas and their output documents:
+**Grade persistence:** When DISCOVERY-GRADE.md doesn't exist, `--grade` is saved as "Minimum Grade".
+When it exists, `--grade` updates the minimum; omitting it reads the saved minimum.
+
+## State Detection
+
+```
+State 1: Missing KB docs           → GENERATE mode
+State 2: All docs, no GRADE file   → REVIEW mode
+State 3: GRADE file, grade < min   → FIX mode
+State 4: GRADE file, grade >= min  → DONE
+```
+
+Expected 13 KB documents:
+```
+architecture.md, technology-stack.md, module-map.md, coding-standards.md, data-model.md,
+api-contracts.md, integration-map.md, domain-glossary.md, test-landscape.md,
+security-model.md, tech-debt.md, infrastructure.md, open-questions.md
+```
+
+**Grade ordering** (highest to lowest):
+`A+, A, A-, B+, B, B-, C+, C, C-, D+, D, D-, F`
+
+---
+
+## Mode: GENERATE
+
+Generate missing KB documents. Skip any that already exist. Organized into 5 discovery areas:
 
 | Area | Owner (Claude Code) | Documents |
 |------|---------------------|-----------|
@@ -29,151 +58,110 @@ The 5 discovery areas and their output documents:
 | Quality & Debt | discovery-quality | test-landscape.md, security-model.md, tech-debt.md |
 | Infrastructure & Gaps | discovery-scout | infrastructure.md, open-questions.md |
 
-## Process
-
-### Step 0: Check Existing KB
-
-Scan `knowledge/` for existing files. Print: `[0/13] Checking existing KB...`
-
-Expected documents:
-```
-architecture.md, technology-stack.md, module-map.md, coding-standards.md, data-model.md,
-api-contracts.md, integration-map.md, domain-glossary.md, test-landscape.md,
-security-model.md, tech-debt.md, infrastructure.md, open-questions.md
-```
-
-Skip any document that already exists. If all 13 exist, regenerate README.md and INDEX.md only.
-
----
-
 ### Area 1: Architecture & Stack
-
 Print: `[1/5] Analyzing architecture and stack...`
-Skip individual documents that already exist.
 
 **architecture.md** — project type, folder structure, architectural patterns (MVVM, CQRS,
 Clean Architecture, etc.), module boundaries, data flow, DI registration, entry points.
 
 **technology-stack.md** — languages, frameworks, versions, package managers, runtime,
-build system, dev tools (linters, formatters, type checkers).
-
----
+build system, dev tools.
 
 ### Area 2: Modules & Conventions
-
 Print: `[2/5] Analyzing modules and conventions...`
-Skip individual documents that already exist.
 
-**module-map.md** — for each module: purpose, dependencies, size (lines/files), test
-coverage estimate, key files.
+**module-map.md** — for each module: purpose, dependencies, size, test coverage, key files.
 
-**coding-standards.md** — conventions mined from actual code (not docs): naming patterns,
-error handling, logging, config patterns, file organization. Mark inferred conventions
+**coding-standards.md** — conventions mined from actual code. Mark inferred conventions
 with ⚠️ Inferred from code — needs confirmation.
 
-**data-model.md** — schema definitions, entity relationships, migrations, indexes,
-validation rules.
-
----
+**data-model.md** — schema definitions, entity relationships, migrations, indexes, validation.
 
 ### Area 3: Integrations & Domain
-
 Print: `[3/5] Mapping integrations and domain language...`
-Skip individual documents that already exist.
 
-**api-contracts.md** — APIs exposed (endpoints, methods, auth, request/response shapes)
-and consumed (external services, SDKs, HTTP clients).
-
-**integration-map.md** — message queues, event buses, caches, webhooks, third-party
-services, feature flags.
-
-**domain-glossary.md** — terminology mined from class names, method names, constants,
-and comments that encode business concepts.
-
----
+**api-contracts.md** — APIs exposed and consumed.
+**integration-map.md** — message queues, caches, webhooks, third-party services.
+**domain-glossary.md** — business terminology from code.
 
 ### Area 4: Quality & Debt
-
 Print: `[4/5] Assessing quality and tech debt...`
-Skip individual documents that already exist.
 
-**test-landscape.md** — test frameworks, test types (unit/integration/E2E), coverage
-tooling, CI/CD integration, testing patterns, coverage gaps.
-
-**security-model.md** — authentication, authorization, secrets management, input
-validation, OWASP concerns. Note: static analysis only.
-
-**tech-debt.md** — large files, circular dependencies, missing tests, TODO/FIXME density,
-dead code. Classify each item: Critical / High / Medium / Low.
-
----
+**test-landscape.md** — frameworks, types, coverage, CI/CD, gaps.
+**security-model.md** — auth, secrets, OWASP (static analysis only).
+**tech-debt.md** — categorized Critical/High/Medium/Low with locations.
 
 ### Area 5: Infrastructure & Gaps
-
 Print: `[5/5] Mapping infrastructure and identifying gaps...`
-Skip individual documents that already exist.
 
-**infrastructure.md** — CI/CD pipelines, Docker/container config, IaC (Terraform, Pulumi,
-CDK, CloudFormation), environments, monitoring/alerting, deployment mechanism.
+**infrastructure.md** — CI/CD, Docker, IaC, environments, monitoring.
+**open-questions.md** — everything that cannot be determined from code alone.
 
-**open-questions.md** — everything that CANNOT be determined from code alone: uncertainties,
-assumptions, gaps needing human input. Be comprehensive.
+### Finalize Generation
+- Generate `knowledge/README.md` (completeness table + revision history)
+- Generate `knowledge/INDEX.md` (2-3 line summary per document)
+- Update `AGENTS.md` and `CLAUDE.md` placeholders with discovered data
 
----
-
-### Step 6: Generate README.md and INDEX.md
-
-**knowledge/README.md** — completeness tracking table with ✅/⚠️ status per document
-and revision history.
-
-**knowledge/INDEX.md** — 2-3 line summary of every KB document:
-```markdown
-# Knowledge Base Index — {Project Name}
-
-Use this index to find the right document before making assumptions.
-If your task touches an area covered here, read the relevant document first.
-
-| Document | Summary |
-|----------|---------|
-| architecture.md | {2-3 line summary of patterns found and structure} |
-| ... | ... |
-```
-
-Regenerate INDEX.md on every discovery run (full or targeted).
+Print: `Generation complete — run again to review.`
 
 ---
 
-### Step 7: Update Project Config Files
+## Mode: REVIEW
 
-Scan the project root for `AGENTS.md` and `CLAUDE.md`. Replace any `<!-- AID:DISCOVER ... -->`
-placeholders with real data from the analysis:
+All 13 KB documents exist. Grade them.
 
-- **Project Overview** — project name, purpose, tech stack, target platform
-- **Build & Test** — actual build, test, and lint commands
-- **Code Conventions** — key naming patterns, formatting rules, idioms
-- **Architecture** — high-level summary (layers, modules, entry points)
-- **Project description** (CLAUDE.md) — project name and one-line description
+For each document assess:
+1. **Completeness** — Does it cover what it should?
+2. **Accuracy** — Cross-reference 3-5 claims per doc against actual source code
+3. **Depth** — Lists vs explains patterns and relationships
+4. **Usefulness** — Would an agent building a feature find this helpful?
+5. **Grade** — A+ through F
 
-Keep the `<!-- AID:DISCOVER ... -->` comment above each section.
-Replace only `(pending discovery)` placeholders.
-If a field cannot be determined: `(not found — check open-questions.md)`.
+**Minimum 10 total spot-checks** (verify claims against actual code).
+All issues MUST have severity: [CRITICAL], [HIGH], or [MEDIUM].
 
-Print: `[13/13] Discovery complete — Knowledge Base ready`
+Write `knowledge/DISCOVERY-GRADE.md` using the template format (see `templates/reports/discovery-grade-template.md`).
+Set Minimum Grade from `--grade` argument or default `A`. Add first Review History entry.
+
+Print: `Review complete. Grade: {overall}. Minimum: {min}.`
+
+---
+
+## Mode: FIX
+
+DISCOVERY-GRADE.md exists but overall grade < minimum.
+
+1. List documents below threshold. Prioritize [CRITICAL] → [HIGH] → [MEDIUM].
+2. For each document below minimum:
+   - Read issues from DISCOVERY-GRADE.md
+   - Read source code, fix the KB doc with evidence
+   - **REMOVE fixed issue lines** from Issues Found section
+   - Re-grade the document
+3. Recalculate overall grade (architecture, module-map, coding-standards count double)
+4. Update Documents table, Last Run, Review History, Recommendation
+
+**IMPORTANT:** DISCOVERY-GRADE.md always reflects CURRENT state. Fixed issues are removed.
+History is tracked in the Review History table.
+
+Print: `Fix complete. Grade: {old} → {new}.`
+
+---
+
+## Mode: DONE
+
+Print: `✅ Discovery complete. Grade: {grade}. KB is ready for the Interview phase.`
 
 ---
 
 ## Targeted Discovery (Re-entry)
 
-When a GAP.md or IMPEDIMENT.md triggers re-discovery of a specific area:
-
-1. Read the GAP/IMPEDIMENT to understand exactly what's missing
+When a GAP.md or IMPEDIMENT.md triggers re-discovery:
+1. Read the GAP/IMPEDIMENT
 2. Identify which area owns the missing documents (see table above)
 3. Process ONLY that area — delete/overwrite only the relevant documents
 4. Regenerate README.md and INDEX.md
-5. Update `knowledge/README.md` revision history
-6. Report completion to the calling phase
-
----
+5. Delete `knowledge/DISCOVERY-GRADE.md` so the next run re-reviews
+6. Report completion
 
 ## Key Constraints
 
@@ -188,6 +176,38 @@ When a GAP.md or IMPEDIMENT.md triggers re-discovery of a specific area:
 - [ ] Claims grounded in code evidence (file paths, line numbers)
 - [ ] Inferred info marked with ⚠️
 - [ ] open-questions.md captures everything needing human input
-- [ ] README.md reflects completeness status and revision history
-- [ ] INDEX.md generated with 2-3 line summaries of every KB document
-- [ ] AGENTS.md and CLAUDE.md placeholders filled with discovered data
+- [ ] All issues in DISCOVERY-GRADE.md have severity: [CRITICAL], [HIGH], or [MEDIUM]
+- [ ] Minimum 10 spot-checks in DISCOVERY-GRADE.md
+
+## Grading Criteria
+
+| Grade | Meaning |
+|-------|---------|
+| A+ | Exceptional — comprehensive, accurate, evidence-rich |
+| A | Thorough — covers scope with solid evidence |
+| B+ | Good — minor gaps that don't block work |
+| B | Adequate — basics covered, depth lacking |
+| B- | Shallow — lists without explaining |
+| C+ | Significant gaps — missing important sections |
+| C | Barely useful |
+| D | Misleading — wrong information |
+| F | Missing or empty |
+
+**Overall grade** = weighted average (architecture, module-map, coding-standards count double).
+
+## Document Expectations
+
+- **architecture.md**: folder structure, patterns with evidence, data flow, entry points
+- **technology-stack.md**: versions from actual config (not "TBD")
+- **module-map.md**: every module with purpose AND dependencies
+- **coding-standards.md**: conventions from actual code, not generic advice
+- **data-model.md**: entities with relationships, not just lists
+- **api-contracts.md**: actual URLs/paths, not just class names
+- **integration-map.md**: connection details, NOT same content as module-map
+- **domain-glossary.md**: project-specific terms
+- **test-landscape.md**: which modules have real tests vs placeholders
+- **security-model.md**: project-specific assessment, not generic OWASP
+- **tech-debt.md**: severity-categorized with file locations
+- **infrastructure.md**: CI/CD flow, deployment, monitoring details
+- **open-questions.md**: specific, answerable, comprehensive
+- **AGENTS.md/CLAUDE.md**: no placeholders, real working commands

@@ -43,7 +43,7 @@ These rules contain the full AID phase instructions. Invoke them by referencing 
 
 | Rule | Phase | Description |
 |------|-------|-------------|
-| `aid-discover.mdc` | Discovery | Brownfield codebase analysis → `knowledge/` directory |
+| `aid-discover.mdc` | Discovery | Brownfield codebase discovery with built-in quality gate (GENERATE → REVIEW → FIX → DONE) |
 | `aid-interview.mdc` | Interview | Adaptive requirements gathering → `REQUIREMENTS.md` |
 | `aid-specify.mdc` | Specify | Requirements → formal `SPEC.md` grounded in KB |
 | `aid-plan.mdc` | Plan | High-level roadmap → `PLAN.md` (MVP, modules, deliverables) |

@@ -1,62 +1,92 @@
 ---
 name: aid-discover
 description: >
-  Brownfield codebase analysis. Produces a structured Knowledge Base (knowledge/ directory).
-  Processes documents sequentially with checkpoint/resume logic for resilient analysis.
-  Use for new brownfield projects (full discovery) or when a downstream phase generates a
-  GAP.md with discovery-needed (targeted discovery).
+  Brownfield codebase discovery with built-in quality gate. Generates KB, reviews it,
+  and fixes issues — one step per run. State-machine: GENERATE → REVIEW → FIX → DONE.
+  Sequential processing (no subagents). Checkpoint/resume logic for resilient analysis.
 allowed-tools: Read, Glob, Grep, Bash, Write, Edit
+argument-hint: "[--grade A] minimum acceptable grade (default: A)  [--reset] clear KB and restart"
 ---
 
 # Brownfield Codebase Discovery
 
 Analyze an existing codebase and produce a structured `knowledge/` directory.
+Includes a built-in quality gate that reviews, grades, and fixes KB documents.
 
 > **Note:** Codex does not support subagents. All document generation is handled directly
 > in this session, one document at a time. Checkpoint/resume logic skips existing files,
 > so the skill is safe to re-run after interruption.
 
-## Inputs
+**State machine — each `/aid-discover` run does ONE step and exits.**
 
-- Codebase access (local path, git URL, or archive)
-- For targeted discovery: GAP.md or IMPEDIMENT.md that triggered re-entry
+## Arguments
 
-## Process
+| Argument | Effect |
+|----------|--------|
+| `--grade X` | Set minimum acceptable grade. Format: `[A-F][-+]?` (e.g., A, A-, B+). Default: `A`. Persists in DISCOVERY-GRADE.md — user doesn't need to repeat it. |
+| `--reset` | Clear entire `knowledge/` directory and restart from scratch. |
+
+**Grade persistence:**
+- When DISCOVERY-GRADE.md doesn't exist yet: the `--grade` value is saved into the file as "Minimum Grade"
+- When DISCOVERY-GRADE.md already exists: if `--grade` is provided, it UPDATES the minimum in the file. If not provided, the minimum is READ from the file.
+
+---
+
+## State Detection
+
+Read the filesystem to determine which mode to enter:
+
+```
+State 1: Missing KB docs           → GENERATE mode
+State 2: All docs, no GRADE file   → REVIEW mode
+State 3: GRADE file, grade < min   → FIX mode
+State 4: GRADE file, grade >= min  → DONE
+```
+
+**Detection logic:**
+
+1. Check `knowledge/` for the 13 expected documents:
+   ```
+   architecture.md, technology-stack.md, module-map.md, coding-standards.md, data-model.md,
+   api-contracts.md, integration-map.md, domain-glossary.md, test-landscape.md,
+   security-model.md, tech-debt.md, infrastructure.md, open-questions.md
+   ```
+2. If any are missing → **GENERATE**
+3. If all 13 exist but `knowledge/DISCOVERY-GRADE.md` does not exist → **REVIEW**
+4. If `knowledge/DISCOVERY-GRADE.md` exists:
+   - Read the current overall grade and minimum grade
+   - If `--grade` was provided, update the minimum grade in the file
+   - Compare current grade against minimum (use grade ordering below)
+   - If current grade < minimum → **FIX**
+   - If current grade >= minimum → **DONE**
+
+**Grade ordering** (highest to lowest):
+`A+, A, A-, B+, B, B-, C+, C, C-, D+, D, D-, F`
+
+Print the detected state: `[State: {GENERATE|REVIEW|FIX|DONE}]`
+
+---
+
+## Mode: GENERATE
+
+Generate missing KB documents sequentially. **Skip any document that already exists.**
 
 ### Step 0: Check Existing KB
 
-Scan `knowledge/` for existing files from the full expected set of 13 documents:
-
-```
-architecture.md, technology-stack.md, module-map.md, coding-standards.md, data-model.md,
-api-contracts.md, integration-map.md, domain-glossary.md, test-landscape.md,
-security-model.md, tech-debt.md, infrastructure.md, open-questions.md
-```
-
-Print: `[0/13] Checking existing KB...`
+Scan `knowledge/` for existing files. Print: `[0/13] Checking existing KB...`
 
 If ALL 13 documents exist and no `--reset` was requested, report KB is complete and skip
 directly to Step 12 (README.md and INDEX.md regeneration).
 
-**Skip any document that already exists.** Only generate missing ones.
-
 ---
 
-### Step 1: Structure Scan → architecture.md
+### Step 1-2: Architecture Analysis → architecture.md
 
-Print: `[1/13] Analyzing project structure...`
+Print: `[1/13] Analyzing project structure and architecture...`
 Skip if `knowledge/architecture.md` exists.
 
-Detect project type, map folder structure, count by language. Identify entry points.
-
----
-
-### Step 2: Architecture Analysis → architecture.md (continued)
-
-Print: `[2/13] Analyzing architecture patterns...`
-Skip if `knowledge/architecture.md` exists.
-
-Identify patterns (MVVM, CQRS, Clean Architecture, etc.), module boundaries, data flow,
+Detect project type, map folder structure, count by language. Identify entry points,
+patterns (MVVM, CQRS, Clean Architecture, etc.), module boundaries, data flow,
 DI registration. Record all findings in `knowledge/architecture.md`.
 
 ---
@@ -191,48 +221,9 @@ Record in `knowledge/open-questions.md`.
 
 Print: `[12/13] Generating KB index...`
 
-**knowledge/README.md** — completeness tracking table and revision history:
-```markdown
-# Knowledge Base
+**knowledge/README.md** — completeness tracking table and revision history.
 
-## Completeness
-
-| Document | Status | Notes |
-|----------|--------|-------|
-| architecture.md | ✅ Complete | |
-| technology-stack.md | ✅ Complete | |
-| module-map.md | ✅ Complete | |
-| coding-standards.md | ✅ Complete | |
-| data-model.md | ✅ Complete | |
-| api-contracts.md | ✅ Complete | |
-| integration-map.md | ✅ Complete | |
-| domain-glossary.md | ✅ Complete | |
-| test-landscape.md | ✅ Complete | |
-| security-model.md | ✅ Complete | |
-| tech-debt.md | ✅ Complete | |
-| infrastructure.md | ✅ Complete | |
-| open-questions.md | ✅ Complete | |
-
-## Revision History
-
-| Date | Documents Updated | Notes |
-|------|-------------------|-------|
-| {date} | All (initial discovery) | |
-```
-
-**knowledge/INDEX.md** — 2-3 line summary of every KB document for agent self-service:
-```markdown
-# Knowledge Base Index — {Project Name}
-
-Use this index to find the right document before making assumptions.
-If your task touches an area covered here, read the relevant document first.
-
-| Document | Summary |
-|----------|---------|
-| architecture.md | {2-3 line summary} |
-| technology-stack.md | {2-3 line summary} |
-| ... | ... |
-```
+**knowledge/INDEX.md** — 2-3 line summary of every KB document for agent self-service.
 
 Regenerate INDEX.md on every discovery run (full or targeted).
 
@@ -243,19 +234,98 @@ Regenerate INDEX.md on every discovery run (full or targeted).
 Print: `[13/13] Updating project config files...`
 
 Scan the project root for `AGENTS.md` and `CLAUDE.md`. Replace any `<!-- AID:DISCOVER ... -->`
-placeholders with real data from the analysis:
-
-- **Project Overview** — project name, purpose, tech stack, target platform
-- **Build & Test** — actual build, test, and lint commands (from build scripts, CI config, package manager)
-- **Code Conventions** — key naming patterns, formatting rules, idioms found in code
-- **Architecture** — high-level summary (layers, modules, entry points)
-- **Project description** (CLAUDE.md) — project name and one-line description
+placeholders with real data from the analysis.
 
 Keep the `<!-- AID:DISCOVER ... -->` comment above each section so future re-discoveries can update them.
 Replace only the `(pending discovery)` placeholder lines with real content.
 If a field cannot be determined, leave it as `(not found — check open-questions.md)`.
 
-Print: `Discovery complete — Knowledge Base ready`
+Print: `Generation complete — Knowledge Base ready. Run /aid-discover again to review.`
+
+---
+
+## Mode: REVIEW
+
+All 13 KB documents exist. Grade them.
+
+### Step 1: Review All Documents
+
+Read every document in `knowledge/`, plus `AGENTS.md` and `CLAUDE.md`. For each document:
+
+1. **Completeness** — Does it cover what it should?
+2. **Accuracy** — Cross-reference 3-5 claims per doc against actual source code
+3. **Depth** — Lists things vs explains patterns and relationships
+4. **Usefulness** — Would an agent building a feature find this helpful?
+5. **Grade** — A+ through F (see grading criteria below)
+
+**Minimum 10 total spot-checks** where you verify a claim from a KB doc against actual code.
+All issues MUST have severity: [CRITICAL], [HIGH], or [MEDIUM].
+
+Print: `[Review 1/2] Reviewing Knowledge Base quality...`
+
+---
+
+### Step 2: Write DISCOVERY-GRADE.md
+
+Write `knowledge/DISCOVERY-GRADE.md` using the template format (see `templates/reports/discovery-grade-template.md`).
+
+Set the Minimum Grade:
+- If `--grade` was provided, use that value
+- If not, use the default: `A`
+
+Add the first Review History entry.
+
+Print: `[Review 2/2] Review complete. Grade: {overall}. Minimum: {min}. Run /aid-discover again to {fix issues|proceed}.`
+
+---
+
+## Mode: FIX
+
+DISCOVERY-GRADE.md exists but the overall grade is below the minimum.
+
+### Step 1: Identify Documents Below Threshold
+
+Read DISCOVERY-GRADE.md. List all documents graded below the minimum grade.
+Prioritize: [CRITICAL] issues first, then [HIGH], then [MEDIUM].
+
+Print: `[Fix] {N} documents below {minimum}. Fixing...`
+
+---
+
+### Step 2: Fix Each Document
+
+For each document below the minimum grade, in priority order:
+
+1. Read the specific issues from the Issues Found section of DISCOVERY-GRADE.md
+2. Read the relevant source code to gather missing information
+3. Edit the KB document to address the issues — be specific, add evidence
+4. **REMOVE the fixed issue lines** from the Issues Found section of DISCOVERY-GRADE.md
+5. Re-grade the document
+
+Print: `[Fix] Improving {document}... {old grade} → {new grade}`
+
+**IMPORTANT:** When an issue is fixed, its line MUST be removed from the Issues Found section.
+DISCOVERY-GRADE.md always reflects the CURRENT state, not history. History is tracked in the
+Review History table.
+
+---
+
+### Step 3: Update DISCOVERY-GRADE.md
+
+After all fixes:
+1. Recalculate the overall grade (weighted average — architecture, module-map, coding-standards count double)
+2. Update the Documents table with new grades and statuses
+3. Update the Last Run timestamp
+4. Add a new entry to the Review History table
+5. Update the Recommendation field
+
+Print: `[Fix] Complete. Grade: {old} → {new}. Run /aid-discover again to {re-review|proceed}.`
+
+---
+
+## Mode: DONE
+
+Print: `✅ Discovery complete. Grade: {grade}. Minimum: {minimum}. KB is ready for the Interview phase.`
 
 ---
 
@@ -265,10 +335,11 @@ When a GAP.md or IMPEDIMENT.md triggers re-discovery of a specific area:
 
 1. Read the GAP/IMPEDIMENT to understand exactly what's missing
 2. Delete (or overwrite) only the specific KB documents that need updating
-3. Re-run only the relevant steps above for the missing/outdated documents
+3. Re-run only the relevant steps for the missing/outdated documents
 4. Regenerate README.md and INDEX.md
 5. Update `knowledge/README.md` revision history with the targeted update
-6. Report completion to the calling phase
+6. Delete `knowledge/DISCOVERY-GRADE.md` so the next run re-reviews
+7. Report completion to the calling phase
 
 ---
 
@@ -281,3 +352,43 @@ When a GAP.md or IMPEDIMENT.md triggers re-discovery of a specific area:
 - [ ] README.md reflects completeness status and revision history
 - [ ] INDEX.md generated with 2-3 line summaries of every KB document
 - [ ] AGENTS.md and CLAUDE.md placeholders filled with discovered data
+- [ ] All issues in DISCOVERY-GRADE.md have severity: [CRITICAL], [HIGH], or [MEDIUM]
+- [ ] Minimum 10 spot-checks in DISCOVERY-GRADE.md
+
+---
+
+## Grading Criteria
+
+| Grade | Meaning |
+|-------|---------|
+| A+ | Exceptional — comprehensive, accurate, evidence-rich, immediately useful |
+| A | Thorough — covers expected scope with solid evidence |
+| B+ | Good — minor gaps or missing details that don't block work |
+| B | Adequate — covers basics but lacks depth in important areas |
+| B- | Shallow — lists things without explaining patterns or relationships |
+| C+ | Significant gaps — missing important sections or inaccurate in places |
+| C | Barely useful — an agent would need to re-discover most information |
+| D | Misleading — contains wrong information that could cause bad decisions |
+| F | Missing or empty |
+
+**Overall grade** = weighted average where architecture, module-map, and coding-standards
+count double (they're referenced most by downstream phases).
+
+---
+
+## Document Expectations
+
+- **architecture.md**: folder structure, patterns with evidence, data flow, entry points
+- **technology-stack.md**: versions from actual config (not "TBD")
+- **module-map.md**: every module with purpose AND dependencies
+- **coding-standards.md**: conventions from actual code, not generic advice
+- **data-model.md**: entities with relationships, not just lists
+- **api-contracts.md**: actual URLs/paths, not just class names
+- **integration-map.md**: connection details, NOT same content as module-map
+- **domain-glossary.md**: project-specific terms
+- **test-landscape.md**: which modules have real tests vs placeholders
+- **security-model.md**: project-specific assessment, not generic OWASP
+- **tech-debt.md**: severity-categorized with file locations
+- **infrastructure.md**: CI/CD flow, deployment, monitoring details
+- **open-questions.md**: specific, answerable, comprehensive
+- **AGENTS.md/CLAUDE.md**: no placeholders, real working commands

@@ -2,7 +2,7 @@
 name: discovery-reviewer
 description: >
   Reviews and grades Knowledge Base documents produced by Discovery.
-  Cross-references claims against actual source code. Produces DISCOVERY-REVIEW.md.
+  Cross-references claims against actual source code. Produces DISCOVERY-GRADE.md.
 tools: Read, Glob, Grep, Bash, Write
 model: sonnet
 maxTurns: 40
@@ -67,6 +67,12 @@ Use the grading scale strictly:
 - **C**: Barely useful — would need to re-discover most info
 - **D**: Misleading — contains wrong info
 - **F**: Missing or empty
+
+### 6. Issue Severity
+**Every issue MUST have a severity level:**
+- **[CRITICAL]** — Wrong information, missing critical sections, would cause bad decisions
+- **[HIGH]** — Significant gaps, shallow coverage of important areas, missing evidence
+- **[MEDIUM]** — Minor gaps, could be more detailed, nice-to-have improvements
 
 ## Document Expectations
 
@@ -161,20 +167,78 @@ After reviewing individual documents:
 
 ## Output
 
-Write the complete review to `knowledge/DISCOVERY-REVIEW.md` using the template format
-provided in the skill instructions. Include:
+Write the complete review to `knowledge/DISCOVERY-GRADE.md` using the template format below.
 
-1. Summary table (all documents with grades and one-line issues)
-2. Detailed review per document (completeness, accuracy, depth, usefulness, issues, suggestions)
-3. Cross-cutting concerns
-4. Verification spot-checks table (minimum 10)
+### DISCOVERY-GRADE.md Format
+
+```markdown
+# Discovery Grade
+
+## Settings
+- **Minimum Grade:** {grade, default A}
+- **Last Run:** {ISO timestamp}
+
+## Current Grade: {overall grade}
+
+**Recommendation:** {Pass / Needs Improvement / Fail}
+
+## Documents
+
+| Document | Grade | Status | Issues |
+|----------|-------|--------|--------|
+| architecture.md | {grade} | {✅ Pass / ❌ Below minimum} | {one-line summary or —} |
+| technology-stack.md | {grade} | {status} | {issues} |
+| module-map.md | {grade} | {status} | {issues} |
+| coding-standards.md | {grade} | {status} | {issues} |
+| data-model.md | {grade} | {status} | {issues} |
+| api-contracts.md | {grade} | {status} | {issues} |
+| integration-map.md | {grade} | {status} | {issues} |
+| domain-glossary.md | {grade} | {status} | {issues} |
+| test-landscape.md | {grade} | {status} | {issues} |
+| security-model.md | {grade} | {status} | {issues} |
+| tech-debt.md | {grade} | {status} | {issues} |
+| infrastructure.md | {grade} | {status} | {issues} |
+| open-questions.md | {grade} | {status} | {issues} |
+| INDEX.md | {grade} | {status} | {issues} |
+| README.md | {grade} | {status} | {issues} |
+| AGENTS.md | {grade} | {status} | {issues} |
+| CLAUDE.md | {grade} | {status} | {issues} |
+
+## Issues Found
+
+### {document} ({grade})
+- [CRITICAL] {specific issue with evidence}
+- [HIGH] {issue}
+- [MEDIUM] {issue}
+
+### {document} ({grade})
+- [HIGH] {issue}
+...
+
+## Verification Spot-Checks
+
+| Claim | Document | Verified | Evidence |
+|-------|----------|----------|----------|
+| {specific claim} | {doc} | ✅/❌ | {file path or reason} |
+{minimum 10 spot-checks}
+
+## Cross-Cutting Concerns
+- {issues spanning multiple documents}
+- {inconsistencies between documents}
+
+## Review History
+
+| Run | Date | Grade | Action | Issues Fixed |
+|-----|------|-------|--------|-------------|
+| 1 | {date} | {grade} | Review | — |
+```
 
 ## ⚠️ File Writing
 
 **Do NOT use the Write tool to create the review — it has a known bug in background subagents.**
 Use Bash with heredoc instead:
 ```bash
-cat > knowledge/DISCOVERY-REVIEW.md << 'KBEOF'
+cat > knowledge/DISCOVERY-GRADE.md << 'KBEOF'
 <review content here>
 KBEOF
 ```
