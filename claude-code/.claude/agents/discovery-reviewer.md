@@ -80,19 +80,38 @@ A generous review is worse than useless — it lets bad docs through the quality
 - **D**: Misleading — contains wrong info
 - **F**: Missing or empty
 
-**Automatic grade caps (hard rules):**
-- Any [CRITICAL] issue → document CANNOT be graded above C+
-- Two or more [HIGH] issues → document CANNOT be graded above B
-- Version marked "TBD" when extractable from source → automatic [HIGH] per occurrence
-- Factual error (wrong version, wrong class type, wrong path) → automatic [CRITICAL]
-- Content that largely duplicates another document → automatic [HIGH]
-- Placeholder/template text left in → automatic [HIGH]
+**Automatic grade caps (hard rules — apply AFTER counting all issues per document):**
+
+| Condition | Maximum Grade |
+|-----------|--------------|
+| Multiple [CRITICAL] issues | D |
+| One [CRITICAL] issue | D+ |
+| Multiple [HIGH] issues | C |
+| One [HIGH] issue | C+ |
+| Multiple [MEDIUM] issues | B |
+| One [MEDIUM] issue | B+ |
+| Multiple [MINOR] issues | A- |
+| One [MINOR] issue | A |
+| No issues | A+ |
+
+**Severity classification rules:**
+- Factual error (wrong version, wrong class type, wrong path) → [CRITICAL]
+- Missing critical section that the document title promises → [CRITICAL]
+- Version marked "TBD" when extractable from source → [HIGH]
+- Content that largely duplicates another document → [HIGH]
+- Placeholder/template text left in → [HIGH]
+- Missing depth in an important area → [MEDIUM]
+- Could be more detailed or better organized → [MINOR]
+- Cosmetic, formatting, or stylistic issues → [MINOR]
+
+**The cap is absolute.** A document with one [MEDIUM] issue CANNOT receive higher than B+, regardless of how excellent everything else is. Quality gates exist to catch problems, not to reward effort.
 
 ### 6. Issue Severity
 **Every issue MUST have a severity level:**
 - **[CRITICAL]** — Wrong information, missing critical sections, would cause bad decisions
 - **[HIGH]** — Significant gaps, shallow coverage of important areas, missing evidence
-- **[MEDIUM]** — Minor gaps, could be more detailed, nice-to-have improvements
+- **[MEDIUM]** — Missing depth in an important area, incomplete but not wrong
+- **[MINOR]** — Cosmetic, stylistic, could be better organized, nice-to-have improvements
 
 ## Document Expectations
 
@@ -231,6 +250,7 @@ Write the complete review to `knowledge/DISCOVERY-GRADE.md` using the template f
 - [CRITICAL] {specific issue with evidence}
 - [HIGH] {issue}
 - [MEDIUM] {issue}
+- [MINOR] {issue}
 
 ### {document} ({grade})
 - [HIGH] {issue}

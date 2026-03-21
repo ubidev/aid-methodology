@@ -36,17 +36,24 @@
 - [CRITICAL] {specific issue with evidence}
 - [HIGH] {issue}
 - [MEDIUM] {issue}
+- [MINOR] {issue}
 
 ### {document} ({grade})
 - [HIGH] {issue}
 ...
+
+**Grade caps (absolute):**
+Multiple [CRITICAL] → max D. One [CRITICAL] → max D+.
+Multiple [HIGH] → max C. One [HIGH] → max C+.
+Multiple [MEDIUM] → max B. One [MEDIUM] → max B+.
+Multiple [MINOR] → max A-. One [MINOR] → max A. Only zero issues = A+.
 
 ## Verification Spot-Checks
 
 | Claim | Document | Verified | Evidence |
 |-------|----------|----------|----------|
 | {specific claim} | {doc} | ✅/❌ | {file path or reason} |
-{minimum 10 spot-checks}
+{minimum 15 spot-checks, at least 5 version verifications}
 
 ## Cross-Cutting Concerns
 - {issues spanning multiple documents}

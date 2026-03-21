@@ -117,8 +117,16 @@ For each document assess:
 4. **Usefulness** — Would an agent building a feature find this helpful?
 5. **Grade** — A+ through F
 
-**Minimum 10 total spot-checks** (verify claims against actual code).
-All issues MUST have severity: [CRITICAL], [HIGH], or [MEDIUM].
+**Minimum 15 total spot-checks** (verify claims against actual code). At least 5 must be version verifications.
+All issues MUST have severity: [CRITICAL], [HIGH], [MEDIUM], or [MINOR].
+
+**Grade caps (absolute):**
+Multiple [CRITICAL] → max D. One [CRITICAL] → max D+.
+Multiple [HIGH] → max C. One [HIGH] → max C+.
+Multiple [MEDIUM] → max B. One [MEDIUM] → max B+.
+Multiple [MINOR] → max A-. One [MINOR] → max A. Only zero issues = A+.
+
+**Do NOT trust what the document says.** Verify against actual source files.
 
 Write `knowledge/DISCOVERY-GRADE.md` using the template format (see `templates/reports/discovery-grade-template.md`).
 Set Minimum Grade from `--grade` argument or default `A`. Add first Review History entry.
@@ -131,16 +139,18 @@ Print: `Review complete. Grade: {overall}. Minimum: {min}.`
 
 DISCOVERY-GRADE.md exists but overall grade < minimum.
 
-1. List documents below threshold. Prioritize [CRITICAL] → [HIGH] → [MEDIUM].
+1. List documents below threshold. Prioritize [CRITICAL] → [HIGH] → [MEDIUM] → [MINOR].
 2. For each document below minimum:
    - Read issues from DISCOVERY-GRADE.md
    - Read source code, fix the KB doc with evidence
    - **REMOVE fixed issue lines** from Issues Found section
-   - Re-grade the document
-3. Recalculate overall grade (architecture, module-map, coding-standards count double)
+3. **MANDATORY Re-Review:** After ALL fixes, re-review every document from scratch.
+   Do NOT self-evaluate — re-run the full review process, re-verify claims against source.
+   Apply the same grade caps. Overwrite DISCOVERY-GRADE.md with fresh assessment.
+   Preserve Review History entries.
 4. Update Documents table, Last Run, Review History, Recommendation
 
-**IMPORTANT:** DISCOVERY-GRADE.md always reflects CURRENT state. Fixed issues are removed.
+**IMPORTANT:** DISCOVERY-GRADE.md always reflects CURRENT state after re-review.
 History is tracked in the Review History table.
 
 Print: `Fix complete. Grade: {old} → {new}.`
@@ -176,7 +186,7 @@ When a GAP.md or IMPEDIMENT.md triggers re-discovery:
 - [ ] Claims grounded in code evidence (file paths, line numbers)
 - [ ] Inferred info marked with ⚠️
 - [ ] open-questions.md captures everything needing human input
-- [ ] All issues in DISCOVERY-GRADE.md have severity: [CRITICAL], [HIGH], or [MEDIUM]
+- [ ] All issues in DISCOVERY-GRADE.md have severity: [CRITICAL], [HIGH], [MEDIUM], or [MINOR]
 - [ ] Minimum 10 spot-checks in DISCOVERY-GRADE.md
 
 ## Grading Criteria

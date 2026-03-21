@@ -294,9 +294,13 @@ Prompt to pass to the subagent:
 > Grade each document: A+ (exceptional), A (thorough), B+ (good with minor gaps), B (adequate),
 > B- (shallow), C+ (significant gaps), C (barely useful), D (misleading or wrong), F (missing/empty).
 >
-> **Grade caps:** Any [CRITICAL] issue → max C+. Two+ [HIGH] → max B. Err on harsh, not lenient.
+> **Grade caps (absolute — no exceptions):**
+> Multiple [CRITICAL] → max D. One [CRITICAL] → max D+.
+> Multiple [HIGH] → max C. One [HIGH] → max C+.
+> Multiple [MEDIUM] → max B. One [MEDIUM] → max B+.
+> Multiple [MINOR] → max A-. One [MINOR] → max A. Only zero issues = A+.
 >
-> All issues MUST have severity: [CRITICAL], [HIGH], or [MEDIUM].
+> All issues MUST have severity: [CRITICAL], [HIGH], [MEDIUM], or [MINOR].
 >
 > **Minimum 15 spot-checks** (verify claims against actual code). At least 5 must be version verifications.
 >
@@ -313,7 +317,7 @@ Wait for completion.
 
 Read `knowledge/DISCOVERY-GRADE.md`. Verify it contains:
 - [ ] Grade for every document (13 KB docs + AGENTS.md + CLAUDE.md + INDEX.md + README.md)
-- [ ] Specific issues with severity levels ([CRITICAL], [HIGH], [MEDIUM])
+- [ ] Specific issues with severity levels ([CRITICAL], [HIGH], [MEDIUM], [MINOR])
 - [ ] Verification spot-checks (minimum 10)
 - [ ] Overall grade and recommendation
 - [ ] Cross-cutting concerns
@@ -363,19 +367,31 @@ Review History table.
 
 ---
 
-### Step 3: Update DISCOVERY-GRADE.md
+### Step 3: Re-Review (MANDATORY — Do NOT Self-Evaluate)
 
-After all fixes:
-1. Recalculate the overall grade (weighted average — architecture, module-map, coding-standards count double)
-2. Update the Documents table with new grades and statuses
-3. Update the Last Run timestamp
-4. Add a new entry to the Review History table:
-   ```
-   | {run} | {date} | {new grade} | Fix | {count of issues fixed} |
-   ```
-5. Update the Recommendation field
+**After fixing all documents, you MUST dispatch the `discovery-reviewer` subagent again.**
+The agent that wrote the fix CANNOT evaluate its own work. This is a hard rule.
 
-Print: `[Fix] Complete. Grade: {old} → {new}. Run /aid-discover again to {re-review|proceed}.`
+Print: `[Fix 2/3] Re-reviewing after fixes...`
+
+Dispatch **discovery-reviewer** with the same prompt as REVIEW mode Step 1.
+The reviewer will overwrite DISCOVERY-GRADE.md with a fresh assessment.
+
+Wait for completion.
+
+---
+
+### Step 4: Post-Fix Update
+
+Read the new DISCOVERY-GRADE.md produced by the reviewer.
+
+1. Verify the Review History was preserved (reviewer should append, not replace)
+2. If Review History is missing entries from before the re-review, add them back
+3. Ensure the new entry reflects this was a Fix + Re-review cycle
+
+Print: `[Fix 3/3] Complete. Grade: {old} → {new}. Run /aid-discover again to {fix remaining issues|proceed}.`
+
+**If the grade is still below minimum:** The next run will enter FIX mode again. This is expected — some fixes may introduce new issues or the reviewer may catch things the fixer missed. The cycle continues until the grade meets the minimum.
 
 **If documents still have issues after fixing:** The next run will re-enter FIX mode to continue.
 

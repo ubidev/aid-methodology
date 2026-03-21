@@ -258,8 +258,17 @@ Read every document in `knowledge/`, plus `AGENTS.md` and `CLAUDE.md`. For each 
 4. **Usefulness** — Would an agent building a feature find this helpful?
 5. **Grade** — A+ through F (see grading criteria below)
 
-**Minimum 10 total spot-checks** where you verify a claim from a KB doc against actual code.
-All issues MUST have severity: [CRITICAL], [HIGH], or [MEDIUM].
+**Minimum 15 total spot-checks** where you verify a claim from a KB doc against actual code.
+At least 5 must be version verifications (check actual pom.xml, package.json, jar filenames, manifests).
+All issues MUST have severity: [CRITICAL], [HIGH], [MEDIUM], or [MINOR].
+
+**Grade caps (absolute — no exceptions):**
+Multiple [CRITICAL] → max D. One [CRITICAL] → max D+.
+Multiple [HIGH] → max C. One [HIGH] → max C+.
+Multiple [MEDIUM] → max B. One [MEDIUM] → max B+.
+Multiple [MINOR] → max A-. One [MINOR] → max A. Only zero issues = A+.
+
+**Do NOT trust what the document says.** Verify claims against actual source files.
 
 Print: `[Review 1/2] Reviewing Knowledge Base quality...`
 
@@ -310,10 +319,21 @@ Review History table.
 
 ---
 
-### Step 3: Update DISCOVERY-GRADE.md
+### Step 3: Re-Review (MANDATORY — Do NOT Self-Evaluate)
 
-After all fixes:
-1. Recalculate the overall grade (weighted average — architecture, module-map, coding-standards count double)
+**After fixing all documents, you MUST review them again from scratch.**
+The agent that wrote the fix CANNOT evaluate its own work. Re-read every fixed document
+and re-verify claims against source code. Apply the same grade caps.
+
+Print: `[Fix] Re-reviewing after fixes...`
+
+Re-run the full review process from REVIEW Step 1 on all documents.
+Overwrite DISCOVERY-GRADE.md with the fresh assessment. Preserve Review History entries.
+
+### Step 4: Update DISCOVERY-GRADE.md
+
+After re-review:
+1. The reviewer has recalculated grades based on fresh assessment
 2. Update the Documents table with new grades and statuses
 3. Update the Last Run timestamp
 4. Add a new entry to the Review History table
