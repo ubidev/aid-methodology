@@ -78,7 +78,7 @@ if [[ $any -eq 0 ]]; then
   exit 0
 fi
 
-# Copy helper: asks before overwriting
+# Copy helper: skip identical, ask if different, copy if new
 copy_file() {
   local src="$1"
   local dst="$2"
@@ -86,7 +86,11 @@ copy_file() {
   dst_dir="$(dirname "$dst")"
   mkdir -p "$dst_dir"
   if [[ -e "$dst" ]]; then
-    read -rp "Overwrite '$dst'? [y/N] " yn
+    if cmp -s "$src" "$dst"; then
+      echo "  Up to date: $dst"
+      return
+    fi
+    read -rp "Overwrite '$dst'? (files differ) [y/N] " yn
     case "$yn" in
       [yY]*) ;;
       *) echo "  Skipped: $dst"; return ;;

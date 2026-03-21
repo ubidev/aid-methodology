@@ -60,7 +60,7 @@ if (-not $any) {
     exit 0
 }
 
-# Copy helper: asks before overwriting
+# Copy helper: skip identical, ask if different, copy if new
 function Copy-Item-Safe {
     param(
         [string]$Src,
@@ -71,7 +71,13 @@ function Copy-Item-Safe {
         New-Item -ItemType Directory -Path $dstDir -Force | Out-Null
     }
     if (Test-Path $Dst) {
-        $answer = Read-Host "Overwrite '$Dst'? [y/N]"
+        $srcHash = (Get-FileHash -Path $Src -Algorithm MD5).Hash
+        $dstHash = (Get-FileHash -Path $Dst -Algorithm MD5).Hash
+        if ($srcHash -eq $dstHash) {
+            Write-Host "  Up to date: $Dst"
+            return
+        }
+        $answer = Read-Host "Overwrite '$Dst'? (files differ) [y/N]"
         if ($answer -notmatch '^[yY]') {
             Write-Host "  Skipped: $Dst"
             return
