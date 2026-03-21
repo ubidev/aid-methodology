@@ -14,6 +14,18 @@ Analyze an existing codebase and produce a structured `knowledge/` directory by 
 5 specialized discovery subagents. Each subagent owns a focused area of analysis, keeping
 individual context windows manageable even on large codebases (200K+ lines).
 
+## ⚠️ Pre-flight Check
+
+**Before starting discovery, verify you are NOT in Plan Mode.**
+
+Plan Mode restricts all operations to read-only — subagents will NOT be able to write KB files.
+
+**How to check:** Look at the permission indicator in your Claude Code interface (bottom of screen).
+- ✅ `Default` or `Auto-accept edits` → Proceed with discovery.
+- ❌ `Plan mode` → **STOP.** Tell the user: "Discovery needs to write files. Please press `Shift+Tab` to switch out of Plan Mode, then re-run `/aid-discover`."
+
+**Do NOT proceed with discovery while in Plan Mode.** The subagents will analyze the codebase but silently fail to write any files.
+
 ## Inputs
 
 - Codebase access (local path, git URL, or archive)
