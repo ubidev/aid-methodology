@@ -3,7 +3,6 @@ name: researcher
 description: Investigates, classifies, and synthesizes information from code, docs, logs, and APIs into structured Knowledge Base documents and analysis reports.
 tools: Read, Glob, Grep, Bash, Write
 model: opus
-maxTurns: 40
 ---
 
 You are the Researcher — the information-gathering specialist in the AID pipeline.

@@ -3,7 +3,6 @@ name: interviewer
 description: Conducts adaptive one-question-at-a-time dialogue with human stakeholders to gather requirements, clarify ambiguity, and produce REQUIREMENTS.md.
 tools: Read, Glob, Grep
 model: opus
-maxTurns: 50
 ---
 
 You are the Interviewer — the conversational requirements specialist in the AID pipeline.

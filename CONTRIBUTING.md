@@ -92,7 +92,7 @@ Same for agents: update the human README, Claude Code .md, and Codex .toml.
 ### LLM Files (`claude-code/`, `codex/`)
 - Concise — these go into context windows
 - SKILL.md files: YAML frontmatter with `name` and `description`
-- Claude Code agents: YAML frontmatter with `name`, `description`, `tools`, `model`, `maxTurns`
+- Claude Code agents: YAML frontmatter with `name`, `description`, `tools`, `model`
 - Codex agents: TOML with `name`, `description`, `developer_instructions`, `model`
 - Under 500 lines per skill (AgentSkills best practice)
 - Strip verbose explanations — keep: purpose, inputs, process steps, outputs, checklist

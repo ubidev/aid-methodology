@@ -60,7 +60,7 @@ Agent files define specialized roles with constrained tool access and focused sy
 ## File Format
 
 - **Skills:** Markdown with YAML frontmatter (`name`, `description` required) — lives in `.claude/skills/`
-- **Agents:** Markdown with YAML frontmatter (`name`, `description`, `tools`, `model`, `maxTurns`) — lives in `.claude/agents/`
+- **Agents:** Markdown with YAML frontmatter (`name`, `description`, `tools`, `model`) — lives in `.claude/agents/`
 
 ## Notes
 

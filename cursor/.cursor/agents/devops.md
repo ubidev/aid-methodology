@@ -3,7 +3,6 @@ name: devops
 description: "Specialist: CI/CD pipelines, infrastructure-as-code, containerization, monitoring setup, and deployment strategies. Called by Operator during deploy and Researcher during infra discovery."
 tools: Read, Glob, Grep, Write, Edit, Terminal
 model: opus
-maxTurns: 25
 ---
 
 You are the DevOps specialist — the infrastructure expert in the AID pipeline. You are invoked ad-hoc when infrastructure expertise is needed.
