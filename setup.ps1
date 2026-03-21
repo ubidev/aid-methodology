@@ -4,7 +4,8 @@ param(
     [Parameter(Mandatory = $true, Position = 0)]
     [string]$TargetDirectory,
 
-    [switch]$ForceOverwrite
+    [Alias('ForceOverwrite')]
+    [switch]$Force
 )
 
 $ErrorActionPreference = 'Stop'
@@ -62,7 +63,7 @@ if (-not $any) {
     exit 0
 }
 
-# Copy helper: new=copy, identical=skip, different=ask (or overwrite with -ForceOverwrite)
+# Copy helper: new=copy, identical=skip, different=ask (or overwrite with -Force)
 function Copy-Item-Safe {
     param(
         [string]$Src,
@@ -79,7 +80,7 @@ function Copy-Item-Safe {
             Write-Host "  Up to date: $Dst"
             return
         }
-        if ($ForceOverwrite) {
+        if ($Force) {
             Copy-Item -Path $Src -Destination $Dst -Force
             Write-Host "  Updated: $Dst"
         } else {
