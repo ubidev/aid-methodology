@@ -3,9 +3,16 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Validate target directory argument
+# (args parsed above)
+
+FORCE=0
+if [[ "$1" == "--force" ]]; then
+  FORCE=1
+  shift
+fi
+
 if [[ $# -lt 1 ]]; then
-  echo "Usage: $0 <target-directory>" >&2
+  echo "Usage: $0 [--force] <target-directory>" >&2
   exit 1
 fi
 
@@ -78,7 +85,7 @@ if [[ $any -eq 0 ]]; then
   exit 0
 fi
 
-# Copy helper: skip identical, ask if different, copy if new
+# Copy helper: new=copy, identical=skip, different=skip (or overwrite with --force)
 copy_file() {
   local src="$1"
   local dst="$2"
@@ -90,11 +97,13 @@ copy_file() {
       echo "  Up to date: $dst"
       return
     fi
-    read -rp "Overwrite '$dst'? (files differ) [y/N] " yn
-    case "$yn" in
-      [yY]*) ;;
-      *) echo "  Skipped: $dst"; return ;;
-    esac
+    if [[ "$FORCE" -eq 1 ]]; then
+      cp -r "$src" "$dst"
+      echo "  Updated: $dst"
+    else
+      echo "  Skipped (differs, use --force to overwrite): $dst"
+    fi
+    return
   fi
   cp -r "$src" "$dst"
   echo "  Copied: $dst"

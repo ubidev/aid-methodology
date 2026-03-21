@@ -2,7 +2,9 @@
 [CmdletBinding()]
 param(
     [Parameter(Mandatory = $true, Position = 0)]
-    [string]$TargetDirectory
+    [string]$TargetDirectory,
+
+    [switch]$ForceOverwrite
 )
 
 $ErrorActionPreference = 'Stop'
@@ -60,7 +62,7 @@ if (-not $any) {
     exit 0
 }
 
-# Copy helper: skip identical, ask if different, copy if new
+# Copy helper: new=copy, identical=skip, different=skip (or overwrite with -Force)
 function Copy-Item-Safe {
     param(
         [string]$Src,
@@ -77,11 +79,13 @@ function Copy-Item-Safe {
             Write-Host "  Up to date: $Dst"
             return
         }
-        $answer = Read-Host "Overwrite '$Dst'? (files differ) [y/N]"
-        if ($answer -notmatch '^[yY]') {
-            Write-Host "  Skipped: $Dst"
-            return
+        if ($ForceOverwrite) {
+            Copy-Item -Path $Src -Destination $Dst -Force
+            Write-Host "  Updated: $Dst"
+        } else {
+            Write-Host "  Skipped (differs, use -Force to overwrite): $Dst"
         }
+        return
     }
     Copy-Item -Path $Src -Destination $Dst -Force
     Write-Host "  Copied: $Dst"
