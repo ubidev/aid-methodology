@@ -43,7 +43,7 @@ The Operator doesn't build infrastructure or debug pipelines — it *uses* them.
 
 ## Model
 
-**Sonnet** — the Operator's work is procedural and verification-heavy, not deeply analytical. Speed matters for deployment workflows.
+**Opus** — all agents use Opus for consistent deep reasoning across the pipeline.
 
 ## Examples
 

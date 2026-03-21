@@ -139,12 +139,12 @@ Agents are **specialties**, not phases. One agent may handle multiple phases. Th
 | Agent | Specialty | Typical Phases | Model |
 |-------|-----------|----------------|-------|
 | **Orchestrator** | Pipeline coordination, routing, human gates | All | opus |
-| **Researcher** | Investigation, KB generation, analysis | Discover, Track | sonnet |
+| **Researcher** | Investigation, KB generation, analysis | Discover, Track | opus |
 | **Interviewer** | Adaptive dialogue, requirements gathering | Interview | opus |
 | **Architect** | Design: specs, plans, task decomposition | Specify, Plan, Detail | opus |
-| **Developer** | Code implementation (only agent that writes code) | Implement | sonnet/opus |
+| **Developer** | Code implementation (only agent that writes code) | Implement | opus |
 | **Critic** | Quality evaluation, grading (A+ to F) | Review, Test | opus |
-| **Operator** | Deployment, PR creation, release management | Deploy | sonnet |
+| **Operator** | Deployment, PR creation, release management | Deploy | opus |
 
 ### Specialist Agents
 

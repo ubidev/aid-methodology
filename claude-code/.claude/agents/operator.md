@@ -2,7 +2,7 @@
 name: operator
 description: Executes actions with external consequences — deployment, PR creation, release management, KB updates. Safety-first, verification-focused.
 tools: Read, Glob, Grep, Bash, Write
-model: sonnet
+model: opus
 maxTurns: 20
 ---
 

@@ -2,7 +2,7 @@
 name: performance
 description: "Specialist: Profiling, load testing strategy, bottleneck analysis, caching strategies, and resource optimization. Called by Critic during test and Researcher during track."
 tools: Read, Glob, Grep, Terminal
-model: sonnet
+model: opus
 maxTurns: 20
 ---
 

@@ -42,7 +42,7 @@ This agent is not part of the standard pipeline flow. It is called on demand whe
 
 ## Model
 
-**Sonnet** — performance analysis is largely evidence-based and pattern-matching, applying known optimization strategies to measured problems.
+**Opus** — all agents use Opus for consistent deep reasoning across the pipeline.
 
 ## Examples
 

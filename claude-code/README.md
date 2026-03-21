@@ -27,23 +27,23 @@ This gives you:
 | Agent | File | Model | Specialty |
 |-------|------|-------|-----------|
 | Orchestrator | `.claude/agents/orchestrator.md` | opus | Pipeline coordination, routing, human gates |
-| Researcher | `.claude/agents/researcher.md` | sonnet | Investigation, KB generation, analysis |
+| Researcher | `.claude/agents/researcher.md` | opus | Investigation, KB generation, analysis |
 | Interviewer | `.claude/agents/interviewer.md` | opus | Adaptive dialogue, requirements gathering |
 | Architect | `.claude/agents/architect.md` | opus | Design: specs, plans, task decomposition |
-| Developer | `.claude/agents/developer.md` | sonnet | Code implementation (only code writer) |
+| Developer | `.claude/agents/developer.md` | opus | Code implementation (only code writer) |
 | Critic | `.claude/agents/critic.md` | opus | Quality evaluation, grading (A+ to F) |
-| Operator | `.claude/agents/operator.md` | sonnet | Deployment, PR creation, releases |
+| Operator | `.claude/agents/operator.md` | opus | Deployment, PR creation, releases |
 
 ### Specialist Agents (invoked ad-hoc)
 
 | Agent | File | Model | Specialty |
 |-------|------|-------|-----------|
-| UX Designer | `.claude/agents/ux-designer.md` | sonnet | UI/UX, accessibility, user flows |
-| DevOps | `.claude/agents/devops.md` | sonnet | CI/CD, IaC, containerization |
-| Tech Writer | `.claude/agents/tech-writer.md` | sonnet | Documentation, API docs, changelogs |
+| UX Designer | `.claude/agents/ux-designer.md` | opus | UI/UX, accessibility, user flows |
+| DevOps | `.claude/agents/devops.md` | opus | CI/CD, IaC, containerization |
+| Tech Writer | `.claude/agents/tech-writer.md` | opus | Documentation, API docs, changelogs |
 | Security | `.claude/agents/security.md` | opus | Threat modeling, OWASP, auth patterns |
-| Data Engineer | `.claude/agents/data-engineer.md` | sonnet | Schema, migrations, query optimization |
-| Performance | `.claude/agents/performance.md` | sonnet | Profiling, load testing, caching |
+| Data Engineer | `.claude/agents/data-engineer.md` | opus | Schema, migrations, query optimization |
+| Performance | `.claude/agents/performance.md` | opus | Profiling, load testing, caching |
 
 ## Skills
 

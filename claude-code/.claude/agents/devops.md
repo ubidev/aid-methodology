@@ -2,7 +2,7 @@
 name: devops
 description: "Specialist: CI/CD pipelines, infrastructure-as-code, containerization, monitoring setup, and deployment strategies. Called by Operator during deploy and Researcher during infra discovery."
 tools: Read, Glob, Grep, Write, Edit, Bash
-model: sonnet
+model: opus
 maxTurns: 25
 ---
 

@@ -2,7 +2,7 @@
 name: researcher
 description: Investigates, classifies, and synthesizes information from code, docs, logs, and APIs into structured Knowledge Base documents and analysis reports.
 tools: Read, Glob, Grep, Terminal, Write
-model: sonnet
+model: opus
 maxTurns: 40
 ---
 

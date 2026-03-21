@@ -41,7 +41,7 @@ This agent is not part of the standard pipeline flow. It is called on demand whe
 
 ## Model
 
-**Sonnet** — documentation writing is structured and pattern-based. Speed matters for generating docs alongside deployments.
+**Opus** — all agents use Opus for consistent deep reasoning across the pipeline.
 
 ## Examples
 

@@ -7,7 +7,6 @@ description: >
 allowed-tools: Read, Glob, Grep, Write, Edit, Terminal
 context: fork
 agent: developer
-# Note: For complex implementations, consider using opus instead of sonnet.
 ---
 
 # Execute Task with Agent

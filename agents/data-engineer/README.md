@@ -43,7 +43,7 @@ This agent is not part of the standard pipeline flow. It is called on demand whe
 
 ## Model
 
-**Sonnet** — data engineering is largely pattern-based, applying known normalization rules, indexing strategies, and migration patterns.
+**Opus** — all agents use Opus for consistent deep reasoning across the pipeline.
 
 ## Examples
 

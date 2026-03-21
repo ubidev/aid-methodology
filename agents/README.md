@@ -18,12 +18,12 @@ These agents form the backbone of every AID pipeline:
 | Agent | Specialty | Typical Phases | Model |
 |-------|-----------|----------------|-------|
 | [**Orchestrator**](orchestrator/) | Pipeline coordination, routing, human gates | All | opus |
-| [**Researcher**](researcher/) | Investigation, KB generation, analysis | Discover, Track, any | sonnet |
+| [**Researcher**](researcher/) | Investigation, KB generation, analysis | Discover, Track, any | opus |
 | [**Interviewer**](interviewer/) | Adaptive dialogue, requirements gathering | Interview | opus |
 | [**Architect**](architect/) | Design: specs, plans, task decomposition | Specify, Plan, Detail | opus |
-| [**Developer**](developer/) | Code implementation (only agent that writes code) | Implement | sonnet/opus |
+| [**Developer**](developer/) | Code implementation (only agent that writes code) | Implement | opus |
 | [**Critic**](critic/) | Quality evaluation, grading (A+ to F) | Review, Test | opus |
-| [**Operator**](operator/) | Deployment, PR creation, release management | Deploy | sonnet |
+| [**Operator**](operator/) | Deployment, PR creation, release management | Deploy | opus |
 
 ### How Core Agents Map to Phases
 
@@ -51,12 +51,12 @@ These agents are invoked on demand when specific expertise is needed:
 
 | Agent | Specialty | Called By | Model |
 |-------|-----------|-----------|-------|
-| [**UX Designer**](ux-designer/) | UI/UX, accessibility (WCAG), user flows | Architect, Critic | sonnet |
-| [**DevOps**](devops/) | CI/CD, IaC, containerization, monitoring | Operator, Researcher | sonnet |
-| [**Tech Writer**](tech-writer/) | Documentation, API docs, changelogs | Operator, Architect | sonnet |
+| [**UX Designer**](ux-designer/) | UI/UX, accessibility (WCAG), user flows | Architect, Critic | opus |
+| [**DevOps**](devops/) | CI/CD, IaC, containerization, monitoring | Operator, Researcher | opus |
+| [**Tech Writer**](tech-writer/) | Documentation, API docs, changelogs | Operator, Architect | opus |
 | [**Security**](security/) | Threat modeling, OWASP, auth, dependency audit | Critic, Researcher | opus |
-| [**Data Engineer**](data-engineer/) | Schema, migrations, queries, ETL | Architect, Developer | sonnet |
-| [**Performance**](performance/) | Profiling, load testing, caching, optimization | Critic, Researcher | sonnet |
+| [**Data Engineer**](data-engineer/) | Schema, migrations, queries, ETL | Architect, Developer | opus |
+| [**Performance**](performance/) | Profiling, load testing, caching, optimization | Critic, Researcher | opus |
 
 ### When to Call a Specialist
 

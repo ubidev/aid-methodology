@@ -42,7 +42,7 @@ This agent is not part of the standard pipeline flow. It is called on demand whe
 
 ## Model
 
-**Sonnet** — infrastructure work is pattern-based and procedural, leveraging known configurations rather than novel reasoning.
+**Opus** — all agents use Opus for consistent deep reasoning across the pipeline.
 
 ## Examples
 

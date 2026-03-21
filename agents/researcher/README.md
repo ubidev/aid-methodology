@@ -46,7 +46,7 @@ The Researcher is read-heavy by design. It should never modify production code. 
 
 ## Model
 
-**Sonnet** — fast, I/O-heavy work. The Researcher's bottleneck is throughput (many files to read), not reasoning depth.
+**Opus** — all agents use Opus for consistent deep reasoning across the pipeline.
 
 ## Examples
 

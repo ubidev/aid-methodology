@@ -2,7 +2,7 @@
 name: tech-writer
 description: "Specialist: End-user documentation, API docs, changelogs, README quality, and writing clarity. Called by Operator during deploy and Architect during specify."
 tools: Read, Glob, Grep, Write, Edit
-model: sonnet
+model: opus
 maxTurns: 20
 ---
 

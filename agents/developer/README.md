@@ -44,7 +44,7 @@ The Developer is the execution engine. It doesn't decide *what* to build (Archit
 
 ## Model
 
-**Sonnet** for fast iteration on straightforward tasks. **Opus** for complex implementation requiring deep reasoning about architecture and edge cases.
+**Opus** — all agents use Opus for consistent deep reasoning across the pipeline.
 
 ## Examples
 

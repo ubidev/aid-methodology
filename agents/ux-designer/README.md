@@ -40,7 +40,7 @@ This agent is not part of the standard pipeline flow. It is called on demand whe
 
 ## Model
 
-**Sonnet** — UX evaluation is pattern-matching and standard-referencing rather than deep novel reasoning.
+**Opus** — all agents use Opus for consistent deep reasoning across the pipeline.
 
 ## Examples
 
