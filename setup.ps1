@@ -62,7 +62,7 @@ if (-not $any) {
     exit 0
 }
 
-# Copy helper: new=copy, identical=skip, different=skip (or overwrite with -Force)
+# Copy helper: new=copy, identical=skip, different=ask (or overwrite with -ForceOverwrite)
 function Copy-Item-Safe {
     param(
         [string]$Src,
@@ -83,7 +83,13 @@ function Copy-Item-Safe {
             Copy-Item -Path $Src -Destination $Dst -Force
             Write-Host "  Updated: $Dst"
         } else {
-            Write-Host "  Skipped (differs, use -Force to overwrite): $Dst"
+            $answer = Read-Host "Overwrite '$Dst'? (files differ) [y/N]"
+            if ($answer -match '^[yY]') {
+                Copy-Item -Path $Src -Destination $Dst -Force
+                Write-Host "  Updated: $Dst"
+            } else {
+                Write-Host "  Skipped: $Dst"
+            }
         }
         return
     }

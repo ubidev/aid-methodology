@@ -85,7 +85,7 @@ if [[ $any -eq 0 ]]; then
   exit 0
 fi
 
-# Copy helper: new=copy, identical=skip, different=skip (or overwrite with --force)
+# Copy helper: new=copy, identical=skip, different=ask (or overwrite with --force)
 copy_file() {
   local src="$1"
   local dst="$2"
@@ -101,7 +101,11 @@ copy_file() {
       cp -r "$src" "$dst"
       echo "  Updated: $dst"
     else
-      echo "  Skipped (differs, use --force to overwrite): $dst"
+      read -rp "Overwrite '$dst'? (files differ) [y/N] " yn
+      case "$yn" in
+        [yY]*) cp -r "$src" "$dst"; echo "  Updated: $dst" ;;
+        *) echo "  Skipped: $dst" ;;
+      esac
     fi
     return
   fi
