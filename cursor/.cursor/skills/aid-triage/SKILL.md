@@ -1,6 +1,13 @@
 ---
-description: "Classify production findings as BUG, Change Request, Infrastructure, or No Action. For bugs: perform root cause analysis and map the patch. Routes bugs to aid-implement (short path), CRs to aid-discover (new cycle). Use when TRACK-REPORT.md has findings above severity thresholds."
-alwaysApply: false
+name: aid-triage
+description: >
+  Classify production findings as BUG, Change Request, Infrastructure, or No Action.
+  For bugs: perform root cause analysis and map the patch. Routes bugs to aid-implement
+  (short path), CRs to aid-discover (new cycle). Use when TRACK-REPORT.md has findings
+  above severity thresholds.
+allowed-tools: Read, Glob, Grep, Terminal
+context: fork
+agent: orchestrator
 ---
 
 # Classification, Root Cause Analysis & Routing

@@ -1,6 +1,12 @@
 ---
-description: "Define the high-level roadmap from SPEC.md — MVP scope, module identification, deliverable scoping, test scenarios, risk assessment. Strategy, not tactics. Use when SPEC.md is complete and you need a roadmap, or when a GAP.md triggers re-planning."
-alwaysApply: false
+name: aid-plan
+description: >
+  Define the high-level roadmap from SPEC.md — MVP scope, module identification,
+  deliverable scoping, test scenarios, risk assessment. Strategy, not tactics.
+  Use when SPEC.md is complete and you need a roadmap, or when a GAP.md triggers re-planning.
+allowed-tools: Read, Glob, Grep, Write, Edit, Terminal
+context: fork
+agent: architect
 ---
 
 # High-Level Roadmap

@@ -1,6 +1,12 @@
 ---
-description: "Final verification, PR creation, delivery summary, and KB updates. The last development phase before production. Use when all tasks are complete, reviewed (A-+), and tested (PASS)."
-alwaysApply: false
+name: aid-deploy
+description: >
+  Final verification, PR creation, delivery summary, and KB updates. The last
+  development phase before production. Use when all tasks are complete, reviewed
+  (A-+), and tested (PASS).
+allowed-tools: Read, Glob, Grep, Terminal, Write
+context: fork
+agent: operator
 ---
 
 # Package & Ship

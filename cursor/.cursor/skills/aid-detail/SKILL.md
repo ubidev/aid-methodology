@@ -1,6 +1,12 @@
 ---
-description: "Decompose PLAN.md into sprint-ready user stories, executable tasks, precedence ordering, and delivery breakdown. Tactics, not strategy. Use when PLAN.md is complete and you need executable work items."
-alwaysApply: false
+name: aid-detail
+description: >
+  Decompose PLAN.md into sprint-ready user stories, executable tasks, precedence
+  ordering, and delivery breakdown. Tactics, not strategy. Use when PLAN.md is
+  complete and you need executable work items.
+allowed-tools: Read, Glob, Grep, Write, Edit, Terminal
+context: fork
+agent: architect
 ---
 
 # Detail the Execution Plan

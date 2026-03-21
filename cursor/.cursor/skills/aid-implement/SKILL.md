@@ -1,6 +1,13 @@
 ---
-description: "Execute a planned task by spawning a coding agent with full KB context. Mandatory build verification. Use when a TASK-{id}.md is ready for implementation or a CORRECTION.md needs coding."
-alwaysApply: false
+name: aid-implement
+description: >
+  Execute a planned task by spawning a coding agent with full KB context.
+  Mandatory build verification. Use when a TASK-{id}.md is ready for
+  implementation or a CORRECTION.md needs coding.
+allowed-tools: Read, Glob, Grep, Write, Edit, Terminal
+context: fork
+agent: developer
+# Note: For complex implementations, consider using opus instead of sonnet.
 ---
 
 # Execute Task with Agent
