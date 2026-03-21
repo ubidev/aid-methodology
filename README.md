@@ -28,13 +28,47 @@ AID contains SDD (Spec-Driven Development). SDD is the spec→code layer. AID is
 
 **New to AID?** Start with the [methodology document](methodology/aid-methodology.md) — it's the complete V3 spec, ~40 minutes to read.
 
-**Want to use AID with your AI coding tool?**
+**Want to use AID with your project?**
 
-| Tool | Setup | Format |
-|------|-------|--------|
-| **Claude Code** | Run `setup.sh` or copy `claude-code/.claude/` → `.claude/` | [Setup guide](claude-code/README.md) |
-| **OpenAI Codex CLI** | Run `setup.sh` or copy `codex/.codex/` → `.codex/` | [Setup guide](codex/README.md) |
-| **Cursor** | Run `setup.sh` or copy `cursor/.cursor/` → `.cursor/` | [Setup guide](cursor/README.md) |
+### 1. Run the setup script
+
+The setup script installs AID skills, agents, and config templates into your project. Pick the tools you use — it handles the rest.
+
+**Linux / macOS:**
+```bash
+git clone https://github.com/AndreVianna/aid-methodology.git
+cd aid-methodology
+./setup.sh /path/to/your/project
+```
+
+**Windows (PowerShell):**
+```powershell
+git clone https://github.com/AndreVianna/aid-methodology.git
+cd aid-methodology
+.\setup.ps1 C:\path\to\your\project
+```
+
+The script shows a menu — select the tools you use (Claude Code, Codex, Cursor), then press 4 to install.
+
+**Re-running is safe:** identical files are skipped, changed files prompt before overwriting. Use `--force` to overwrite everything without prompts.
+
+### 2. Run Discovery
+
+After setup, open your AI coding tool in the project directory and run the Discovery phase. It will analyze the codebase, generate the Knowledge Base (`knowledge/`), and fill in the `AGENTS.md` / `CLAUDE.md` placeholders automatically.
+
+### 3. Start building
+
+You now have a Knowledge Base, configured skills, and agents ready to go. Every phase from Interview to Triage is available as a skill your AI tool can execute.
+
+---
+
+**Manual setup:** If you prefer not to use the script, copy the relevant tool directory contents to your project root. See the setup guide for each tool:
+
+| Tool | Directory | Guide |
+|------|-----------|-------|
+| **Claude Code** | `claude-code/.claude/` → `.claude/` + `CLAUDE.md` + `AGENTS.md` | [Setup guide](claude-code/README.md) |
+| **OpenAI Codex CLI** | `codex/.codex/` → `.codex/` + `AGENTS.md` | [Setup guide](codex/README.md) |
+| **Cursor** | `cursor/.cursor/` → `.cursor/` + `AGENTS.md` | [Setup guide](cursor/README.md) |
 | **Other agents** | Use `skills/` READMEs as reference | Load as system context |
 
 **Want to understand the skills and agents?**
