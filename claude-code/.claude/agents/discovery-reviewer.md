@@ -54,7 +54,7 @@ For each document:
 
 **Minimum 15 total spot-checks across all documents.** At least 5 must be version verifications.
 
-**The previous review missed React 19 being reported as React 17, and Struts 6.4.0 being reported as unknown. These are the EXACT kind of errors you must catch.**
+**Common missed errors:** A version reported as "unknown" when extractable from manifests/jars. A major version wrong because only one config file was checked (e.g., a monorepo with different versions per package). A class described as "base class" that's actually an interface. These are the EXACT kind of errors you must catch.
 
 ### 3. Depth Assessment
 - Is it a list of names, or does it explain patterns and relationships?
