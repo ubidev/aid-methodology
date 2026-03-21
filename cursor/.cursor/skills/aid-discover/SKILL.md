@@ -92,91 +92,120 @@ directly to Step 6 (README.md and INDEX.md regeneration).
 
 ---
 
-### Step 1: Architecture Analysis
+### Steps 1-5: Dispatch All 5 Subagents
 
-Dispatch **discovery-architect** to produce `architecture.md` and `technology-stack.md`.
-Only dispatch if either file is missing.
+Dispatch all 5 agents. If the Task tool supports parallel dispatch, send all at once.
+If it only supports sequential, dispatch one at a time but still verify ALL files at the end.
+
+**⚠️ CRITICAL: Do NOT check files or take any action until ALL 5 agents have completed.**
+**⚠️ An agent completing does NOT mean all its files were written — verify after ALL finish.**
+
+Only dispatch agents whose target files are missing. Skip agents whose files all exist.
+
+#### [1/5] Architecture Analysis (discovery-architect)
+
+Target files: `architecture.md`, `technology-stack.md`
 
 Print: `[1/5] Dispatching architecture analysis...`
 
-Prompt to pass to the subagent:
+Prompt:
 > Analyze this codebase and produce knowledge/architecture.md and knowledge/technology-stack.md.
 > Cover: project type, folder structure, architectural patterns, module boundaries, data flow,
 > DI registration, entry points, tech stack (languages, frameworks, versions, package managers,
 > runtime, build tools, dev tooling). Write only to the knowledge/ directory.
 
-Wait for completion. Verify both files exist before proceeding.
+#### [2/5] Module and Convention Analysis (discovery-analyst)
 
----
-
-### Step 2: Module and Convention Analysis
-
-Dispatch **discovery-analyst** to produce `module-map.md`, `coding-standards.md`, and `data-model.md`.
-Only dispatch if any of those files are missing.
+Target files: `module-map.md`, `coding-standards.md`, `data-model.md`
 
 Print: `[2/5] Dispatching module and convention analysis...`
 
-Prompt to pass to the subagent:
+Prompt:
 > Analyze this codebase and produce knowledge/module-map.md, knowledge/coding-standards.md,
 > and knowledge/data-model.md. Map every module (purpose, size, dependencies, test coverage).
 > Mine coding conventions from actual code — naming, error handling, logging, config, file
 > organization. Extract data models: schemas, relationships, migrations, indexes, validation.
 > Write only to the knowledge/ directory.
 
-Wait for completion. Verify files before proceeding.
+#### [3/5] Integration Mapping (discovery-integrator)
 
----
-
-### Step 3: Integration Mapping
-
-Dispatch **discovery-integrator** to produce `api-contracts.md`, `integration-map.md`, and `domain-glossary.md`.
-Only dispatch if any of those files are missing.
+Target files: `api-contracts.md`, `integration-map.md`, `domain-glossary.md`
 
 Print: `[3/5] Dispatching integration mapping...`
 
-Prompt to pass to the subagent:
+Prompt:
 > Analyze this codebase and produce knowledge/api-contracts.md, knowledge/integration-map.md,
 > and knowledge/domain-glossary.md. Map APIs exposed and consumed, message queues, caches,
 > webhooks, and third-party services. Build a domain glossary from class names, method names,
 > constants, and comments that encode business concepts. Write only to the knowledge/ directory.
 
-Wait for completion. Verify files before proceeding.
+#### [4/5] Quality Assessment (discovery-quality)
 
----
-
-### Step 4: Quality Assessment
-
-Dispatch **discovery-quality** to produce `test-landscape.md`, `security-model.md`, and `tech-debt.md`.
-Only dispatch if any of those files are missing.
+Target files: `test-landscape.md`, `security-model.md`, `tech-debt.md`
 
 Print: `[4/5] Dispatching quality assessment...`
 
-Prompt to pass to the subagent:
+Prompt:
 > Analyze this codebase and produce knowledge/test-landscape.md, knowledge/security-model.md,
 > and knowledge/tech-debt.md. Assess test frameworks, test types, coverage, CI/CD integration.
 > Evaluate security: auth, authorization, secrets management, OWASP concerns. Audit tech debt:
 > large files, TODO/FIXME density, missing tests, outdated packages, dead code. Classify all
 > debt items with risk ratings (Critical/High/Medium/Low). Write only to the knowledge/ directory.
 
-Wait for completion. Verify files before proceeding.
+#### [5/5] Infrastructure and Gap Analysis (discovery-scout)
 
----
-
-### Step 5: Infrastructure and Gap Analysis
-
-Dispatch **discovery-scout** to produce `infrastructure.md` and `open-questions.md`.
-Only dispatch if either file is missing.
+Target files: `infrastructure.md`, `open-questions.md`
 
 Print: `[5/5] Dispatching infrastructure and gap analysis...`
 
-Prompt to pass to the subagent:
+Prompt:
 > Analyze this codebase and produce knowledge/infrastructure.md and knowledge/open-questions.md.
 > Map CI/CD pipelines, Docker/container config, IaC (Terraform, Pulumi, CDK), environments,
 > and monitoring. For open-questions.md: capture EVERYTHING that cannot be determined from code
 > alone — every uncertainty, assumption, and gap needing human input. Be comprehensive.
 > Write only to the knowledge/ directory.
 
-Wait for completion. Verify files before proceeding.
+---
+
+### Wait for ALL Agents
+
+**After dispatching, WAIT. Do not check files. Do not take any action.**
+
+Track agent completions. Print each one as it arrives:
+```
+Agent "[name]" completed. [N/5] done.
+```
+
+**Only proceed to file verification when ALL dispatched agents have completed.**
+
+---
+
+### Verify All 13 Files
+
+**Only after ALL agents have completed**, check which files exist:
+
+```bash
+for f in architecture.md technology-stack.md module-map.md coding-standards.md \
+  data-model.md api-contracts.md integration-map.md domain-glossary.md \
+  test-landscape.md security-model.md tech-debt.md infrastructure.md open-questions.md; do
+  [ -f "knowledge/$f" ] && echo "✅ $f" || echo "❌ $f MISSING"
+done
+```
+
+**If any files are missing:** Re-dispatch ONLY the specific agent responsible for the missing files.
+Wait for that agent to complete. Verify again. Repeat until all 13 exist.
+
+**Agent-to-file mapping for re-dispatch:**
+| Agent | Files |
+|-------|-------|
+| discovery-architect | architecture.md, technology-stack.md |
+| discovery-analyst | module-map.md, coding-standards.md, data-model.md |
+| discovery-integrator | api-contracts.md, integration-map.md, domain-glossary.md |
+| discovery-quality | test-landscape.md, security-model.md, tech-debt.md |
+| discovery-scout | infrastructure.md, open-questions.md |
+
+When re-dispatching, target ONLY the missing file(s):
+> Analyze this codebase and produce ONLY knowledge/{missing-file}.md. [original prompt for that area]. Write only to the knowledge/ directory.
 
 ---
 
