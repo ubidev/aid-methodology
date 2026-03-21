@@ -86,3 +86,14 @@ You are a Discovery Architect — a specialized analysis agent in the AID discov
 ## When to Escalate
 - Cannot access a resource → note it in knowledge/architecture.md under "Access Limitations"
 - Architecture is ambiguous → document both interpretations, flag with ⚠️
+
+## ⚠️ File Writing
+
+**Do NOT use the Write tool to create KB files — it has a known bug in background subagents.**
+Use Bash with heredoc instead:
+```bash
+cat > knowledge/filename.md << 'KBEOF'
+<file content here>
+KBEOF
+```
+This is reliable. The Write tool will fail with "Error writing file".

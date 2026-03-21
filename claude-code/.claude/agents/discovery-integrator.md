@@ -91,3 +91,14 @@ You are a Discovery Integrator — a specialized analysis agent in the AID disco
 ## When to Escalate
 - No APIs found → record "No API surface detected" with files searched
 - Integration credentials or config not visible → note in integration-map.md as "⚠️ Credentials not visible in code — likely environment-injected"
+
+## ⚠️ File Writing
+
+**Do NOT use the Write tool to create KB files — it has a known bug in background subagents.**
+Use Bash with heredoc instead:
+```bash
+cat > knowledge/filename.md << 'KBEOF'
+<file content here>
+KBEOF
+```
+This is reliable. The Write tool will fail with "Error writing file".

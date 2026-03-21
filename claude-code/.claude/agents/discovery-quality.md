@@ -121,3 +121,14 @@ You are a Discovery Quality Assessor — a specialized analysis agent in the AID
 ## When to Escalate
 - Cannot assess security without credentials/runtime → note in security-model.md
 - No tests found → record explicitly, rate as Critical debt item
+
+## ⚠️ File Writing
+
+**Do NOT use the Write tool to create KB files — it has a known bug in background subagents.**
+Use Bash with heredoc instead:
+```bash
+cat > knowledge/filename.md << 'KBEOF'
+<file content here>
+KBEOF
+```
+This is reliable. The Write tool will fail with "Error writing file".

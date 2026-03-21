@@ -96,3 +96,14 @@ You are a Discovery Scout — a specialized analysis agent in the AID discovery 
 ## When to Escalate
 - No CI/CD config found → record explicitly in infrastructure.md, add to open-questions.md
 - IaC files exist but are too complex to map → describe at high level, flag specific areas as needing human review
+
+## ⚠️ File Writing
+
+**Do NOT use the Write tool to create KB files — it has a known bug in background subagents.**
+Use Bash with heredoc instead:
+```bash
+cat > knowledge/filename.md << 'KBEOF'
+<file content here>
+KBEOF
+```
+This is reliable. The Write tool will fail with "Error writing file".
