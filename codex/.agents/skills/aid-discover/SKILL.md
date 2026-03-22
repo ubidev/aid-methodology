@@ -31,6 +31,10 @@ grades, and fixes KB documents.
 
 ## State Detection
 
+⚠️ **FILESYSTEM IS THE ONLY SOURCE OF TRUTH.**
+Do NOT rely on memory from previous runs in this session. Do NOT assume state based on
+what happened earlier. ALWAYS read the actual files on disk right now.
+
 Read the filesystem to determine which mode to enter:
 
 ```
@@ -289,9 +293,13 @@ All 13 KB documents exist. Grade them.
 
 ### Step 1: Dispatch the Reviewer
 
-Dispatch **discovery-reviewer** subagent with ALL KB documents as context.
+Dispatch **discovery-reviewer** subagent.
 
 Print: `[Review 1/2] Reviewing Knowledge Base quality...`
+
+**⚠️ CLEAN CONTEXT:** Do NOT include any information about the generation process,
+which agents ran, what was easy or hard, or any prior state. The reviewer must
+evaluate the KB purely on what's on disk — as if a stranger wrote it.
 
 Prompt to pass to the subagent:
 > Review every document in knowledge/ for quality. Be AGGRESSIVE — a lenient review is worse
@@ -408,8 +416,14 @@ The agent that wrote the fix CANNOT evaluate its own work. This is a hard rule.
 
 Print: `[Fix 2/3] Re-reviewing after fixes...`
 
-Dispatch **discovery-reviewer** with the same prompt as REVIEW mode Step 1.
+Dispatch **discovery-reviewer** with the prompt from REVIEW mode Step 1.
 The reviewer will overwrite DISCOVERY-GRADE.md with a fresh assessment.
+
+**⚠️ CONTAMINATION PREVENTION:**
+- Do NOT include previous review results in the prompt to the reviewer.
+- Do NOT tell the reviewer what was fixed or what the previous grade was.
+- Do NOT say "re-review" or "verify the fixes" — the reviewer must approach
+  the KB as if seeing it for the first time.
 
 Wait for completion.
 
