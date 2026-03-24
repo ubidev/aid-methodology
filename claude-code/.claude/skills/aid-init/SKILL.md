@@ -22,7 +22,7 @@ workspace, and determines the workflow path. Run this once before any other AID 
   AGENTS.md
   CLAUDE.md
   aid-workspace/
-    aid-workspace/knowledge/
+    knowledge/
       DISCOVERY-STATE.md
       (...14 KB docs, INDEX.md, README.md)
 ```
@@ -360,7 +360,7 @@ Print a summary of everything created:
   External:    {N paths / None}
 
   Created:
-    aid-workspace/knowledge/    (14 KB documents + README + INDEX + DISCOVERY-STATE)
+    knowledge/    (14 KB documents + README + INDEX + DISCOVERY-STATE)
     AGENTS.md                   {created / updated / unchanged}
     CLAUDE.md                   {created / updated / unchanged}
 
