@@ -126,6 +126,11 @@ Read ALL before making any proposal:
    - **Greenfield:** If KB docs are init placeholders (`❌ Pending`), treat as empty.
      Propose from scratch; decisions will seed KB during Write step.
 4. **Codebase** — `Grep`/`Glob` to explore relevant source code. Skip for greenfield.
+5. **Known Issues** — Read `.aid/{work}/known-issues.md` if it exists. Check `tech-debt.md` in KB.
+
+**During codebase exploration, register known issues** in `.aid/{work}/known-issues.md`
+(create from `../templates/known-issues.md` if missing). Only register issues in code
+that this feature touches. See [Known Issues Scope](#known-issues-scope) for criteria.
 
 ### Step 2: Determine Applicable Sections
 
@@ -229,6 +234,10 @@ Update section status to `In Discussion` in STATE.md.
 - Fit the architecture from `architecture.md`
 - Use domain terms from `domain-glossary.md`
 - Call out explicitly if changing something that exists
+- **Known issues:** If codebase exploration reveals new issues in code this feature
+  touches, register them in `.aid/{work}/known-issues.md` before proposing.
+  Check existing entries first to avoid duplicates. Check `tech-debt.md` — if already
+  catalogued there, reference it: `See tech-debt.md #TD-NNN`.
 
 ### 2. Discuss
 
@@ -365,6 +374,38 @@ Create new feature folder(s), redistribute SPEC.md content, add Change Log entri
 ### Feature Merge
 
 Merge content into target, delete current folder, exit.
+
+---
+
+## Known Issues Scope
+
+**File:** `.aid/{work}/known-issues.md` — one per work, shared across all features.
+Created from `../templates/known-issues.md` on first issue found.
+
+**Only register issues found in code this feature touches.** The filter:
+
+> *"Can I implement this feature without resolving this?"*
+> - **No** → register (blocks or compromises the feature)
+> - **Yes, but it gets worse** → register with Severity: Medium
+
+**Four types only:**
+
+| Type | Example |
+|------|---------|
+| **Bug** | NullPointerException in OrderService.processAsync when basket is empty |
+| **Security** | SQL injection in UserRepository.findByEmail — string concatenation |
+| **Deprecated Dependency** | Jackson 2.13 (EOL) used by the serialization layer this feature extends |
+| **Breaking API Contract** | GET /api/orders returns 200 with empty body instead of 404 when not found |
+
+**Excluded** (scope creep):
+- Coding standard violations → already in `coding-standards.md` (KB)
+- Code smells / long methods → general tech debt, not actionable per-feature
+- Missing test coverage → handled by acceptance criteria on the feature/task
+- Performance concerns → handled by acceptance criteria on the feature/task
+- Tech debt not touching this feature → stays in `tech-debt.md` (KB)
+
+**Cross-reference with KB:** Before registering, check `tech-debt.md`. If already
+catalogued, add a reference (`See tech-debt.md #TD-NNN`) instead of duplicating.
 
 ---
 

@@ -73,7 +73,10 @@ Each deliverable follows the same cycle:
 3. No features → **STOP.** "Run `/aid-interview` then `/aid-specify`."
 4. Some not Ready → warn, offer to plan with completed only or wait
 
-### Check 3: Detect State
+- ✅ `Default` or `Auto-accept edits` → Proceed.
+- ❌ `Plan mode` → **STOP.**
+
+### Check 4: Detect State
 
 - No PLAN.md → **FIRST RUN** (Step 1)
 - PLAN.md exists → **REVIEW** (enter loop at step 4)
@@ -83,6 +86,9 @@ Each deliverable follows the same cycle:
 - **All feature SPECs** — requirements, tech spec, priority, acceptance criteria
 - **REQUIREMENTS.md** — scope boundaries, overall priority
 - **KB (selective):** `architecture.md`, `module-map.md`, `tech-debt.md`
+- **Known Issues** — `.aid/{work}/known-issues.md` (if exists). Issues registered
+  by Specify that block or affect features. Plan may create a fix-first deliverable
+  or sequence features to address issues before dependent work.
 
 ---
 
@@ -94,6 +100,8 @@ For each feature:
 - What it **needs** (depends on another feature's output?)
 - What it **enables** (other features depend on this?)
 - What it **touches** (modules/areas from SPEC Layers & Components)
+- What **known issues** affect it? (from `known-issues.md` — issues with
+  Severity Critical/High that block a feature may need a fix-first deliverable)
 
 Build dependency graph. No-dependency features can be in any order.
 
