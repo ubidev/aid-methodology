@@ -67,7 +67,7 @@ Each deliverable MUST be:
 
 Grouping heuristics:
 - Must-have features first, then Should, then Could.
-- Foundation features (auth, data model setup) in D-1.
+- Foundation features (auth, data model setup) in delivery-001.
 - Features with shared dependencies go together.
 - Small independent features can be bundled.
 - Large independently-valuable features can be a deliverable alone.
@@ -76,7 +76,7 @@ Grouping heuristics:
 
 Risks that Specify couldn't see because they span features:
 - Multiple features touching the same fragile module (from tech-debt.md).
-- Sequencing risks — if D-1 slips, D-2 through D-N all slip.
+- Sequencing risks — if delivery-001 slips, delivery-002 through delivery-N all slip.
 - Integration risks — features that work alone but might conflict when combined.
 
 **Only include if cross-cutting risks actually exist.** Don't manufacture risks.
@@ -94,16 +94,16 @@ Present the delivery sequence to the user. Wait for approval or adjustments befo
 
 ## Deliverables
 
-### D-1: {Name}
+### delivery-001: {Name}
 - **What it delivers:** {user-facing value — one sentence}
 - **Features:** feature-001-{name}, feature-003-{name}
 - **Depends on:** — (foundation)
 - **Priority:** Must
 
-### D-2: {Name}
+### delivery-002: {Name}
 - **What it delivers:** {user-facing value}
 - **Features:** feature-002-{name}
-- **Depends on:** D-1
+- **Depends on:** delivery-001
 - **Priority:** Must
 
 ## Cross-Cutting Risks

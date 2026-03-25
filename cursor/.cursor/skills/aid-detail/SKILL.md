@@ -98,7 +98,7 @@ Each task gets a file: `aid-workspace/{work}/tasks/TASK-{id}.md`
 ```markdown
 # TASK-{id}: {Title}
 
-**Source:** feature-NNN-{name} → D-{x}
+**Source:** feature-NNN-{name} → delivery-{x}
 
 **Files:**
 - `path/to/File.java` (create)
@@ -126,12 +126,12 @@ Walk through the task list in order:
 ```
 Here's the task breakdown for {work}:
 
-**D-1: {Deliverable Name}**
+**delivery-001: {Deliverable Name}**
   1. TASK-001: {title} — {n} files
   2. TASK-002: {title} — {n} files
   3. TASK-003: {title} — {n} files
 
-**D-2: {Deliverable Name}**
+**delivery-002: {Deliverable Name}**
   4. TASK-004: {title} — {n} files
   5. TASK-005: {title} — {n} files
 

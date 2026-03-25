@@ -105,7 +105,7 @@ Cluster features into deliverables. Each deliverable MUST be:
 
 Grouping heuristics:
 - Must-have features first, then Should, then Could
-- Foundation features (auth, data model setup) in D-1
+- Foundation features (auth, data model setup) in delivery-001
 - Features with shared dependencies go together
 - Small independent features can be bundled into one deliverable
 - Large features that are independently valuable can be a deliverable alone
@@ -114,7 +114,7 @@ Grouping heuristics:
 
 These are risks that Specify couldn't see because they span features:
 - Multiple features touching the same fragile module (from tech-debt.md)
-- Sequencing risks — if D-1 slips, D-2 through D-N all slip
+- Sequencing risks — if delivery-001 slips, delivery-002 through delivery-N all slip
 - Resource contention — two features needing the same person/expertise simultaneously
 - Integration risks — features that work alone but might conflict when combined
 
@@ -127,19 +127,19 @@ Present the proposed sequence clearly:
 ```
 Here's the delivery sequence for {work}:
 
-**D-1: {Name}** — {what this delivers to the user}
+**delivery-001: {Name}** — {what this delivers to the user}
   Features: feature-001-{name}, feature-003-{name}
   Depends on: — (foundation)
   Priority: Must
 
-**D-2: {Name}** — {what this adds}
+**delivery-002: {Name}** — {what this adds}
   Features: feature-002-{name}
-  Depends on: D-1
+  Depends on: delivery-001
   Priority: Must
 
-**D-3: {Name}** — {what this adds}
+**delivery-003: {Name}** — {what this adds}
   Features: feature-004-{name}, feature-005-{name}
-  Depends on: D-1
+  Depends on: delivery-001
   Priority: Should
 
 {If cross-cutting risks exist:}
@@ -156,23 +156,23 @@ Does this sequence make sense? You can:
 If user chooses [2] or describes a change in natural language, enter the adjustment loop.
 
 **Supported adjustments:**
-- **Move feature** — "move feature-004 from D-3 to D-2"
-- **Reorder deliverables** — "swap D-2 and D-3" or "I want SSO before self-service"
-- **Split deliverable** — "D-1 is too big, split login and roles"
-- **Merge deliverables** — "combine D-2 and D-3 into one"
+- **Move feature** — "move feature-004 from delivery-003 to delivery-002"
+- **Reorder deliverables** — "swap delivery-002 and delivery-003" or "I want SSO before self-service"
+- **Split deliverable** — "delivery-001 is too big, split login and roles"
+- **Merge deliverables** — "combine delivery-002 and delivery-003 into one"
 - **Defer feature** — "push feature-005 out of scope for now"
 - **Change priority** — "OAuth is actually a Must, not a Should"
 
 **For every adjustment:**
 1. **Check dependencies** — does the change break the dependency graph?
-   - If yes → warn the user: "Moving feature-004 to D-1 would break a dependency: it needs the auth middleware from feature-001 which is also in D-1. That's fine (same deliverable), but feature-004 needs feature-002's API which is in D-2. Options: (a) move feature-002 to D-1 as well, (b) keep feature-004 in D-3."
+   - If yes → warn the user: "Moving feature-004 to delivery-001 would break a dependency: it needs the auth middleware from feature-001 which is also in delivery-001. That's fine (same deliverable), but feature-004 needs feature-002's API which is in delivery-002. Options: (a) move feature-002 to delivery-001 as well, (b) keep feature-004 in delivery-003."
    - If no → apply the change
 2. **Re-present the updated sequence** — show the full plan again, not just the diff
 3. **Ask again** — approve or adjust?
 
 **Loop until approved.** No limit on iterations — the user drives the sequence.
 
-**Natural language:** Users won't always say "move feature-004 from D-3 to D-2." They'll say
+**Natural language:** Users won't always say "move feature-004 from delivery-003 to delivery-002." They'll say
 "I want OAuth before password reset" or "clients are asking for SSO first." Interpret intent,
 map it to deliverable changes, confirm understanding before applying.
 
@@ -191,22 +191,22 @@ map it to deliverable changes, confirm understanding before applying.
 
 ## Deliverables
 
-### D-1: {Name}
+### delivery-001: {Name}
 - **What it delivers:** {user-facing value — one sentence}
 - **Features:** feature-001-{name}, feature-003-{name}
 - **Depends on:** — (foundation)
 - **Priority:** Must
 
-### D-2: {Name}
+### delivery-002: {Name}
 - **What it delivers:** {user-facing value}
 - **Features:** feature-002-{name}
-- **Depends on:** D-1
+- **Depends on:** delivery-001
 - **Priority:** Must
 
-### D-3: {Name}
+### delivery-003: {Name}
 - **What it delivers:** {user-facing value}
 - **Features:** feature-004-{name}, feature-005-{name}
-- **Depends on:** D-1
+- **Depends on:** delivery-001
 - **Priority:** Should
 
 ## Cross-Cutting Risks
@@ -221,7 +221,7 @@ map it to deliverable changes, confirm understanding before applying.
 
 | Feature | Reason | Revisit When |
 |---------|--------|--------------|
-| feature-006-{name} | Could-have, low priority | After D-3 feedback |
+| feature-006-{name} | Could-have, low priority | After delivery-003 feedback |
 
 *(Omit this section if all features are included.)*
 ```

@@ -721,16 +721,16 @@ Each feature gets its own SPEC.md. Interview writes the top half (requirements s
 
 ## Deliverables
 
-### D-1: {Name}
+### delivery-001: {Name}
 - **What it delivers:** {user-facing value}
 - **Features:** feature-001-{name}, feature-003-{name}
 - **Depends on:** — (foundation)
 - **Priority:** Must
 
-### D-2: {Name}
+### delivery-002: {Name}
 - **What it delivers:** {user-facing value}
 - **Features:** feature-002-{name}
-- **Depends on:** D-1
+- **Depends on:** delivery-001
 - **Priority:** Must
 
 ## Cross-Cutting Risks

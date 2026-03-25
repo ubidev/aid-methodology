@@ -30,7 +30,7 @@ Detail makes **no new decisions**. Everything in the tasks is already defined in
 ```markdown
 # TASK-{id}: {Title}
 
-**Source:** feature-NNN-{name} → D-{x}
+**Source:** feature-NNN-{name} → delivery-{x}
 
 **Files:**
 - `path/to/File.java` (create)
