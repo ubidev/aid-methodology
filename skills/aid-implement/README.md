@@ -1,174 +1,60 @@
+# Implement Task
 
-# Execute Task with Agent
+Code + built-in review. Same universal loop as every design phase:
+**code → review → fix → re-review → done when grade ≥ A-.**
 
-Read a TASK spec, load relevant context from SPEC.md and the Knowledge Base, spawn a coding agent, and verify the output builds and passes tests.
+Review is NOT a separate skill. It's built into implement.
 
-## Core Principle
+## How It Works
 
-**Agents don't improvise.** They receive a task spec, a project spec, and KB context. They implement what's specified. When they encounter something that contradicts their instructions, they report an impediment — they don't silently work around it.
+1. **Branch per delivery.** First task creates `aid/delivery-NNN`. All tasks
+   in that delivery accumulate on the same branch.
+2. **Code.** Spawn coding agent with task + feature SPEC + KB context.
+   Agent writes code + unit tests, runs build, runs all tests.
+3. **Review.** Spawn separate reviewer agent (clean context). Grades A+ to F.
+   Tags issues by source (CODE/TASK/SPEC/KB). Auto-fixes P1/P2 CODE issues.
+4. **Fix.** If grade < A-, CORRECTION file produced, developer fixes,
+   back to review. Circuit breaker after 3 cycles.
+5. **Done.** Grade ≥ A-. Next task or `/aid-test` when deliverable complete.
 
 ## Inputs
 
-- `task-{id}.md` — the primary prompt. What to build.
-- `SPEC.md` — the project specification. Architectural constraints.
-- `.aid/knowledge/` documents (context-dependent):
-  - Always: `coding-standards.md`, `architecture.md`.
-  - If DB work: `data-model.md`.
-  - If API work: `api-contracts.md`.
-  - If integration work: `integration-map.md`.
-  - If test-heavy: `test-landscape.md`.
+- `task-NNN.md` — primary prompt (title, source, scope, acceptance criteria)
+- Feature SPEC — Technical Specification sections
+- KB docs — always coding-standards + architecture; conditionally data-model,
+  api-contracts, integration-map, test-landscape, ui-architecture
+- known-issues.md — issues in code the task touches
 
-## Process
+## Isolation
 
-### Step 1: Prepare Context
-
-Assemble the agent's context:
-
-1. **Primary prompt:** The full task-{id}.md content.
-2. **System context:** SPEC.md (constraints, architecture, non-functional requirements).
-3. **KB context:** Relevant documents based on task type. Don't load all 16 — select the 2-4 most relevant.
-4. **Workspace:** The codebase directory where the agent will work.
-
-### Step 2: Spawn Agent
-
-Use the coding-agent skill to spawn an implementation agent. The agent prompt should include:
+One branch per delivery, not per task. Tasks within a delivery are sequential.
+Branch merges to main only after `/aid-test` passes.
 
 ```
-## Task
-{Full task-{id}.md content}
-
-## Project Specification
-{Relevant sections of SPEC.md}
-
-## Coding Standards
-{From .aid/knowledge/coding-standards.md}
-
-## Architecture Context
-{From .aid/knowledge/architecture.md — relevant sections}
-
-## Additional Context
-{Other KB documents as needed}
-
-## Rules
-- Follow the coding standards exactly.
-- Match the interface contracts in the task spec.
-- Write tests as specified in Test Requirements.
-- If you encounter something that contradicts the task spec or KB, STOP and report it.
-  Do NOT work around it silently.
-- Run build and tests before reporting completion.
+git checkout -b aid/delivery-001
+  → /aid-implement task-001  (code → review → fix → ✅)
+  → /aid-implement task-002  (code → review → fix → ✅)
+  → /aid-test delivery-001
+  → PR / merge to main
 ```
 
-### Step 3: Verify Output
+## Impediments
 
-After the agent completes:
+When agent hits a contradiction between SPEC and codebase, it reports
+an IMPEDIMENT (not a silent workaround):
+- **kb-gap** → `/aid-discover`
+- **architecture-conflict** → `/aid-specify`
+- **missing-dependency** → `/aid-detail`
+- **wrong-assumption** → update task or SPEC
 
-1. **Build check:** Run the project's build command. Must pass with zero errors and zero warnings.
-2. **Test check:** Run the full test suite. All tests must pass — both new and existing.
-3. **Scope check:** Review the files changed. Do they match the "Files to Touch" guidance in the task spec? Unexpected file changes need justification.
+## Loopbacks
 
-If verification fails:
-- Build errors → agent must fix before reporting done.
-- Test failures → distinguish between new test failures (agent's bug) and regression (agent broke existing code).
-- Scope creep → if the agent touched files outside the task scope, evaluate whether the change was necessary.
-
-### Step 4: Handle Impediments
-
-If the agent reports that assumptions don't hold:
-
-1. Agent generates `IMPEDIMENT.md`:
-   ```markdown
-   # IMPEDIMENT: IMP-{id}
-   **Source:** aid-implement, task-{task-id}
-   **Type:** wrong-assumption | missing-dependency | architecture-conflict | kb-gap
-   **Description:** {What's wrong}
-   **KB Impact:** {Which KB document needs revision, if any}
-   **Options:**
-     A) {Option with effort, risk, trade-offs}
-     B) {Option with effort, risk, trade-offs}
-     C) {Option with effort, risk, trade-offs}
-   **Recommendation:** {Which option and why}
-   **Blocking:** task-{task-id}
-   ```
-2. If `kb-gap` → trigger targeted aid-discover, update KB.
-3. If resolvable within task scope → resolve, document in commit message.
-4. If requires plan/spec change → pause, escalate to human.
-
-**Key rule:** The agent NEVER silently works around an impediment. Silent workarounds create tech debt.
-
-## Multi-Agent Parallel Execution
-
-When the plan (aid-plan) identifies independent tasks, execute them in parallel:
-
-### Prerequisites for Parallel Execution
-
-- Tasks have no shared dependencies (confirmed in DELIVERY-{id}.md dependency graph).
-- Tasks touch different files/modules (no merge conflicts).
-- Each agent gets its own feature branch.
-
-### Parallel Protocol
-
-1. Create a feature branch per task: `feature/task-{id}`.
-2. Spawn one agent per task with `streamTo: "parent"`.
-3. **Yield and wait.** Do not start other work in the same turn.
-4. As each agent completes, verify its output independently.
-5. Merge branches in dependency order.
-6. Run full test suite after merge to catch integration issues.
-
-### When NOT to Parallelize
-
-- Tasks share database migrations (merge conflicts in migration files).
-- Tasks modify the same interfaces (conflicting signatures).
-- One task's output is another's input (dependency exists despite plan saying otherwise).
-
-## Output
-
-- Code changes on a feature branch.
-- Tests added per task spec requirements.
-- Build: green. Tests: green.
-- IMPEDIMENT.md if assumptions were violated.
-- Task status updated to "Complete" (or "Blocked" if impediment unresolved).
-
-## Feedback Loops
-
-### → Discovery / Plan / Spec (Loop 5)
-
-**Trigger:** Implementation reveals assumptions don't hold.
-
-**Protocol:**
-- `kb-gap` → targeted aid-discover → KB updated → resume or re-plan.
-- `wrong-assumption` about the spec → GAP.md → aid-specify revision → resume.
-- `architecture-conflict` → escalate to human with options.
-- Resolvable locally → resolve, document, continue.
-
-### ← Review (Loop 6)
-
-If review identifies issues:
-- `CODE` issues → fix in the same branch.
-- `TASK` issues → update task spec, re-implement affected portions.
-- `SPEC`/`KB`/`ARCHITECTURE` issues → escalate upstream.
-
-## Quality Checklist
-
-- [ ] Agent received TASK spec + SPEC.md + relevant KB documents.
-- [ ] Build passes with zero errors, zero warnings.
-- [ ] All tests pass (new and existing).
-- [ ] Files changed match expected scope.
-- [ ] No silent workarounds — impediments are documented.
-- [ ] Task status updated.
-- [ ] Commit messages reference the task-{id}.
-
-## Why This Phase Exists
-
-Implementation is where the rubber meets the road. Coding agents work best with precise context: task spec + project spec + KB conventions. Without this structured handoff, agents improvise — and improvised code doesn't match the architecture, doesn't follow conventions, and creates tech debt faster than it delivers value.
-
-The mandatory build verification and formal impediment protocol ensure that implementation failures are caught early and reported honestly, rather than buried in silent workarounds.
+- CODE issues → fix this cycle
+- TASK issues → update task, re-implement
+- SPEC issues → Q&A to feature STATE.md → `/aid-specify`
+- KB issues → Q&A to DISCOVERY-STATE.md → `/aid-discover`
 
 ## Related Phases
 
-- **Previous:** [Detail](../aid-detail/) — provides task files
-- **Next:** [Review](../aid-review/) — evaluates implementation quality
-- **Also from:** [Triage](../aid-triage/) — provides TRIAGE.md with root cause analysis for bug fixes
-
-## See Also
-
-- [AID Methodology](../../methodology/aid-methodology.md) — The complete methodology.
+- **Previous:** [Detail](../aid-detail/) — produces task files
+- **Next:** [Test](../aid-test/) — validates deliverable in staging

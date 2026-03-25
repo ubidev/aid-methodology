@@ -30,7 +30,7 @@ Any agent that can read files and write code: Claude Code, OpenAI Codex, Cursor,
 ### How do I use the skills?
 Load the relevant SKILL.md as system context or initial prompt for your AI agent. For example:
 - Starting a new feature? Load `aid-specify/SKILL.md` and give the agent your requirements.
-- Reviewing a PR? Load `aid-review/SKILL.md` and point the agent at the diff.
+- Reviewing a PR? Review is built into `aid-implement` — run `/aid-implement task-NNN` and it will code, review, and fix.
 
 ### Can I use AID with a team, not just solo?
 Yes. The Knowledge Base and formal artifacts (SPEC.md, GAP.md, IMPEDIMENT.md) are designed for team collaboration. Multiple people can work on different phases simultaneously. The artifacts are the coordination mechanism.

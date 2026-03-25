@@ -13,7 +13,6 @@
 | `aid-plan` | 4. Plan | SPEC.md → high-level roadmap (PLAN.md) |
 | `aid-detail` | 5. Detail | PLAN.md → user stories, tasks, execution waves |
 | `aid-implement` | 6. Implement | TASK → code with build verification |
-| `aid-review` | 7. Review | Spec-anchored review with A+ to F grading |
 | `aid-test` | 8. Test | Staging validation — E2E, integration, manual |
 | `aid-deploy` | 9. Deploy | Final verification, PR, KB updates |
 | `aid-track` | 10. Track | Production telemetry interpretation |

@@ -9,7 +9,7 @@ Deploy to staging, run E2E and integration tests, support manual testing, produc
 
 ## Inputs
 
-- Feature branch with reviewed code (grade A- or above from aid-review).
+- Feature branch with reviewed code (grade A- or above from aid-implement (built-in review)).
 - `DELIVERY-{id}.md` — delivery scope and success criteria.
 - `DETAIL.md` — user stories and acceptance criteria.
 - `SPEC.md` — expected behavior and non-functional requirements.
@@ -122,7 +122,7 @@ See [Test Report Template](../../templates/reports/test-report-template.md) for 
 **Protocol:**
 1. Document failures in TEST-REPORT.md with reproduction steps.
 2. Route back to aid-implement for targeted fix.
-3. Fix → aid-review (quick review of the fix) → aid-test (re-run failed tests + regression).
+3. Fix → aid-implement (built-in review) (quick review of the fix) → aid-test (re-run failed tests + regression).
 
 ### → Review (test reveals review miss)
 
@@ -130,7 +130,7 @@ See [Test Report Template](../../templates/reports/test-report-template.md) for 
 
 **Protocol:**
 1. Document in TEST-REPORT.md.
-2. Update aid-review checklist with the new pattern to check for.
+2. Update aid-implement (built-in review) checklist with the new pattern to check for.
 3. Fix → re-review → re-test.
 
 ### → Specify (spec gap in staging)
@@ -161,7 +161,7 @@ Test is the last gate before production. Its verdict (PASS/PASS WITH NOTES/FAIL)
 
 ## Related Phases
 
-- **Previous:** [Review](../aid-review/) — code must pass review (A-+) first
+- **Previous:** [Review](../aid-implement (built-in review)/) — code must pass review (A-+) first
 - **Next:** [Deploy](../aid-deploy/) — proceeds on PASS verdict
 - **Feedback to:** [Implement](../aid-implement/) for test failures, [Specify](../aid-specify/) for spec gaps found in staging
 

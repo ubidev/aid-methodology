@@ -1,75 +1,228 @@
 ---
 name: aid-test
 description: >
-  Staging validation — E2E, integration, and manual testing. The gate between
-  review and deploy. Use when code has passed review (grade A- or above) and
-  needs staging validation.
+  Staging validation — E2E, integration, and acceptance testing per deliverable.
+  The gate between implement and deploy. Use when ALL tasks in a deliverable
+  have been implemented (grade A- or above from built-in review).
 allowed-tools: Read, Glob, Grep, Bash
 context: fork
 agent: critic
+argument-hint: "delivery-001 (required)  [work-001 if multiple works]"
 ---
 
-# Staging Validation & Testing
+# Staging Validation
 
-Deploy to staging, run tests, validate user stories, produce TEST-REPORT.md.
+Deploy deliverable to staging. Run integration + E2E tests. Validate acceptance
+criteria. Produce TEST-REPORT.md.
 
 ## Core Principle
 
-Review catches what code looks like. Test catches what code does. Both gates are necessary.
+Implement catches what code **looks like** (built-in review grades it).
+Test catches what code **does**. Unit tests run during implement.
+Integration and E2E run here, in staging, where real services connect
+and real data flows.
 
-## Inputs
+## Workspace
 
-- Feature branch (reviewed, grade A- or above)
-- `.aid/{work}/DETAIL.md` — user stories, delivery breakdown, and acceptance criteria
-- `.aid/{work}/PLAN.md` — deliverables and test scenarios
-- Feature SPECs: `.aid/{work}/features/*/SPEC.md` — expected behavior and NFRs
-- `.aid/knowledge/`: test-landscape.md, infrastructure.md
+```
+.aid/
+  knowledge/                ← shared KB (read)
+  work-NNN-{name}/
+    PLAN.md                 ← deliverable definitions
+    tasks/
+      task-NNN.md           ← acceptance criteria per task
+    features/
+      feature-NNN-{name}/
+        SPEC.md             ← expected behavior, NFRs
+```
 
-## Prerequisites
+## Arguments
 
-- [ ] All tasks passed review (A- or above)
-- [ ] Staging environment available
-- [ ] Test data prepared
-- [ ] No open IMPEDIMENTs blocking this delivery
+| Argument | Effect |
+|----------|--------|
+| `delivery-NNN` | Required. Which deliverable to test. |
+| `work-NNN` | Required if multiple works exist. |
 
-If any fail → do not proceed.
+## Pre-flight
+
+### Check 1: Locate Work
+
+1. If work arg provided → use that work directory
+2. If single work exists → auto-select
+3. If multiple works → list them, ask user to choose
+
+### Check 2: Verify Deliverable
+
+1. Read `PLAN.md` → find `delivery-NNN`
+2. Deliverable not found → **STOP.** List available deliverables.
+3. Identify which features are in this deliverable
+4. Identify which tasks belong to those features
+
+### Check 3: Verify All Tasks Implemented
+
+For each task in this deliverable:
+- Must have passed `/aid-implement` with grade A- or above (built-in review)
+- Any task not implemented or below A- → **STOP.** List incomplete tasks.
+
+### Check 4: Verify On Delivery Branch
+
+- Must be on `aid/delivery-NNN` branch (matching the deliverable being tested)
+- If not → `git checkout aid/delivery-NNN`
+- If branch doesn't exist → **STOP.** Tasks haven't been implemented yet.
+
+### Check 5: Verify No Open Impediments
+
+- Check for IMPEDIMENT-task-NNN.md files in the work directory
+- If any exist and relate to this deliverable → **STOP.** Resolve first.
+
+---
 
 ## Process
 
-### 1. Deploy to Staging
-Deploy feature branch. Verify: app starts, health checks pass, migrations applied, external services connected/mocked.
+### Step 1: Deploy to Staging
 
-### 2. Run Automated Tests
-Full battery in staging: unit (regression), integration, E2E. Record per category: total, passed, failed, skipped, execution time, failure details.
+Deploy the deliverable's code to staging environment.
 
-### 3. Validate User Stories
-Per acceptance criterion from delivery's user stories: verify in staging. Mark passed/failed. Document method (automated or manual).
+Verify:
+- [ ] Application starts successfully
+- [ ] Health checks pass
+- [ ] Database migrations applied (if any)
+- [ ] External services connected or properly mocked
 
-### 4. Non-Functional Validation
-Performance (latency under load), concurrency, data integrity, error handling, edge cases — against feature SPEC targets.
+**If deployment fails → STOP.** Document failure, return to `/aid-implement`.
 
-### 5. Manual Testing (if applicable)
-Visual/UI review, workflow coherence, accessibility, cross-platform. Document observations.
+### Step 2: Run Automated Test Suite
 
-### 6. Produce TEST-REPORT.md
-Verdict: **PASS** (all green, no critical issues) | **PASS WITH NOTES** (critical pass, minor issues noted) | **FAIL** (critical/high issues, deploy blocked).
+Run the FULL test battery in staging:
+
+| Category | What | Source |
+|----------|------|--------|
+| Unit (regression) | All existing unit tests | Catch regressions in staging env |
+| Integration | Service-to-service, DB queries | test-landscape.md patterns |
+| E2E | User flows end-to-end | Feature SPEC acceptance criteria |
+
+Record per category:
+- Total / Passed / Failed / Skipped
+- Execution time
+- Failure details with reproduction steps
+
+### Step 3: Validate Acceptance Criteria
+
+For each task in this deliverable, check its acceptance criteria in staging:
+
+| Task | Criterion | Status | Method |
+|------|-----------|--------|--------|
+| task-001 | {criterion} | ✅ Pass / ❌ Fail | Automated / Manual |
+
+**Every criterion must be validated.** If a criterion can't be tested in staging,
+document why and note what would be needed.
+
+### Step 4: Non-Functional Validation
+
+If feature SPECs define NFRs (performance targets, concurrency, data volume):
+
+| NFR | Target | Actual | Status |
+|-----|--------|--------|--------|
+| Response time | < 200ms | 150ms | ✅ Pass |
+| Concurrent users | 100 | 95 | ⚠️ Close |
+
+**Only test NFRs that are specified.** Don't invent performance requirements.
+
+### Step 5: Manual Testing (if applicable)
+
+When automated tests can't cover everything:
+- Visual/UI review (layout, responsiveness, design system compliance)
+- Workflow coherence (multi-step flows make sense end-to-end)
+- Accessibility (keyboard nav, screen reader, contrast)
+- Cross-platform/browser (if specified in requirements)
+
+Document observations — not just pass/fail.
+
+### Step 6: Produce TEST-REPORT.md
+
+Write to `.aid/{work}/TEST-REPORT-{delivery-NNN}.md`:
+
+```markdown
+# Test Report — delivery-NNN: {Name}
+
+**Work:** work-NNN-{name}
+**Date:** {YYYY-MM-DD}
+**Environment:** {staging details}
+
+## Deployment
+- Status: ✅ Success / ❌ Failed
+- Notes: {any deployment observations}
+
+## Automated Tests
+
+| Category | Total | Passed | Failed | Skipped | Time |
+|----------|-------|--------|--------|---------|------|
+| Unit | | | | | |
+| Integration | | | | | |
+| E2E | | | | | |
+
+{If failures: details with reproduction steps}
+
+## Acceptance Criteria
+
+| Task | Criterion | Status | Method | Notes |
+|------|-----------|--------|--------|-------|
+| task-001 | {criterion} | ✅/❌ | Auto/Manual | |
+
+## Non-Functional (if applicable)
+
+| NFR | Target | Actual | Status |
+|-----|--------|--------|--------|
+
+## Manual Testing (if applicable)
+
+{Observations}
+
+## Verdict: {PASS / PASS WITH NOTES / FAIL}
+
+{Justification}
+```
+
+---
+
+## Verdicts
+
+| Verdict | Meaning | Next Step |
+|---------|---------|-----------|
+| **PASS** | All green, no issues | `/aid-deploy` |
+| **PASS WITH NOTES** | All critical pass, minor observations | `/aid-deploy` (notes tracked) |
+| **FAIL** | Critical or high-priority failures | CORRECTION.md → `/aid-implement` → re-test |
+
+### On FAIL
+
+Produce `.aid/{work}/CORRECTION.md` with:
+- Failed test details
+- Failed acceptance criteria
+- Reproduction steps
+- Severity classification
+
+Route back to `/aid-implement` → `/aid-test` cycle.
+
+---
 
 ## Feedback Loops
 
-- **→ Implement:** Test failure from implementation bug → Developer fixes → quick review → re-test
-- **→ Review:** Test reveals review miss → update review checklist → fix → re-review → re-test
-- **→ Specify:** Spec gap in staging → GAP.md → Architect revises → implement → review → test
+- **→ Implement:** Test failure from code bug → CORRECTION.md → `/aid-implement` → re-test
+- **→ Specify:** Spec gap discovered in staging → Q&A to feature STATE.md → re-specify
+
+---
 
 ## Output
 
-`TEST-REPORT.md` with: staging deployment status, automated test results per category, user story validation per criterion, NFR results, manual test observations, verdict.
+`.aid/{work}/TEST-REPORT-{delivery-NNN}.md` with clear verdict.
 
 ## Quality Checklist
 
 - [ ] Staging deployment successful
 - [ ] Full automated suite ran (unit + integration + E2E)
-- [ ] Every acceptance criterion validated
-- [ ] NFRs tested
+- [ ] Every acceptance criterion from every task validated
+- [ ] NFRs tested (if specified in SPECs)
 - [ ] Manual testing completed (if applicable)
 - [ ] All failures documented with reproduction steps
 - [ ] TEST-REPORT.md produced with clear verdict
+- [ ] CORRECTION.md produced on FAIL

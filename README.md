@@ -132,16 +132,15 @@ examples/
 ### Group 3: Execute
 | Phase | Skill | What It Does |
 |-------|-------|-------------|
-| 6. Implement | `aid-implement` | Spawns a coding agent with full KB context; mandatory build verification |
-| 7. Review | `aid-review` | Spec-anchored code review with A+ to F grading; auto-fixes P1/P2 issues |
-| 8. Test | `aid-test` | Staging validation — E2E, integration, manual; the gate before deploy |
+| 6. Implement | `aid-implement` | Code + built-in review (A+ to F grading); branch per delivery; loop until A- |
+| 7. Test | `aid-test` | Staging validation — E2E, integration, manual; the gate before deploy  |
 
 ### Group 4: Deliver
 | Phase | Skill | What It Does |
 |-------|-------|-------------|
-| 9. Deploy | `aid-deploy` | Final verification, PR creation, KB update, delivery summary |
-| 10. Track | `aid-track` | Interprets production telemetry — doesn't just collect, understands |
-| 11. Triage | `aid-triage` | Classifies findings, performs root cause analysis for bugs, and routes (BUG → Implement, CR → Discover) |
+| 8. Deploy | `aid-deploy` | Final verification, PR creation, KB update, delivery summary |
+| 9. Track | `aid-track` | Interprets production telemetry — doesn't just collect, understands |
+| 10. Triage | `aid-triage` | Classifies findings, performs root cause analysis for bugs, and routes (BUG → Implement, CR → Discover) |
 
 ---
 

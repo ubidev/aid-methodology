@@ -6,7 +6,7 @@ Analyze an existing codebase and produce a structured Knowledge Base (`.aid/know
 ## When to Use
 
 - **Full discovery:** New brownfield project. No KB exists yet.
-- **Targeted discovery:** A downstream phase (aid-interview, aid-specify, aid-plan, aid-detail, aid-implement, aid-review, aid-test) generated a GAP.md with `discovery-needed`. Only analyze the specific area identified in the gap.
+- **Targeted discovery:** A downstream phase (aid-interview, aid-specify, aid-plan, aid-detail, aid-implement, aid-implement (built-in review), aid-test) generated a GAP.md with `discovery-needed`. Only analyze the specific area identified in the gap.
 
 ## Inputs
 

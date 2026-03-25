@@ -402,31 +402,15 @@ The interview has six states, advancing one per run:
 
 **Output:** Code changes + tests on a feature branch. Build green. Test green.
 
-#### Phase 7: Review (`aid-review`)
+Review is built into `aid-implement`. After the coding agent finishes, a separate
+reviewer agent (clean context) grades the implementation A+ to F, tags issues
+by source (CODE/TASK/SPEC/KB), and auto-fixes P1/P2 CODE issues. The loop
+continues until grade ≥ A-. Circuit breaker after 3 cycles.
 
-**Purpose:** Static code review — verify implementation quality against task spec, project spec, and KB standards.
+**Branch isolation:** One branch per delivery (`aid/delivery-NNN`). All tasks in
+a delivery accumulate on the same branch. Branch merges only after testing passes.
 
-**Input:** Git diff + `task-{id}.md` + per-feature `SPEC.md` (referenced by the task's Source field) + `.aid/knowledge/coding-standards.md`.
-
-**Process:**
-1. Check against TASK acceptance criteria.
-2. Check against feature SPEC architectural constraints.
-3. Check against KB coding standards.
-4. **Check context usage** — did the agent consult relevant KB documents, or did it guess? Violations traceable to ignored KB context are tagged KB, not CODE.
-5. Run automated checks: build, tests, lint.
-6. Grade the implementation: A+ through F.
-7. Tag each issue by source: CODE, TASK, SPEC, KB, ARCHITECTURE.
-8. P1/P2 CODE issues: auto-fix. Everything else: escalate.
-
-**Grading scale:**
-- **A+ / A / A-**: Ship-ready. Proceed to testing.
-- **B+ / B / B-**: Needs cleanup. One review cycle.
-- **C+ / C / C-**: Significant issues. Partial re-implementation.
-- **D / F**: Fundamental problems. Re-implement from task spec.
-
-**Output:** `REVIEW.md` — issues found, grade, suggested fixes.
-
-#### Phase 8: Test (`aid-test`)
+#### Phase 7: Test (`aid-test`)
 
 **Purpose:** Dynamic validation in staging — E2E tests, integration tests, manual testing.
 
@@ -460,7 +444,7 @@ The interview has six states, advancing one per run:
 
 ---
 
-#### Phase 9: Deploy (`aid-deploy`)
+#### Phase 8: Deploy (`aid-deploy`)
 
 **Purpose:** Package, verify, and ship the completed delivery to production.
 
@@ -479,7 +463,7 @@ The interview has six states, advancing one per run:
 - KB updated with any new discoveries.
 - Delivery summary for stakeholder communication.
 
-#### Phase 10: Track (`aid-track`)
+#### Phase 9: Track (`aid-track`)
 
 **Purpose:** Monitor production. Interpret telemetry, error logs, issue trackers, and performance metrics.
 
@@ -499,7 +483,7 @@ The interview has six states, advancing one per run:
 
 **When to trigger:** On deployment, on schedule, on alert threshold, or on-demand.
 
-#### Phase 11: Triage (`aid-triage`)
+#### Phase 10: Triage (`aid-triage`)
 
 **Purpose:** Classify what Track found. For bugs: perform root cause analysis and map the fix. Route everything to the right path.
 
@@ -575,7 +559,7 @@ The pipeline is sequential by default. But real engineering isn't linear. Assump
 
 **Trigger:** Tests fail due to implementation bugs discovered in staging.
 
-**Protocol:** Failures documented in TEST-REPORT.md → route back to aid-implement for fix → aid-review (quick review) → aid-test (re-run).
+**Protocol:** Failures documented in TEST-REPORT.md → route back to `/aid-implement` for fix → `/aid-test` (re-run).
 
 #### Post-Production Loops (9-11)
 
@@ -1014,7 +998,7 @@ Ship to Test | Rework (minor) | Rework (major) | Re-implement
    │            │      → code + tests
    │            │           │
    │            │           ▼
-   │            │     aid-review ◄───── issue (KB/SPEC/ARCH)
+   │            │     built-in review ◄── issue (KB/SPEC/ARCH)
    │            │      → REVIEW.md
    │            │           │
    │            │           ▼
@@ -1170,7 +1154,7 @@ SDD is not wrong. It's incomplete. AID is SDD + Discovery + Feedback Loops + Two
 5. Run `aid-plan` to define the roadmap.
 6. Run `aid-detail` to decompose into tasks.
 7. Run `aid-implement` for each task.
-8. Run `aid-review` after each task.
+8. Review is built into `aid-implement` (code → review → fix → done).
 9. Run `aid-test` to validate in staging.
 10. Run `aid-deploy` to package and ship.
 

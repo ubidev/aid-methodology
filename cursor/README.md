@@ -30,8 +30,6 @@ Tells Cursor to:
 - Treat the Knowledge Base as the single source of truth
 - Follow AID phases and produce artifacts at each gate
 
-### `aid-review.mdc` (applied to source files)
-
 When Cursor reviews code it will:
 - Check against task acceptance criteria
 - Verify against `.aid/knowledge/coding-standards.md` and `.aid/knowledge/architecture.md`
@@ -50,7 +48,6 @@ Skills are the full AID phase instructions. Cursor loads them based on relevance
 | `aid-plan` | Plan | High-level roadmap → `PLAN.md` (MVP, modules, deliverables) |
 | `aid-detail` | Detail | Decompose plan → user stories, `task-{id}.md` files, execution waves |
 | `aid-implement` | Implement | Execute tasks with KB context, mandatory build verification |
-| `aid-review` | Review | Spec-anchored code review, A+ to F grading, auto-fix P1/P2 |
 | `aid-test` | Test | Staging validation — E2E, integration, manual testing |
 | `aid-deploy` | Deploy | Final verification, PR creation, delivery summary, KB updates |
 | `aid-track` | Track | Production telemetry interpretation → `TRACK-REPORT.md` |

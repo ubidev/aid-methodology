@@ -36,7 +36,6 @@ Each skill represents one phase of the AID pipeline. These README files provide 
 | Skill | Phase | Purpose |
 |-------|-------|---------|
 | [aid-implement](aid-implement/README.md) | 6. Implement | Execute a task by spawning a coding agent with full KB context |
-| [aid-review](aid-review/README.md) | 7. Review | Spec-anchored code review with A+ to F grading and auto-fix |
 | [aid-test](aid-test/README.md) | 8. Test | Staging validation — E2E, integration, manual testing |
 
 ### Group 4: Deliver

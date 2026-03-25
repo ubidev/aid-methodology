@@ -51,7 +51,7 @@ If final verification fails:
 2. Determine if it's a regression (existing test broke) or integration issue (tasks conflict).
 3. Fix on the feature branch.
 4. Re-run full verification.
-5. If the fix is non-trivial, loop back to aid-review for the fix.
+5. If the fix is non-trivial, loop back to aid-implement for the fix.
 
 ### Step 2: Delivery Summary
 
@@ -85,7 +85,7 @@ Generate a summary of what this delivery contains:
 ## KB Updates During Delivery
 | Document | Change | Source |
 |----------|--------|--------|
-| coding-standards.md | Added FluentValidation convention | aid-review |
+| coding-standards.md | Added FluentValidation convention | aid-implement |
 
 ## Known Issues
 {Any P3+ issues deferred to next delivery}
