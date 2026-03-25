@@ -12,23 +12,28 @@ argument-hint: "work-001 (required if multiple works)  [--reset] clear PLAN.md a
 
 # Delivery Roadmap
 
-Produce PLAN.md: sequence features into deliverables where each deliverable is a
-functional MVP that works on its own.
+Sequence features into deliverables where each is a functional MVP that works on its own.
 
 ## Core Principle
 
 Plan answers ONE question: **"In what order do we deliver, and does each delivery
 stand on its own?"**
 
-- Each deliverable is a shippable increment — it works without the next one.
-- Features within a deliverable ship together.
-- Deliverables are ordered by dependency, then priority.
-
 What Plan does NOT do (already covered by Specify):
-- Module mapping → Layers & Components in SPEC
-- Test scenarios → Acceptance Criteria / BDD in SPEC
-- Per-feature risks → trade-offs and spikes in SPEC
-- Technical details → SPEC handles all of this
+- Module mapping, test scenarios, per-feature risks, technical details — all in SPEC.
+
+## The Loop
+
+Each deliverable follows the same cycle:
+
+```
+1. PROPOSE  → agent proposes deliverable grouping and sequence
+2. DISCUSS  → developer and agent negotiate (move, reorder, split, merge, defer)
+3. WRITE    → save agreed deliverable to PLAN.md
+4. REVIEW   → grade against SPECs/KB — pass? next deliverable. fail? back to 1.
+```
+
+**Re-run = enter at step 4 with existing PLAN.md.**
 
 ## Workspace
 
@@ -40,8 +45,8 @@ aid-workspace/
     PLAN.md                 ← OUTPUT
     features/
       feature-NNN-{name}/
-        SPEC.md             ← read (requirements + tech spec)
-        STATE.md            ← read (check Ready status)
+        SPEC.md             ← read
+        STATE.md            ← check Ready status
 ```
 
 ## Arguments
@@ -50,6 +55,7 @@ aid-workspace/
 |----------|--------|
 | `work-NNN` | Plan a specific work. Required if multiple works exist. |
 | *(no arg)* | Auto-selects if only one work exists. |
+| `--reset` | Delete PLAN.md and start fresh. |
 
 ## Pre-flight
 
@@ -63,128 +69,166 @@ aid-workspace/
 ### Check 2: Verify Feature SPECs
 
 1. Scan `aid-workspace/{work}/features/*/SPEC.md`
-2. For each, check `STATE.md` — status should be `Ready`
-3. If **no features exist** → **STOP.** "No features found. Run `/aid-interview` then `/aid-specify`."
-4. If **some features not Ready** → warn:
-   ```
-   ⚠️ {N} of {M} features have incomplete SPECs:
-   - feature-002-reporting: In Discussion
-   - feature-004-auth: Spike Needed
-
-   [1] Plan with completed features only (defer incomplete ones)
-   [2] Wait — go finish SPECs first
-   ```
+2. Check each `STATE.md` — should be `Ready`
+3. No features → **STOP.** "Run `/aid-interview` then `/aid-specify`."
+4. Some not Ready → warn, offer to plan with completed only or wait
 
 ### Check 3: Verify Not in Plan Mode
 
 - ✅ `Default` or `Auto-accept edits` → Proceed.
-- ❌ `Plan mode` → **STOP.** Tell user to switch out of Plan Mode.
+- ❌ `Plan mode` → **STOP.**
+
+### Check 4: Detect State
+
+- No PLAN.md → **FIRST RUN** (Step 1)
+- PLAN.md exists → **REVIEW** (enter loop at step 4)
 
 ## Inputs
 
-Read these before planning:
+- **All feature SPECs** — requirements, tech spec, priority, acceptance criteria
+- **REQUIREMENTS.md** — scope boundaries, overall priority
+- **KB (selective):** `architecture.md`, `module-map.md`, `tech-debt.md`
 
-- **All feature SPECs** (`aid-workspace/{work}/features/*/SPEC.md`) — requirements, tech spec, priority, acceptance criteria
-- **REQUIREMENTS.md** — scope boundaries, constraints, overall priority (§10)
-- **KB (selective):** `aid-workspace/knowledge/architecture.md`, `module-map.md`, `tech-debt.md` — for understanding cross-feature dependencies and fragile areas
+---
 
-## Process
+## FIRST RUN — The Loop
 
-### 1. Map Dependencies
+### Step 1: Map Dependencies
 
-For each feature, determine:
-- **What it needs** — does it depend on another feature's output? (data model, API, service)
-- **What it enables** — which features depend on this one?
-- **What it touches** — which modules/areas of the codebase (from SPEC Layers & Components)
+For each feature:
+- What it **needs** (depends on another feature's output?)
+- What it **enables** (other features depend on this?)
+- What it **touches** (modules/areas from SPEC Layers & Components)
 
-Build a dependency graph. Features that share no dependencies can be in any order.
-Features with dependencies must be sequenced.
+Build dependency graph. No-dependency features can be in any order.
 
-### 2. Group into Deliverables
+### Step 2: Propose First Deliverable
 
-Cluster features into deliverables. Each deliverable MUST be:
-- **Functional on its own** — a user can use it without the next deliverable
-- **Testable independently** — acceptance criteria from the included SPECs can all be verified
-- **Buildable in order** — its dependencies are satisfied by earlier deliverables
-
-Grouping heuristics:
-- Must-have features first, then Should, then Could
-- Foundation features (auth, data model setup) in delivery-001
-- Features with shared dependencies go together
-- Small independent features can be bundled into one deliverable
-- Large features that are independently valuable can be a deliverable alone
-
-### 3. Identify Cross-Cutting Risks (if any)
-
-These are risks that Specify couldn't see because they span features:
-- Multiple features touching the same fragile module (from tech-debt.md)
-- Sequencing risks — if delivery-001 slips, delivery-002 through delivery-N all slip
-- Resource contention — two features needing the same person/expertise simultaneously
-- Integration risks — features that work alone but might conflict when combined
-
-**Only include this section if cross-cutting risks actually exist.** Don't manufacture risks.
-
-### 4. Present & Negotiate
-
-Present the proposed sequence clearly:
+Group features into the first deliverable. It MUST be:
+- **Functional on its own** — usable without the next deliverable
+- **Testable independently** — acceptance criteria verifiable
+- **Foundation first** — dependencies satisfied
 
 ```
-Here's the delivery sequence for {work}:
-
 **delivery-001: {Name}** — {what this delivers to the user}
   Features: feature-001-{name}, feature-003-{name}
   Depends on: — (foundation)
   Priority: Must
 
-**delivery-002: {Name}** — {what this adds}
-  Features: feature-002-{name}
-  Depends on: delivery-001
-  Priority: Must
+This deliverable covers {rationale}. I grouped these because {reason}.
 
-**delivery-003: {Name}** — {what this adds}
-  Features: feature-004-{name}, feature-005-{name}
-  Depends on: delivery-001
-  Priority: Should
-
-{If cross-cutting risks exist:}
-**Cross-Cutting Risks:**
-- {risk}: {impact} — {mitigation}
-
-Does this sequence make sense? You can:
-[1] Approve
-[2] Adjust — tell me what to change (move features, reorder, split, merge, defer)
+What do you think? We can discuss:
+- Which features belong here
+- Whether to split or merge
+- Priority ordering
 ```
 
-### 5. Adjustment Loop
+### Step 3: Discuss
 
-If user chooses [2] or describes a change in natural language, enter the adjustment loop.
+The developer may:
+- **Agree** → write and review
+- **Move feature** → "put feature-004 here instead"
+- **Split** → "too big, separate login from roles"
+- **Merge** → "combine these two deliverables"
+- **Reorder** → "I want SSO before self-service"
+- **Defer** → "push feature-005 out of scope"
+- **Change priority** → "OAuth is actually a Must"
 
-**Supported adjustments:**
-- **Move feature** — "move feature-004 from delivery-003 to delivery-002"
-- **Reorder deliverables** — "swap delivery-002 and delivery-003" or "I want SSO before self-service"
-- **Split deliverable** — "delivery-001 is too big, split login and roles"
-- **Merge deliverables** — "combine delivery-002 and delivery-003 into one"
-- **Defer feature** — "push feature-005 out of scope for now"
-- **Change priority** — "OAuth is actually a Must, not a Should"
+For every adjustment:
+1. Check dependencies — does it break the graph? Warn if so, offer alternatives.
+2. Re-present the updated deliverable
+3. Loop until approved
 
-**For every adjustment:**
-1. **Check dependencies** — does the change break the dependency graph?
-   - If yes → warn the user: "Moving feature-004 to delivery-001 would break a dependency: it needs the auth middleware from feature-001 which is also in delivery-001. That's fine (same deliverable), but feature-004 needs feature-002's API which is in delivery-002. Options: (a) move feature-002 to delivery-001 as well, (b) keep feature-004 in delivery-003."
-   - If no → apply the change
-2. **Re-present the updated sequence** — show the full plan again, not just the diff
-3. **Ask again** — approve or adjust?
+### Step 4: Write and Review
 
-**Loop until approved.** No limit on iterations — the user drives the sequence.
+When agreed:
+1. Write the deliverable to PLAN.md
+2. **Review immediately:** Does it hold up?
+   - All included features' dependencies satisfied by prior deliverables?
+   - Actually standalone-functional?
+   - Consistent with KB architecture?
 
-**Natural language:** Users won't always say "move feature-004 from delivery-003 to delivery-002." They'll say
-"I want OAuth before password reset" or "clients are asking for SSO first." Interpret intent,
-map it to deliverable changes, confirm understanding before applying.
+| Grade | Action |
+|-------|--------|
+| **A** | Solid. Move to next deliverable. |
+| **B** | Minor issue — flag, quick fix, continue. |
+| **C** | Problem found — back to Propose with findings. |
+
+```
+✅ delivery-001 written and verified — dependencies satisfied, standalone-functional.
+Moving to delivery-002.
+```
+
+### Step 5: Next Deliverable
+
+Propose the next deliverable → same loop (steps 2–4). Repeat until all features
+are assigned to deliverables or explicitly deferred.
+
+### Step 6: Cross-Cutting Risks (if any)
+
+After all deliverables are written, check for risks that span features:
+- Multiple features touching same fragile module (from tech-debt.md)
+- Sequencing risks — delivery-001 slips, everything slips
+- Integration risks — features work alone but might conflict combined
+
+**Only include if real.** Don't manufacture risks.
+
+### Step 7: Final Summary
+
+```
+Plan complete for {work}:
+
+delivery-001: {Name} → features 001, 003
+delivery-002: {Name} → features 002
+delivery-003: {Name} → features 004, 005
+
+{If deferred:}
+Deferred: feature-006 (Could-have, revisit after delivery-003 feedback)
+
+{If cross-cutting risks:}
+Cross-cutting risks: {count} identified (see PLAN.md)
+```
+
+---
+
+## REVIEW (re-run on existing PLAN.md)
+
+PLAN.md exists. Enter **the same loop at step 4** — review each deliverable
+against current reality.
+
+### Load Current State
+
+Re-read all feature SPECs, REQUIREMENTS.md, KB docs (same as first run).
+
+### Review Each Deliverable
+
+For each deliverable in PLAN.md, run step 4:
+
+1. **New features** not assigned to any deliverable?
+2. **Removed features** still referenced in PLAN.md?
+3. **Changed SPECs** since PLAN.md was written?
+4. **Priority shifts** in REQUIREMENTS.md?
+5. **Dependency changes** from SPEC updates?
+6. **Cross-cutting risks** emerged or resolved?
+
+### Grade Overall
+
+| Grade | Meaning | Action |
+|-------|---------|--------|
+| **A** | Plan current. No drift. | Print summary, done. |
+| **B** | Minor drift. 1–2 features shifted. | List findings, fix inline. |
+| **C** | Significant changes. Restructuring needed. | Present findings, re-enter loop for affected deliverables. |
+| **D** | Major changes. Sequence invalidated. | Recommend `--reset`. |
+
+For B/C: re-enter the loop (Propose → Discuss → Write → Review) for affected deliverables.
+
+---
 
 ## Feedback Loops
 
-- **→ Discovery:** KB insufficient for dependency analysis → Q&A to `aid-workspace/knowledge/DISCOVERY-STATE.md`
-- **→ Specify:** SPEC ambiguous about what a feature needs/enables → Q&A to feature's `STATE.md`
-- **→ Interview:** Requirements priority unclear → Q&A to work's `INTERVIEW-STATE.md`
+- **→ Discovery:** KB insufficient → Q&A to `aid-workspace/knowledge/DISCOVERY-STATE.md`
+- **→ Specify:** SPEC ambiguous → Q&A to feature's `STATE.md`
+- **→ Interview:** Priority unclear → Q&A to work's `INTERVIEW-STATE.md`
 
 ## Output
 
@@ -196,9 +240,9 @@ map it to deliverable changes, confirm understanding before applying.
 ## Deliverables
 
 ### delivery-001: {Name}
-- **What it delivers:** {user-facing value — one sentence}
+- **What it delivers:** {user-facing value}
 - **Features:** feature-001-{name}, feature-003-{name}
-- **Depends on:** — (foundation)
+- **Depends on:** —
 - **Priority:** Must
 
 ### delivery-002: {Name}
@@ -207,86 +251,29 @@ map it to deliverable changes, confirm understanding before applying.
 - **Depends on:** delivery-001
 - **Priority:** Must
 
-### delivery-003: {Name}
-- **What it delivers:** {user-facing value}
-- **Features:** feature-004-{name}, feature-005-{name}
-- **Depends on:** delivery-001
-- **Priority:** Should
-
 ## Cross-Cutting Risks
 
 | # | Risk | Impact | Mitigation |
 |---|------|--------|------------|
-| 1 | {description} | {High/Medium/Low} | {what to do about it} |
+| 1 | {description} | {H/M/L} | {mitigation} |
 
-*(Omit this section if no cross-cutting risks exist.)*
+*(Omit if no cross-cutting risks.)*
 
 ## Deferred
 
 | Feature | Reason | Revisit When |
 |---------|--------|--------------|
-| feature-006-{name} | Could-have, low priority | After delivery-003 feedback |
+| feature-006-{name} | Could-have | After delivery-003 feedback |
 
-*(Omit this section if all features are included.)*
+*(Omit if all features included.)*
 ```
-
-## Re-run = Review
-
-If PLAN.md already exists when `/aid-plan` is run, the agent reviews it instead of
-starting from scratch.
-
-### Step 1: Load Current State
-
-Re-read all feature SPECs, REQUIREMENTS.md, and relevant KB docs (same as initial run).
-
-### Step 2: Check for Changes
-
-Compare the current state against what PLAN.md was based on:
-1. **New features** — features added since PLAN.md was written (not assigned to any deliverable)
-2. **Removed features** — features in PLAN.md that no longer exist
-3. **Changed SPECs** — features whose SPEC.md changed (compare Change Log dates vs PLAN.md date)
-4. **Priority shifts** — feature priorities that changed in REQUIREMENTS.md
-5. **New cross-cutting risks** — risks that emerged from new features or SPEC changes
-6. **Dependency changes** — features whose dependencies changed (new shared modules, removed APIs)
-
-### Step 3: Grade
-
-| Grade | Meaning | Action |
-|-------|---------|--------|
-| **A** | Plan is current. No changes detected. | Print summary, no changes needed. |
-| **B** | Minor changes. 1–2 features shifted, no structural impact. | Present changes, adjust inline. |
-| **C** | Significant changes. Deliverable restructuring needed. | Present findings, re-run grouping for affected deliverables. |
-| **D** | Major changes. New features or removed features invalidate the sequence. | Recommend `--reset` and re-plan. |
-
-### Step 4: Present Findings
-
-```
-Reviewing {work} plan against current feature SPECs...
-
-**Grade: {grade}**
-
-{If A:}
-✅ Plan is current. All deliverables still valid.
-
-{If B/C:}
-**Changes detected:**
-1. {what changed} — {impact on plan}
-2. {what changed} — {impact on plan}
-...
-
-[1] Apply changes — update PLAN.md
-[2] Re-plan from scratch — regenerate deliverable sequence
-[3] Skip — keep current plan
-```
-
-Process response and update PLAN.md accordingly. Add Change Log entry.
 
 ## Quality Checklist
 
 - [ ] Every Ready feature assigned to a deliverable or explicitly deferred
-- [ ] Each deliverable works as a standalone MVP
+- [ ] Each deliverable is standalone-functional
 - [ ] Dependencies between deliverables flow one direction (no cycles)
-- [ ] Deliverable order follows Must → Should → Could priority
-- [ ] Cross-cutting risks only included if they actually exist
+- [ ] Deliverables follow Must → Should → Could priority
+- [ ] Cross-cutting risks only if real
 - [ ] User approved the sequence
-- [ ] PLAN.md lives inside the work directory
+- [ ] Each deliverable was reviewed after writing (step 4)

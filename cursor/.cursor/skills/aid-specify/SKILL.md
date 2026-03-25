@@ -12,23 +12,35 @@ argument-hint: "work-001/feature-001 (required)  [--reset] clear technical spec 
 # Technical Specification — Conversational Refinement
 
 Specify the technical implementation of a single feature through conversational refinement
-with the developer. The agent reads the KB, Requirements, codebase, and existing feature
-SPEC.md, then proposes technical solutions section by section. The developer discusses,
-corrects, and approves each section.
+with the developer.
 
 **The agent is a tech lead, not an interviewer.** It proposes concrete solutions grounded
 in the existing architecture. The developer validates, redirects, or deepens the discussion.
 
 **One feature at a time.** The feature path is a required argument.
 
-**Workspace structure:**
+## The Loop
+
+Every section follows the same cycle:
+
+```
+1. PROPOSE  → agent proposes (grounded in KB, codebase, SPEC)
+2. DISCUSS  → developer and agent refine together
+3. WRITE    → save what was agreed to SPEC.md
+4. REVIEW   → grade what was written against KB/codebase reality
+             → pass? next section. fail? back to 1.
+```
+
+**Re-run = enter at step 4 with existing content.**
+
+**Workspace:**
 ```
 aid-workspace/
   knowledge/               ← shared KB
-  work-001-name/
+  work-NNN-{name}/
     REQUIREMENTS.md
     features/
-      feature-001-name/
+      feature-NNN-{name}/
         SPEC.md            ← product (requirements + technical specification)
         STATE.md           ← process (section status, Q&A, loopbacks)
 ```
@@ -39,7 +51,7 @@ aid-workspace/
 
 ### Check 1: Feature Path Required
 
-If no feature path was provided, list available features across all tasks:
+If no feature path was provided, list available features across all works:
 
 ```
 Usage: /aid-specify work-001/feature-001
@@ -61,18 +73,8 @@ Resolve the feature path using **prefix matching** (glob):
 - `feature-001` → match `aid-workspace/{work}/features/feature-001-*/SPEC.md`
 - `work-001/feature-002` → match `aid-workspace/work-001-*/features/feature-002-*/SPEC.md`
 
-The user provides the numeric prefix (`feature-001`, `work-001/feature-002`); the agent
-resolves it against the actual folder name which includes the kebab-case suffix.
-
-**If zero matches:** 
-```
-Feature not found matching {input} in aid-workspace/
-Run /aid-interview to create features from requirements.
-```
-Exit.
-
-**If multiple matches:** List them and ask the user to be more specific. Exit.
-
+**If zero matches:** Exit with instruction to run `/aid-interview` first.
+**If multiple matches:** List them, ask user to be more specific. Exit.
 **If exactly one match:** Use that path. Print: `[Resolved: {full-path}]`
 
 ### Check 3: Plan Mode
@@ -88,22 +90,20 @@ Exit.
 |----------|--------|
 | `work-NNN/feature-NNN` | **Required.** Path to the feature to specify. |
 | `feature-NNN` | Shortcut when only one work exists. |
-| `--reset` | Clear the `## Technical Specification` section from SPEC.md and delete STATE.md. Restart from scratch. |
+| `--reset` | Clear `## Technical Specification` from SPEC.md and delete STATE.md. |
 
 ---
 
 ## State Detection
 
-⚠️ **FILESYSTEM IS THE ONLY SOURCE OF TRUTH.**
-
 All paths relative to `aid-workspace/{work}/features/{feature}/`.
 
-```plaintext
-State 1: No STATE.md                                       → INITIALIZE
-State 2: STATE.md exists, Status: In Discussion             → CONTINUE
-State 3: STATE.md exists, Status: Spike Needed              → SPIKE INFO
-State 4: STATE.md exists, Status: Blocked (loopback pending)→ BLOCKED
-State 5: STATE.md exists, Status: Ready                     → REVIEW
+```
+State 1: No STATE.md                                        → INITIALIZE
+State 2: STATE.md exists, Status: In Discussion              → CONTINUE
+State 3: STATE.md exists, Status: Spike Needed               → SPIKE INFO
+State 4: STATE.md exists, Status: Blocked (loopback pending) → BLOCKED
+State 5: STATE.md exists, Status: Ready                      → REVIEW (enter loop at step 4)
 ```
 
 Print: `[{work}/{feature}: {STATE}]`
@@ -112,33 +112,22 @@ Print: `[{work}/{feature}: {STATE}]`
 
 ## State 1: INITIALIZE
 
-No STATE.md exists. First run for this feature.
-
 ### Step 1: Load Full Context
 
-Read ALL of these before making any proposal:
+Read ALL before making any proposal:
 
-1. **SPEC.md** — the feature's requirements side (description, user stories, acceptance criteria)
-2. **`aid-workspace/{work}/REQUIREMENTS.md`** — full requirements for cross-reference
-3. **`aid-workspace/knowledge/INDEX.md`** — then read specific KB documents relevant to
-   this feature:
-   - Always read: `architecture.md`, `technology-stack.md`, `coding-standards.md`,
+1. **SPEC.md** — the feature's requirements (description, user stories, acceptance criteria)
+2. **REQUIREMENTS.md** — full requirements for cross-reference
+3. **KB documents via INDEX.md:**
+   - Always: `architecture.md`, `technology-stack.md`, `coding-standards.md`,
      `module-map.md`, `data-model.md`
-   - Read if relevant: `api-contracts.md`, `integration-map.md`, `security-model.md`,
+   - If relevant: `api-contracts.md`, `integration-map.md`, `security-model.md`,
      `domain-glossary.md`, `test-landscape.md`, `infrastructure.md`
-   - **Greenfield note:** If KB documents contain only the init template placeholder
-     (`❌ Pending`), treat them as empty — no existing architecture to reference. The
-     agent proposes from scratch based on REQUIREMENTS.md and discussion with the
-     developer. Technical decisions made during specification will be written back to
-     the KB (see **KB Seeding** in Discussion Loop → Write).
-4. **Codebase** — Use `Grep` and `Glob` to explore relevant source code areas identified
-   by KB documents. Understand what exists before proposing what to add. For greenfield
-   projects with no codebase yet, skip this step.
+   - **Greenfield:** If KB docs are init placeholders (`❌ Pending`), treat as empty.
+     Propose from scratch; decisions will seed KB during Write step.
+4. **Codebase** — `Grep`/`Glob` to explore relevant source code. Skip for greenfield.
 
 ### Step 2: Determine Applicable Sections
-
-Based on the feature requirements, KB, and codebase analysis, determine which technical
-sections apply.
 
 **Core sections (always present unless truly N/A):**
 
@@ -150,361 +139,255 @@ sections apply.
 
 **Conditional sections — activation rules:**
 
-Each conditional section has two activation paths:
-1. **Auto-activate** — obvious from KB + Requirements + codebase (don't ask, just include)
-2. **Ask** — not obvious, use the default question to check with the developer
+Each has two paths: **Auto-activate** (obvious from context) or **Ask** (use default question).
 
 | Section | Auto-activate when... | Default question |
 |---------|----------------------|------------------|
-| API Contracts | KB or Requirements mention endpoints/API | Does this feature expose or modify any APIs? (REST, GraphQL, gRPC, WebSocket) |
-| UI Specs | Requirements mention screens/UI | Does this feature include any user-facing screens or UI changes? |
-| Events & Messaging | KB has queues/events or Requirements mention async | Does this feature involve asynchronous processing, events, or message queues? |
-| DDD Analysis | KB or Requirements indicate DDD/bounded contexts | Does the project follow Domain-Driven Design? Should we define bounded contexts and aggregates? |
-| BDD Scenarios | Requirements indicate BDD/Gherkin | Does the project use Behavior-Driven Development? Should we write Gherkin scenarios? |
-| CQRS Specs | KB shows CQRS pattern | Does this feature use or introduce Command/Query separation? |
-| State Machines | Requirements describe stateful workflows | Do any aspects of this feature involve stateful workflows with defined transitions? |
-| Security Specs | Requirements mention auth/roles/permissions | Are there specific authentication, authorization, or permission requirements beyond basic auth? |
-| Migration Plan | Brownfield + schema changes in Data Model | Does this feature change existing database schemas or require data migration? |
-| Cache Strategy | Requirements mention performance/caching | Are there performance requirements that may need caching? |
-| External Integrations | Requirements mention 3rd party services | Does this feature integrate with any external services or third-party APIs? |
-| Batch/Jobs | Requirements mention scheduled processing | Does this feature include any scheduled jobs, batch processing, or background tasks? |
-| Mobile Specs | Requirements target mobile platforms | Does this feature target mobile platforms? Any offline-first or platform-specific concerns? |
-| Search/Indexing | Requirements mention search/complex filtering | Does this feature require full-text search, complex filtering, or search indexing? |
-| AI Enhancements | Requirements mention AI/ML/LLM | Does this feature involve AI or machine learning? (prompts, RAG, agents, fine-tuning, models, cost/limits) |
-| Telemetry & Tracking | Not obvious from context | Are there specific logging, auditing, alerting, or dashboard requirements for this feature? |
-| Recovery Management | Not obvious from context | Are there disaster recovery, backup, or redundancy requirements? |
-| Cloud Support | Requirements mention deploy/cloud | Does this feature have specific cloud provider requirements? |
-| Hardware Requirements | Not obvious from context | Are there particular hardware considerations? (compute, memory, storage, GPU, network) |
+| API Contracts | KB/Requirements mention endpoints/API | Does this feature expose or modify any APIs? |
+| UI Specs | Requirements mention screens/UI | Does this feature include UI changes? |
+| Events & Messaging | KB has queues/events or async | Does this feature involve async processing or events? |
+| DDD Analysis | KB/Requirements indicate DDD | Does the project follow DDD? Define bounded contexts? |
+| BDD Scenarios | Requirements indicate BDD/Gherkin | Does the project use BDD? Write Gherkin scenarios? |
+| CQRS Specs | KB shows CQRS pattern | Does this feature use Command/Query separation? |
+| State Machines | Requirements describe stateful workflows | Any stateful workflows with defined transitions? |
+| Security Specs | Requirements mention auth/roles | Specific auth/permission requirements beyond basic? |
+| Migration Plan | Brownfield + schema changes | Does this change existing schemas or require migration? |
+| Cache Strategy | Requirements mention performance | Performance requirements that may need caching? |
+| External Integrations | Requirements mention 3rd party | Does this integrate with external services? |
+| Batch/Jobs | Requirements mention scheduled work | Any scheduled jobs or background tasks? |
+| Mobile Specs | Requirements target mobile | Mobile platforms? Offline-first? Platform-specific? |
+| Search/Indexing | Requirements mention search | Full-text search or complex filtering needed? |
+| AI Enhancements | Requirements mention AI/ML | AI or ML involved? (prompts, RAG, agents, fine-tuning) |
+| Telemetry & Tracking | Not obvious | Specific logging, auditing, or alerting requirements? |
+| Recovery Management | Not obvious | Disaster recovery or backup requirements? |
+| Cloud Support | Requirements mention deploy/cloud | Specific cloud provider requirements? |
+| Hardware Requirements | Not obvious | Particular hardware considerations? |
 
 ### Step 3: Create STATE.md
 
-Create `STATE.md` in the feature folder using the template from
-`../templates/feature-state.md`. Fill in:
-
+Create from template (`../templates/feature-state.md`):
 - **Started:** today's date
-- **Activated Sections table:** add rows for each activated section (core and conditional)
-  with Status `Pending` and Activation source (`core` or `auto` or `user-confirmed`)
-- **Change Log:** `| {today} | Specify started, {N} sections activated | /aid-specify |`
+- **Sections table:** each activated section, Status `Pending`, source (`core`/`auto`/`user-confirmed`)
+- **Change Log:** initial entry
 
-### Step 4: Present Section Plan and Start Discussion
+### Step 4: Present and Start
 
-Present the activated sections and the ambiguous questions together:
+Present activated sections + ambiguous questions:
 
 ```
-I've analyzed {feature} against the KB and codebase. Here's what I think we need to specify:
+I've analyzed {feature} against the KB and codebase.
 
 **Core sections:**
 - Data Model — {brief rationale}
 - Feature Flow — {brief rationale}
 - Layers & Components — {brief rationale}
 
-**Also activated (based on context):**
-- {Section} — {why: e.g., "KB shows REST API in module X"}
+**Also activated:**
 - {Section} — {why}
 
-**Questions about additional sections:**
-1. {default question for ambiguous section 1}
-2. {default question for ambiguous section 2}
-...
+**Questions:**
+1. {default question for ambiguous section}
+2. ...
 
-Does this look right? Answer the questions above, and tell me if I'm missing
-or including something I shouldn't.
+Does this look right? Answer the questions, and tell me if I'm missing anything.
 ```
 
-Process the developer's response:
-- For each question answered → activate or skip the section, update STATE.md
-- For any additional sections requested → add to STATE.md
-- For any sections to remove → mark as N/A in STATE.md
-
-**Then immediately begin the Discussion Loop for the first Pending section.**
+Process response → update STATE.md → begin **The Loop** for first Pending section.
 
 ---
 
-## State 2: CONTINUE (In Discussion)
+## State 2: CONTINUE
 
-STATE.md exists, status is "In Discussion." Resume where we left off.
-
-Read STATE.md. Find the first section with Status `Pending` or `In Discussion`.
-Read SPEC.md to see what's already been written.
-
-Continue with the **Discussion Loop** for that section.
+STATE.md exists, status "In Discussion." Find first `Pending` or `In Discussion` section.
+Resume **The Loop** for that section.
 
 ---
 
-## Discussion Loop
+## The Loop — Per Section
 
-This is the core of the Specify phase. For each activated section, the agent proposes
-a technical solution and discusses it with the developer.
+### 1. Propose
 
-### For each section (in order from STATE.md):
-
-#### 1. Propose
-
-Read the relevant KB documents and codebase for this section. Then propose:
+Read relevant KB and codebase for this section. Then:
 
 ```
 ### {Section Name}
 
-Based on the KB and codebase, here's what I propose:
+Based on {KB evidence}, here's what I propose:
 
-{Concrete technical proposal — not generic, grounded in what exists.
-Reference specific KB documents, files, patterns, and conventions.
-Use actual class names, table names, module names from the codebase.}
+{Concrete technical proposal — specific files, classes, patterns from the codebase.
+Reference conventions from coding-standards.md. Fit architecture.md. Use domain terms.
+If changing something that exists, call it out.}
 
-What do you think? Anything to adjust?
+What do you think?
 ```
+
+Update section status to `In Discussion` in STATE.md.
 
 **Proposal quality rules:**
 - Reference specific files, classes, patterns from the codebase
 - Follow conventions from `coding-standards.md`
-- Fit into the architecture from `architecture.md`
+- Fit the architecture from `architecture.md`
 - Use domain terms from `domain-glossary.md`
-- If the proposal requires changing something that exists, call it out explicitly
+- Call out explicitly if changing something that exists
 
-Update section status to `In Discussion` in STATE.md.
+### 2. Discuss
 
-#### 2. Discuss
+Free-form conversation. The developer may:
+- **Agree** → move to Write
+- **Adjust** → revise proposal, present again
+- **Redirect** → different approach. Adapt.
+- **Ask questions** → answer from KB/codebase. If you don't know, say so.
+- **Raise concerns** → discuss trade-offs with options and pros/cons
 
-This is a free-form conversation. The developer may:
+Continue until the developer is satisfied.
 
-- **Agree** → write the section to SPEC.md, mark `Complete` in STATE.md
-- **Adjust** → revise the proposal, present again
-- **Redirect** → the developer has a different approach. Adapt.
-- **Ask questions** → answer from KB/codebase/knowledge. If you don't know, say so.
-- **Raise concerns** → discuss trade-offs. Present options with pros/cons.
+### 3. Write
 
-**The discussion continues until the developer is satisfied with the section.**
+When agreed:
 
-#### 3. Write
-
-When the developer agrees (explicitly or implicitly — "looks good", "yeah", "let's go"):
-
-1. Write the section content to SPEC.md under `## Technical Specification`
-2. Update STATE.md: section status → `Complete`
+1. Write section to SPEC.md under `## Technical Specification`
+2. Update STATE.md: section status → `Written`
 3. Add Change Log entry to SPEC.md
-4. **KB Seeding (greenfield):** If the agreed technical decision fills a gap in a KB
-   document that is empty or contains only the init placeholder (`❌ Pending`), update
-   that KB document with the decision. Examples:
-   - Data Model section agreed → update `aid-workspace/knowledge/data-model.md`
-   - Technology stack chosen → update `aid-workspace/knowledge/technology-stack.md`
-   - Architecture pattern decided → update `aid-workspace/knowledge/architecture.md`
-   - API style agreed → update `aid-workspace/knowledge/api-contracts.md`
-   
-   Also update `aid-workspace/knowledge/INDEX.md` summaries and
-   `aid-workspace/knowledge/README.md` status for any KB docs that changed.
-   Add a Change Log entry to SPEC.md noting which KB docs were seeded.
-   This is how greenfield projects build their KB incrementally through specification.
-5. Move to the next Pending section
+4. **KB Seeding (greenfield):** If the decision fills a gap in an empty KB doc,
+   update that KB doc + INDEX.md + README.md. Log which KB docs were seeded.
 
-#### 4. Continue or Finish
+### 4. Review
 
-After completing a section:
-- If more Pending sections remain → propose the next one
-- If all sections are `Complete`:
-  - Set STATUS to `Ready` in STATE.md
-  - Print summary (see **Completion** below)
+Immediately after writing, verify what was written:
 
----
+- Does it contradict other completed sections in this SPEC?
+- Does it align with KB reality (architecture, coding standards, existing patterns)?
+- Does it reference real codebase artifacts (not hallucinated paths/classes)?
+- Is it concrete enough for implementation (no vague "appropriate pattern" language)?
 
-## Handling Outcomes During Discussion
-
-The discussion may reveal problems that go beyond this feature's specification.
-
-### KB is Wrong or Incomplete
-
-**If the fix is simple** (a version number, a wrong path, a missing class):
-- Fix the KB document directly
-- Note it in STATE.md Change Log
-
-**If the fix requires re-discovery:**
-- Add a Q&A entry to `aid-workspace/knowledge/DISCOVERY-STATE.md`:
-  ```markdown
-  ### Q{N}: [{Category}: {Impact}]
-  - **Category:** {area}
-  - **Impact:** High
-  - **Status:** Pending
-  - **Context:** During {work}/{feature} specification, developer noted {what}
-  - **Suggested:** {suggestion or "—"}
-  - **Question:** {what needs investigation}
-  ```
-- Add a Loopback entry to STATE.md
-- Continue with other sections that are not blocked
-
-### Requirements are Wrong or Incomplete
-
-**If the fix is simple:** Fix REQUIREMENTS.md and SPEC.md directly, add Change Log entries.
-
-**If the fix requires re-interview:**
-- Add a Q&A entry to `aid-workspace/{work}/INTERVIEW-STATE.md`:
-  ```markdown
-  ### IQ{N}: [{Category}: {Impact}]
-
-  **Question:** {question for the stakeholder}
-  **Context:** During {work}/{feature} specification, developer noted {what}
-  **Source:** /aid-specify {work}/{feature}
-  **Suggested:** {suggestion or "—"}
-  **Status:** Pending
-  ```
-- Add a Loopback entry to STATE.md
-
-### Spike Needed
-
-1. Update STATE.md:
-   - Set `**Status:** Spike Needed`
-   - Add Spike section with What/Why/Scope/Blocked Sections
-2. Print spike details and exit
-
-### Feature Needs to Be Split
-
-1. Create new feature folder(s) in `aid-workspace/{work}/features/`
-2. Create SPEC.md for each new feature using the template
-3. Redistribute content from the original SPEC.md
-4. Add Change Log entries to ALL affected files
-5. Continue with the current (reduced) feature
-
-### Feature Needs to Be Merged
-
-1. Merge SPEC.md content into the target feature's SPEC.md
-2. Delete the current feature folder (SPEC.md + STATE.md)
-3. Add Change Log entry to the target
-4. Exit
-
----
-
-## State 3: SPIKE INFO
-
-STATE.md has `**Status:** Spike Needed`.
-
-1. Read the Spike section from STATE.md
-2. Ask for spike results
-3. Record in SPEC.md under `### Spike Results`
-4. Update STATE.md: remove Spike section, set status back to `In Discussion`
-5. Continue with Discussion Loop
-
----
-
-## State 4: BLOCKED
-
-STATE.md has `**Status:** Blocked` and Loopbacks with `Pending` status.
-
-1. Check each Pending loopback — read the target STATE file
-2. If Q&A entry is now `Answered` or `Applied` → resolve loopback, unblock sections
-3. If all resolved → set STATUS to `In Discussion`, continue Discussion Loop
-4. If still blocked → print blocking items with instructions, exit
-
----
-
-## State 5: REVIEW
-
-STATE.md has `**Status:** Ready`. The spec was completed previously — now review it
-against the current state of the KB, codebase, and requirements.
-
-### Step 1: Load Current Context
-
-Read the same sources as INITIALIZE Step 1:
-- SPEC.md (the existing technical specification)
-- REQUIREMENTS.md (may have changed since spec was written)
-- Relevant KB documents (may have been updated by re-discovery)
-- Codebase (may have evolved — other features implemented, refactors)
-
-### Step 2: Review Against Current Reality
-
-Check for:
-1. **KB drift** — Does the spec reference KB content that has since changed?
-   (e.g., architecture.md updated, module-map.md reorganized)
-2. **Requirements drift** — Have requirements changed since the spec was written?
-   (check SPEC.md Change Log dates vs REQUIREMENTS.md Change Log dates)
-3. **Codebase drift** — Does the spec reference code that has changed?
-   (e.g., classes renamed, patterns refactored by another feature)
-4. **Missing sections** — Should new conditional sections now be activated?
-   (e.g., another feature introduced caching, now this feature should specify its cache strategy too)
-5. **Stale sections** — Does any section contradict what now exists?
-
-### Step 3: Grade
-
-Assign a grade based on findings:
+**Grade the section:**
 
 | Grade | Meaning | Action |
 |-------|---------|--------|
-| **A** | Spec is current. No drift detected. | Print summary, no changes needed. |
-| **B** | Minor drift. 1–3 small updates needed. | List findings, ask to fix inline. |
-| **C** | Significant drift. 4+ updates or a section needs rewrite. | List findings, re-enter Discussion Loop for affected sections. |
-| **D** | Major drift. Core assumptions invalidated. | Recommend `--reset` and re-specify from scratch. |
+| **A** | Solid. Consistent with everything. | Mark `Complete` in STATE.md. Next section. |
+| **B** | Minor gap. One small clarification needed. | Flag to developer, quick fix, mark Complete. |
+| **C** | Issue found. Contradicts another section or KB. | Back to Propose with findings. |
 
-### Step 4: Present Findings
+```
+✅ Data Model section written and verified — consistent with architecture.md
+   and coding-standards.md. Moving to Feature Flow.
+```
+
+or:
+
+```
+⚠️ Data Model section has an issue: the index strategy contradicts what's
+in coding-standards.md §3.2 (composite indices discouraged). Let me re-propose...
+```
+
+### Continue or Finish
+
+- More Pending sections → Propose next one (step 1)
+- All sections Complete:
+  - Set STATUS to `Ready` in STATE.md
+  - Print summary with all completed sections
+  - `/aid-specify` on this feature now enters **REVIEW** (step 4 on all sections)
+
+---
+
+## State 5: REVIEW (re-run on completed feature)
+
+The spec was completed previously. Re-run enters **the same loop at step 4** —
+reviewing all sections against current reality.
+
+### Load Current Context
+
+Same as INITIALIZE Step 1: SPEC.md, REQUIREMENTS.md, KB docs, codebase.
+
+### Review All Sections
+
+For each section in SPEC.md, run step 4 of the loop against current state:
+
+1. **KB drift** — SPEC references KB content that changed?
+2. **Requirements drift** — Requirements changed since spec was written?
+3. **Codebase drift** — Code changed (renamed, refactored by another feature)?
+4. **Missing sections** — New conditional sections should now be activated?
+5. **Stale content** — Section contradicts what now exists?
+
+### Grade Overall
+
+| Grade | Meaning | Action |
+|-------|---------|--------|
+| **A** | Current. No drift. | Print summary, done. |
+| **B** | Minor drift. 1–3 small updates. | List findings, fix inline. |
+| **C** | Significant drift. Sections need rewrite. | List findings, re-enter loop for affected sections. |
+| **D** | Major drift. Core assumptions invalidated. | Recommend `--reset`. |
 
 ```
 Reviewing {work}/{feature} against current KB and codebase...
 
 **Grade: {grade}**
 
-{If A:}
-✅ Spec is current. All sections consistent with KB and codebase.
-Ready for /aid-plan.
-
-{If B/C:}
-**Findings:**
-1. {section}: {what drifted} — {source of drift}
-2. {section}: {what drifted} — {source of drift}
-...
-
-[1] Fix all — update the affected sections
-[2] Review one by one — discuss each finding
-[3] Skip — accept the spec as-is
+{findings and options}
 ```
 
-### Step 5: Process Response
-
-- **Fix all (B only):** Apply straightforward updates, add Change Log entries, keep status Ready.
-- **Review one by one:** For each finding, re-enter the **Discussion Loop** for that section.
-  Set status to `In Discussion` in STATE.md. When all findings are resolved, set back to Ready.
-- **Skip:** Print warning and exit. Status stays Ready.
-- **Reset recommended (D):** If user agrees, run `--reset` logic and start INITIALIZE.
+For B/C: re-enter the loop (Propose → Discuss → Write → Review) for affected sections.
+When all resolved, set status back to Ready.
 
 ---
 
-## Completion
+## Handling Outcomes During Discussion
 
-When all sections are `Complete` in STATE.md:
+### KB is Wrong or Incomplete
 
-1. Verify SPEC.md:
-   - [ ] All activated sections have content under `## Technical Specification`
-   - [ ] No placeholder text remaining
-   - [ ] Change Log has entries for each section
-   - [ ] Technical sections reference KB documents and codebase locations
+**Simple fix:** Fix the KB document directly, note in STATE.md Change Log.
 
-2. Set STATE.md `**Status:** Ready`
+**Needs re-discovery:** Add Q&A entry to `aid-workspace/knowledge/DISCOVERY-STATE.md`,
+add Loopback entry to STATE.md, continue with non-blocked sections.
 
-3. Print summary with completed sections and any loopbacks triggered.
-4. Note: running `/aid-specify` again on this feature will trigger a **REVIEW** against
-   current KB/codebase state.
+### Requirements are Wrong or Incomplete
+
+**Simple fix:** Fix REQUIREMENTS.md and SPEC.md directly, add Change Log entries.
+
+**Needs re-interview:** Add Q&A entry to `aid-workspace/{work}/INTERVIEW-STATE.md`,
+add Loopback entry to STATE.md.
+
+### Spike Needed (State 3)
+
+1. Update STATE.md: `**Status:** Spike Needed` with What/Why/Scope/Blocked Sections
+2. Print spike details and exit
+
+On return: read spike results, record in SPEC.md, resume loop.
+
+### Blocked (State 4)
+
+Check each Pending loopback. If resolved → unblock, resume loop. If still blocked → exit.
+
+### Feature Split
+
+Create new feature folder(s), redistribute SPEC.md content, add Change Log entries, continue.
+
+### Feature Merge
+
+Merge content into target, delete current folder, exit.
 
 ---
 
 ## Conversation Style
 
-The agent acts as a **technical collaborator**, not an interviewer or a generator.
-
 **Do:**
-- Propose concrete solutions based on what exists in the codebase
-- Reference specific files, classes, patterns, and conventions
+- Propose concrete solutions based on what exists
+- Reference specific files, classes, patterns
 - Explain trade-offs when multiple approaches exist
-- Push back if the developer proposes something that contradicts KB patterns
-- Ask follow-up questions when the developer's answer opens new technical questions
-- Admit when you don't know or can't determine something from the codebase
+- Push back if the developer contradicts KB patterns
+- Admit when you don't know something
 
 **Don't:**
-- Ask generic questions ("What technology do you want to use?") — propose based on KB
-- Generate walls of specification without discussion
-- Move to the next section without clear agreement
-- Ignore contradictions between what the developer says and what the KB shows
-- Be a yes-machine — if you see a problem with the developer's approach, say so
+- Ask generic questions — propose based on KB
+- Generate walls of spec without discussion
+- Move to next section without clear agreement
+- Be a yes-machine — if you see a problem, say so
 
 **The rhythm:**
 ```
-Agent: [reads context] "I think this fits like {proposal}. Based on {KB evidence}."
+Agent: "Based on {KB}, I propose {concrete approach}."
 Dev:   "Actually, we should do X because Y."
-Agent: "Good point. That means we also need to change Z. Here's the updated approach..."
-Dev:   "Yeah, that works."
-Agent: [writes section] [moves to next]
+Agent: "Good point. That means we also need Z. Updated approach..."
+Dev:   "Yeah, works."
+Agent: [writes] [reviews: ✅ consistent] [next section]
 ```
