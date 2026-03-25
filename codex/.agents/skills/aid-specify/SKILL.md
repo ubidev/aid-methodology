@@ -75,6 +75,7 @@ Exit.
 
 **If exactly one match:** Use that path. Print: `[Resolved: {full-path}]`
 
+
 ---
 
 ## Arguments
@@ -98,7 +99,7 @@ State 1: No STATE.md                                       → INITIALIZE
 State 2: STATE.md exists, Status: In Discussion             → CONTINUE
 State 3: STATE.md exists, Status: Spike Needed              → SPIKE INFO
 State 4: STATE.md exists, Status: Blocked (loopback pending)→ BLOCKED
-State 5: STATE.md exists, Status: Ready                     → DONE
+State 5: STATE.md exists, Status: Ready                     → REVIEW
 ```
 
 Print: `[{work}/{feature}: {STATE}]`
@@ -389,17 +390,72 @@ STATE.md has `**Status:** Blocked` and Loopbacks with `Pending` status.
 
 ---
 
-## State 5: DONE
+## State 5: REVIEW
 
-STATE.md has `**Status:** Ready`.
+STATE.md has `**Status:** Ready`. The spec was completed previously — now review it
+against the current state of the KB, codebase, and requirements.
+
+### Step 1: Load Current Context
+
+Read the same sources as INITIALIZE Step 1:
+- SPEC.md (the existing technical specification)
+- REQUIREMENTS.md (may have changed since spec was written)
+- Relevant KB documents (may have been updated by re-discovery)
+- Codebase (may have evolved — other features implemented, refactors)
+
+### Step 2: Review Against Current Reality
+
+Check for:
+1. **KB drift** — Does the spec reference KB content that has since changed?
+   (e.g., architecture.md updated, module-map.md reorganized)
+2. **Requirements drift** — Have requirements changed since the spec was written?
+   (check SPEC.md Change Log dates vs REQUIREMENTS.md Change Log dates)
+3. **Codebase drift** — Does the spec reference code that has changed?
+   (e.g., classes renamed, patterns refactored by another feature)
+4. **Missing sections** — Should new conditional sections now be activated?
+   (e.g., another feature introduced caching, now this feature should specify its cache strategy too)
+5. **Stale sections** — Does any section contradict what now exists?
+
+### Step 3: Grade
+
+Assign a grade based on findings:
+
+| Grade | Meaning | Action |
+|-------|---------|--------|
+| **A** | Spec is current. No drift detected. | Print summary, no changes needed. |
+| **B** | Minor drift. 1–3 small updates needed. | List findings, ask to fix inline. |
+| **C** | Significant drift. 4+ updates or a section needs rewrite. | List findings, re-enter Discussion Loop for affected sections. |
+| **D** | Major drift. Core assumptions invalidated. | Recommend `--reset` and re-specify from scratch. |
+
+### Step 4: Present Findings
 
 ```
-✅ {work}/{feature} specification is complete.
+Reviewing {work}/{feature} against current KB and codebase...
 
-Sections specified: {list}
+**Grade: {grade}**
 
-Ready for /aid-plan. Run /aid-specify {work}/{next-feature} for the next feature.
+{If A:}
+✅ Spec is current. All sections consistent with KB and codebase.
+Ready for /aid-plan.
+
+{If B/C:}
+**Findings:**
+1. {section}: {what drifted} — {source of drift}
+2. {section}: {what drifted} — {source of drift}
+...
+
+[1] Fix all — update the affected sections
+[2] Review one by one — discuss each finding
+[3] Skip — accept the spec as-is
 ```
+
+### Step 5: Process Response
+
+- **Fix all (B only):** Apply straightforward updates, add Change Log entries, keep status Ready.
+- **Review one by one:** For each finding, re-enter the **Discussion Loop** for that section.
+  Set status to `In Discussion` in STATE.md. When all findings are resolved, set back to Ready.
+- **Skip:** Print warning and exit. Status stays Ready.
+- **Reset recommended (D):** If user agrees, run `--reset` logic and start INITIALIZE.
 
 ---
 
@@ -416,6 +472,8 @@ When all sections are `Complete` in STATE.md:
 2. Set STATE.md `**Status:** Ready`
 
 3. Print summary with completed sections and any loopbacks triggered.
+4. Note: running `/aid-specify` again on this feature will trigger a **REVIEW** against
+   current KB/codebase state.
 
 ---
 
