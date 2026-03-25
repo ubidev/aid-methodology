@@ -7,6 +7,7 @@ description: >
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 context: fork
 agent: architect
+argument-hint: "work-001 (required if multiple works)  [--reset] clear DETAIL.md and tasks/"
 ---
 
 # Detail the Execution Plan
@@ -177,6 +178,39 @@ Time-boxed research for uncertain tasks. Output is knowledge (KB update), not co
 
 - `aid-workspace/{work}/DETAIL.md` — user stories, task list, precedence graph, delivery breakdown, wave plan
 - `aid-workspace/{work}/tasks/TASK-{id}.md` files — one per executable task
+
+## Re-run = Review
+
+If DETAIL.md and `tasks/` already exist when `/aid-detail` is run, the agent reviews
+them instead of starting from scratch.
+
+### Step 1: Load Current State
+
+Re-read PLAN.md, all feature SPECs, DETAIL.md, and all TASK files.
+
+### Step 2: Check for Changes
+
+Compare against what DETAIL.md was based on:
+1. **PLAN.md changed** — deliverables added, removed, or resequenced
+2. **SPECs changed** — feature SPEC.md content updated (check Change Log dates)
+3. **Task gaps** — user stories with no corresponding tasks
+4. **Orphan tasks** — tasks referencing deliverables/features that no longer exist
+5. **Dependency shifts** — task dependencies invalidated by SPEC or PLAN changes
+6. **Complexity drift** — KB changes that affect complexity estimates (new tech-debt, changed architecture)
+
+### Step 3: Grade
+
+| Grade | Meaning | Action |
+|-------|---------|--------|
+| **A** | Detail is current. No changes detected. | Print summary, no changes needed. |
+| **B** | Minor changes. 1–3 tasks need update, no structural impact. | Present changes, fix inline. |
+| **C** | Significant changes. Waves need restructuring, new tasks needed. | Present findings, regenerate affected waves. |
+| **D** | Major changes. PLAN restructured, most tasks orphaned. | Recommend `--reset` and re-detail. |
+
+### Step 4: Present and Apply
+
+Same pattern as Plan review — present findings, offer fix/regenerate/skip options.
+Update DETAIL.md and affected TASK files. Add Change Log entries.
 
 ## Quality Checklist
 

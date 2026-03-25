@@ -7,6 +7,7 @@ description: >
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 context: fork
 agent: architect
+argument-hint: "work-001 (required if multiple works)  [--reset] clear PLAN.md and restart"
 ---
 
 # Delivery Roadmap
@@ -200,6 +201,57 @@ Wait for response. If [2], adjust and present again.
 
 *(Omit this section if all features are included.)*
 ```
+
+## Re-run = Review
+
+If PLAN.md already exists when `/aid-plan` is run, the agent reviews it instead of
+starting from scratch.
+
+### Step 1: Load Current State
+
+Re-read all feature SPECs, REQUIREMENTS.md, and relevant KB docs (same as initial run).
+
+### Step 2: Check for Changes
+
+Compare the current state against what PLAN.md was based on:
+1. **New features** — features added since PLAN.md was written (not assigned to any deliverable)
+2. **Removed features** — features in PLAN.md that no longer exist
+3. **Changed SPECs** — features whose SPEC.md changed (compare Change Log dates vs PLAN.md date)
+4. **Priority shifts** — feature priorities that changed in REQUIREMENTS.md
+5. **New cross-cutting risks** — risks that emerged from new features or SPEC changes
+6. **Dependency changes** — features whose dependencies changed (new shared modules, removed APIs)
+
+### Step 3: Grade
+
+| Grade | Meaning | Action |
+|-------|---------|--------|
+| **A** | Plan is current. No changes detected. | Print summary, no changes needed. |
+| **B** | Minor changes. 1–2 features shifted, no structural impact. | Present changes, adjust inline. |
+| **C** | Significant changes. Deliverable restructuring needed. | Present findings, re-run grouping for affected deliverables. |
+| **D** | Major changes. New features or removed features invalidate the sequence. | Recommend `--reset` and re-plan. |
+
+### Step 4: Present Findings
+
+```
+Reviewing {work} plan against current feature SPECs...
+
+**Grade: {grade}**
+
+{If A:}
+✅ Plan is current. All deliverables still valid.
+
+{If B/C:}
+**Changes detected:**
+1. {what changed} — {impact on plan}
+2. {what changed} — {impact on plan}
+...
+
+[1] Apply changes — update PLAN.md
+[2] Re-plan from scratch — regenerate deliverable sequence
+[3] Skip — keep current plan
+```
+
+Process response and update PLAN.md accordingly. Add Change Log entry.
 
 ## Quality Checklist
 
