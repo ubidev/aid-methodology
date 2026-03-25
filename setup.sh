@@ -131,27 +131,25 @@ echo ""
 echo "Installing selected tools..."
 echo ""
 
-# AGENTS.md is shared across all tools — copy once
-echo "--- AGENTS.md ---"
-copy_file "$SCRIPT_DIR/claude-code/AGENTS.md" "$TARGET/AGENTS.md"
-
-# Claude Code
+# Claude Code — uses CLAUDE.md only (no AGENTS.md)
 if [[ "${selected[1]}" -eq 1 ]]; then
   echo "--- Claude Code ---"
   copy_dir "$SCRIPT_DIR/claude-code/.claude" "$TARGET/.claude"
   copy_file "$SCRIPT_DIR/claude-code/CLAUDE.md" "$TARGET/CLAUDE.md"
 fi
 
-# Codex
+# Codex — uses AGENTS.md only (no CLAUDE.md)
 if [[ "${selected[2]}" -eq 1 ]]; then
   echo "--- Codex ---"
   copy_dir "$SCRIPT_DIR/codex/.codex" "$TARGET/.codex"
+  copy_file "$SCRIPT_DIR/codex/AGENTS.md" "$TARGET/AGENTS.md"
 fi
 
-# Cursor
+# Cursor — uses AGENTS.md + .cursor/rules/aid-project.mdc (no CLAUDE.md)
 if [[ "${selected[3]}" -eq 1 ]]; then
   echo "--- Cursor ---"
   copy_dir "$SCRIPT_DIR/cursor/.cursor" "$TARGET/.cursor"
+  copy_file "$SCRIPT_DIR/cursor/AGENTS.md" "$TARGET/AGENTS.md"
 fi
 
 echo ""
