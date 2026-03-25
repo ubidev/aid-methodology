@@ -61,7 +61,7 @@ Open your AI coding tool in the project directory and run `/aid-init` to scaffol
 ```
 
 Init asks whether your project is greenfield or brownfield, collects metadata, and creates the
-`.aid/` directory with `.aid/knowledge/` containing 14 empty KB document templates, plus `AGENTS.md` and `CLAUDE.md` placeholders. Subsequent phases create work directories (`.aid/work-NNN-{name}/`) with requirements, features, plans, and tasks.
+`.aid/` directory with `.aid/knowledge/` containing 14 empty KB document templates, plus editor-specific config file placeholders (`CLAUDE.md` for Claude Code, `AGENTS.md` for Codex/Cursor). Subsequent phases create work directories (`.aid/work-NNN-{name}/`) with requirements, features, plans, and tasks.
 
 ### 3. Run Discovery or Interview
 
@@ -81,7 +81,7 @@ You now have a Knowledge Base, configured skills, and agents ready to go. Every 
 
 | Tool | Directory | Guide |
 |------|-----------|-------|
-| **Claude Code** | `claude-code/.claude/` → `.claude/` + `CLAUDE.md` + `AGENTS.md` | [Setup guide](claude-code/README.md) |
+| **Claude Code** | `claude-code/.claude/` → `.claude/` + `CLAUDE.md` | [Setup guide](claude-code/README.md) |
 | **OpenAI Codex CLI** | `codex/.codex/` → `.codex/` + `AGENTS.md` | [Setup guide](codex/README.md) |
 | **Cursor** | `cursor/.cursor/` → `.cursor/` + `AGENTS.md` | [Setup guide](cursor/README.md) |
 | **Other agents** | Use `skills/` READMEs as reference | Load as system context |
@@ -231,7 +231,6 @@ aid-methodology/
 │   └── {agent}/README.md             ← Rich docs per agent specialty
 ├── claude-code/                            ← Claude Code native format
 │   ├── README.md                           ← Setup guide
-│   ├── AGENTS.md                           ← Template: project context for agents
 │   ├── CLAUDE.md                           ← Template: Claude Code configuration
 │   └── .claude/
 │       ├── skills/aid-{phase}/SKILL.md     ← LLM-optimized AgentSkills format

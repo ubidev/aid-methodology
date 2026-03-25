@@ -10,15 +10,13 @@ path/to/aid-methodology/setup.sh /path/to/your/project
 
 # Manual
 cp -r path/to/aid-methodology/claude-code/.claude  .claude/
-cp path/to/aid-methodology/claude-code/AGENTS.md   AGENTS.md
 cp path/to/aid-methodology/claude-code/CLAUDE.md   CLAUDE.md
 ```
 
 This gives you:
 - `.claude/skills/aid-{phase}/SKILL.md` — Phase instructions in AgentSkills format (11 skills)
 - `.claude/agents/{name}.md` — Agent definitions in Claude Code format (13 agents)
-- `AGENTS.md` — Project context for AI agents (edit with your project details)
-- `CLAUDE.md` — Claude Code configuration (edit with your project details)
+- `CLAUDE.md` — Claude Code project configuration (edit with your project details)
 
 ## Agents
 
