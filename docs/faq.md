@@ -11,7 +11,7 @@ SDD covers spec→code. AID covers problem→production→maintenance. AID conta
 ### Is this just Waterfall rebranded?
 Yes — and that's the point. Waterfall's phases were sound. Waterfall failed because humans were too slow to execute them with rigor. Agile solved that by dropping the rigor. AI changes the economics: discovery takes hours not weeks, going back costs tokens not sprints. The rigor becomes viable again.
 
-### Do I need all 9 phases?
+### Do I need all 8 phases?
 No. Use what applies:
 - **Greenfield project with clear requirements?** Skip Discover, start at Interview.
 - **Quick bug fix?** Skip to Triage→Implement→Review→Test→Deploy (the short bug path).

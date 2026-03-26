@@ -15,8 +15,7 @@
 | `aid-execute` | 6. Implement | Developer | TASK → code with build verification |
 | `aid-execute` | 8. Test | Critic | Staging validation — E2E, integration, manual |
 | `aid-deploy` | 9. Deploy | Operator | Final verification, PR, KB updates |
-| `aid-track` | 10. Track | Researcher | Production telemetry interpretation |
-| `aid-triage` | 11. Triage | Orchestrator | Root cause analysis + classify findings → route to implement or discover |
+| `aid-monitor` | 8. Monitor | Orchestrator | Observe, classify, route production findings |
 
 ## Usage
 

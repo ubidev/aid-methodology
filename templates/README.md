@@ -28,14 +28,14 @@ These are produced when a phase discovers that upstream assumptions were wrong. 
 
 → [feedback-artifacts/GAP.md](feedback-artifacts/GAP.md) — Knowledge Base gap discovered during any phase
 → [feedback-artifacts/IMPEDIMENT.md](feedback-artifacts/IMPEDIMENT.md) — Implementation blocker requiring plan/spec revision
-→ [feedback-artifacts/TRIAGE.md](feedback-artifacts/TRIAGE.md) — Production finding classification and routing
+→ [feedback-artifacts/MONITOR-STATE.md](feedback-artifacts/MONITOR-STATE.md) — Production finding classification and routing
 
 ## Reports
 
 → [reports/review-template.md](reports/review-template.md) — Code review report with grading
 → [reports/test-report-template.md](reports/test-report-template.md) — Staging/E2E test validation report
 → [reports/track-report-template.md](reports/track-report-template.md) — Production monitoring report
-→ [reports/correction-template.md](reports/correction-template.md) — *(Deprecated)* Bug fix scope and root cause analysis — now included in TRIAGE.md
+→ [reports/correction-template.md](reports/correction-template.md) — *(Deprecated)* Bug fix scope and root cause analysis — now included in MONITOR-STATE.md
 
 ---
 

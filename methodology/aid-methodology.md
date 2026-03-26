@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-AID (AI-Integrated Development) is a structured methodology for building and maintaining software with AI agents. It defines eleven sequential phases organized into four groups — from problem mapping through production monitoring and issue routing — with formal feedback loops that allow any phase to revise upstream artifacts when reality contradicts assumptions.
+AID (AI-Integrated Development) is a structured methodology for building and maintaining software with AI agents. It defines nine sequential phases organized into four groups — from problem mapping through production monitoring and issue routing — with formal feedback loops that allow any phase to revise upstream artifacts when reality contradicts assumptions.
 
 Each phase is **co-executed by human and AI**. The AI is the Iron Man suit — it amplifies the human's capabilities. The human is the pilot — setting direction, making decisions, approving advancement between phases. The human never leaves the cockpit. This is not "AI executes, human validates." It is "human and AI work together, human drives."
 
@@ -35,7 +35,7 @@ This document defines the complete methodology: philosophy, phases, artifacts, f
 
 1. [Philosophy](#1-philosophy)
 2. [The Knowledge Base](#2-the-knowledge-base)
-3. [The Eleven Phases](#3-the-eleven-phases)
+3. [The Nine Phases](#3-the-eleven-phases)
 4. [Feedback Loops](#4-feedback-loops)
 5. [Artifacts Reference](#5-artifacts-reference)
 6. [The Pipeline](#6-the-pipeline)
@@ -195,12 +195,12 @@ The Knowledge Base is institutional memory. It outlives any individual session, 
 
 ---
 
-## 3. The Eleven Phases
+## 3. The Nine Phases
 
-AID organizes eleven phases into four groups. The pipeline is linear with feedback loops. Post-production phases monitor and route issues back into development through one of two paths:
+AID organizes nine phases into four groups. The pipeline is linear with feedback loops. The Monitor phase observes production and routes issues back into development through one of two paths:
 
-- **Bug path (short):** Track → Triage → Implement → Review → Test → Deploy. Surgical. No re-specification, no re-planning. Triage maps the root cause; the existing pipeline executes the fix.
-- **Change Request path (full cycle):** Track → Triage → Discover. The CR enters as a new project, running the complete pipeline from the beginning.
+- **Bug path (short):** Monitor → Execute → Deploy. Surgical. Monitor identifies the bug, performs root cause analysis, creates a task, and routes to Execute. No re-specification, no re-planning.
+- **Change Request path (full cycle):** Monitor → Discover. The CR enters as a new project, running the complete pipeline from the beginning.
 
 ---
 
@@ -445,51 +445,34 @@ artifacts may skip branching.
 - KB updated with any new discoveries.
 - Delivery summary for stakeholder communication.
 
-#### Phase 8: Track (`aid-track`)
+#### Phase 8: Monitor (`aid-monitor`)
 
-**Purpose:** Monitor production. Interpret telemetry, error logs, issue trackers, and performance metrics.
+**Purpose:** Observe production, classify findings, and route actions. Combines telemetry interpretation with triage in a single observe → classify → act cycle. Per-work scope.
 
-**Input:** Telemetry, error logs, issue tracking, performance metrics, user feedback, CI/CD results.
+**Input:** Telemetry, error logs, issue tracking, performance metrics, user feedback, CI/CD results + `.aid/knowledge/` + per-feature SPECs.
 
 **Process:**
-1. **Data collection** — Pull from configured sources.
-2. **Anomaly detection** — Identify deviations from baseline.
-3. **Trend analysis** — Spot patterns over time.
-4. **Correlation** — Connect signals across sources.
-5. **Impact assessment** — Evaluate severity.
-6. **KB context** — Cross-reference against .aid/knowledge/ to distinguish expected behavior from anomalies.
+1. **Observe** — Pull from configured sources. Detect anomalies vs. baseline. Correlate signals across sources ("error spike started 23 min after deploy of package-002").
+2. **Classify** — For each finding: BUG (spec right, code wrong), CR (spec needs change), INFRASTRUCTURE (ops), or NO ACTION (false positive).
+3. **Analyze** — Root cause analysis for bugs: trace → fault → scope → test requirements.
+4. **Propose** — Present findings with routing recommendations to the user.
+5. **Act** — Create tasks for bugs (→ aid-execute), Q&A entries for CRs (→ aid-discover), escalate infra.
 
-**Key distinction:** Track *interprets*, it doesn't just collect. A dashboard shows you a spike. Track tells you "error rate increased 340% after deploy #47, concentrated in the payment module, affecting ~2,000 users, correlating with the async refactor."
+**Key distinction:** Monitor *interprets*, it doesn't just collect. A dashboard shows you a spike. Monitor tells you "error rate increased 340% after deploy #47, concentrated in the payment module, affecting ~2,000 users" — and then classifies it as a BUG with root cause analysis and patch scope.
 
-**Output:** `TRACK-REPORT.md` — findings with evidence, severity, recommended action.
+**Bug vs. CR:** If the spec said "do X" and the code doesn't do X — bug. If users now need Y instead of X — CR, even if the code "works."
+
+**The short path:** BUG → new task → aid-execute → aid-deploy. The short path skips specification and planning because the spec is already correct — only the code is wrong.
 
 **When to trigger:** On deployment, on schedule, on alert threshold, or on-demand.
 
-#### Phase 9: Triage (`aid-triage`)
-
-**Purpose:** Classify what Track found. For bugs: perform root cause analysis and map the fix. Route everything to the right path.
-
-**Input:** `TRACK-REPORT.md` + `.aid/knowledge/` + per-feature SPECs.
-
-**Classification:**
-- **BUG** — Code doesn't match spec. Perform root cause analysis, then route to aid-execute (short path).
-- **Change Request** — Spec is wrong or incomplete. Route to aid-discover (new cycle).
-- **Infrastructure** — Not a code issue. Escalate to ops.
-- **No Action** — False positive, expected behavior, or below threshold.
-
-**The hard call:** Bug vs. CR. If the spec said "do X" and the code doesn't do X — bug. If users now need Y instead of X — CR, even if the code "works."
-
-**For bugs:** Triage performs root cause analysis — trace from symptom to cause using the KB, assess impact, define minimal patch scope. The root cause analysis, patch scope, and test requirements are documented directly in TRIAGE.md. The short path skips Define, Map, and the rest of Execute because the spec is already correct.
-
-**The short path:** Triage → Implement → Review → Test → Deploy. Five phases, not eleven.
-
-**Output:** `TRIAGE.md` — classification, evidence, severity, routing decision. For bugs: also includes root cause analysis, patch scope, and test requirements.
+**Output:** `MONITOR-STATE.md` — observation log, active findings with classification/evidence/severity/routing, resolved findings.
 
 ---
 
 ## 4. Feedback Loops
 
-The pipeline is sequential by default. But real engineering isn't linear. Assumptions break. Gaps appear. Production reveals truths that development couldn't anticipate. AID defines eleven formal feedback loops — eight within development and three connecting production back to development.
+The pipeline is sequential by default. But real engineering isn't linear. Assumptions break. Gaps appear. Production reveals truths that development couldn't anticipate. AID defines formal feedback loops — eight within development and three connecting production back to development.
 
 ### The Eleven Loops
 
@@ -545,23 +528,17 @@ The pipeline is sequential by default. But real engineering isn't linear. Assump
 
 #### Post-Production Loops (9-11)
 
-#### Loop 9: Track → Triage
+#### Loop 9: Monitor → Execute (Bug Path)
 
-**Trigger:** Track identifies an anomaly above the severity threshold.
+**Trigger:** Monitor classifies a finding as BUG.
 
-**Protocol:** Track produces TRACK-REPORT.md → Triage classifies each finding → routes to Implement (bug) or Discover (CR).
+**Protocol:** Monitor performs root cause analysis, creates a task in `.aid/{work}/tasks/`, routes to aid-execute → aid-deploy. The short path.
 
-#### Loop 10: Triage → Implement
+#### Loop 10: Monitor → Discover (Change Request Path)
 
-**Trigger:** Triage classifies a finding as BUG.
+**Trigger:** Monitor classifies a finding as Change Request.
 
-**Protocol:** Triage performs root cause analysis (documented in TRIAGE.md) → Implement → Review → Test → Deploy. The short path.
-
-#### Loop 11: Triage → Discover (New Cycle)
-
-**Trigger:** Triage classifies a finding as Change Request.
-
-**Protocol:** Triage produces TRIAGE.md with CR classification → new project cycle starts at aid-discover (or aid-interview for greenfield) → full pipeline.
+**Protocol:** Monitor writes Q&A entry to DISCOVERY-STATE.md → new cycle starts at aid-discover (or aid-interview for greenfield) → full pipeline.
 
 ### The Revision Trail
 
@@ -624,8 +601,7 @@ Every change to an upstream artifact is tracked at the bottom of the artifact:
 | TEST-REPORT.md | project root | Test | Deploy, Implement (if failures) | Per test cycle |
 | GAP.md | project root | Any phase | Discovery, Specify | Closed when resolved |
 | IMPEDIMENT.md | project root | Implement | Plan, Specify, Discovery | Closed when resolved |
-| TRACK-REPORT.md | project root | Track | Triage | Per tracking cycle |
-| TRIAGE.md | project root | Triage | Implement (bugs), Discover (CRs) | Closed when routed |
+| MONITOR-STATE.md | .aid/{work}/ | Monitor | Execute (bugs), Discover (CRs) | Per monitor run |
 
 ### REQUIREMENTS.md Template
 
@@ -857,10 +833,10 @@ Gotchas, decisions, context the agent needs.
 Ship to Test | Rework (minor) | Rework (major) | Re-implement
 ```
 
-### TRACK-REPORT.md Template
+### MONITOR-STATE.md Template
 
 ```markdown
-# Track Report — {Date or Deployment ID}
+# Monitor Report — {Date or Deployment ID}
 
 ## Sources Checked
 | Source | Type | Period |
@@ -878,13 +854,13 @@ Ship to Test | Rework (minor) | Rework (major) | Re-implement
 {Trigger triage or no action}
 ```
 
-### TRIAGE.md Template
+### MONITOR-STATE.md Template
 
 ```markdown
-# Triage — {Finding ID or Title}
+# Monitor Finding — {Finding ID or Title}
 
 ## Source
-**Track Report:** {ref} | **Finding:** {summary}
+**Monitor Run:} | **Finding:** {summary}
 
 ## Classification
 **Type:** BUG | Change Request | Infrastructure | No Action
@@ -905,7 +881,7 @@ Ship to Test | Rework (minor) | Rework (major) | Re-implement
 
 ### CORRECTION.md Template (Deprecated)
 
-> **Note:** The Correct phase has been merged into Triage. Root cause analysis, patch scope, and test requirements are now documented directly in TRIAGE.md. This template is retained for reference only.
+> **Note:** The Correct phase has been merged into Monitor. Root cause analysis, patch scope, and test requirements are now documented directly in MONITOR-STATE.md. This template is retained for reference only.
 
 ```markdown
 # Correction — {Bug ID or Title}
@@ -994,13 +970,13 @@ Ship to Test | Rework (minor) | Rework (major) | Re-implement
    │            │      → PR + summary
    │            │          │
    │            │          ▼
-   │            │     aid-track ◄────── deployment / schedule / alert
-   │            │      → TRACK-REPORT.md
+   │            │     aid-monitor ◄────── deployment / schedule / alert
+   │            │      → MONITOR-STATE.md
    └────────────┤─────────┤
                 │         │
                 │         ▼
-                │     aid-triage
-                │      → TRIAGE.md (includes root cause analysis for bugs)
+                │     aid-monitor
+                │      → MONITOR-STATE.md (includes root cause analysis for bugs)
                 │         │
                 │    ┌────┴─────┐
                 │    │          │
@@ -1014,13 +990,13 @@ Ship to Test | Rework (minor) | Rework (major) | Re-implement
 
 ### The Two Post-Production Paths
 
-**Bug path (short):** Track → Triage → Implement → Review → Test → Deploy. Four phases to fix, not eleven. Triage maps the root cause — diagnosis, files to touch, tests to add — and hands it to Implement as a task. No re-specification, no re-planning.
+**Bug path (short):** Monitor → Execute → Deploy. Three phases to fix. Monitor maps the root cause — diagnosis, files to touch, tests to add — and hands it to Implement as a task. No re-specification, no re-planning.
 
-**Change Request path (full):** Track → Triage → Discover. The CR enters the development pipeline as a new project. It gets its own requirements, its own spec, its own plan. The full pipeline ensures that changes are understood before they're built.
+**Change Request path (full):** Monitor → Discover. The CR enters the development pipeline as a new project. It gets its own requirements, its own spec, its own plan. The full pipeline ensures that changes are understood before they're built.
 
 ### Flow Rules
 
-1. **Linear by default.** Discover → Interview → Specify → Plan → Detail → Implement → Review → Test → Deploy → Track → Triage.
+1. **Linear by default.** Discover → Interview → Specify → Plan → Detail → Execute → Deploy → Monitor.
 2. **Human approves each phase transition.** The pipeline never auto-advances.
 3. **Feedback to KB.** Any phase can trigger targeted discovery. The KB is always the return target.
 4. **Feedback to Spec.** Plan, Detail, Implement, Review, and Test can trigger spec revision.
@@ -1029,7 +1005,7 @@ Ship to Test | Rework (minor) | Rework (major) | Re-implement
 7. **Each phase produces persistent artifacts.** Each artifact has a revision history.
 8. **The KB outlives the project.** It's institutional memory for future work.
 9. **Bugs take the short path.** Implement → Review → Test → Deploy. No re-specification.
-10. **CRs take the full path.** Triage routes to Discover. New cycle, new spec, new plan.
+10. **CRs take the full path.** Monitor routes to Discover. New cycle, new spec, new plan.
 11. **Track runs continuously.** It monitors production on schedule or on deployment.
 12. **Detail feeds Implement.** Plan feeds Detail. Strategy flows down; tactics flow up when strategy is insufficient.
 
@@ -1111,7 +1087,7 @@ Both AID and SDD:
 | **Agent model** | One agent per spec | Multi-agent orchestration with specialists |
 | **Delivery model** | Spec → code → done | Spec → plan → detail → implement → review → test → deploy |
 | **Memory** | Stateless | Knowledge Base persists across sessions |
-| **Post-delivery** | Not addressed | Track → Triage → Implement/Discover |
+| **Post-delivery** | Not addressed | Monitor → Execute (bugs) / Discover (CRs) |
 | **Scope** | Code generation | Full lifecycle: discovery through production maintenance |
 | **Human role** | Spec writer, reviewer | Co-pilot across all phases |
 
@@ -1150,7 +1126,7 @@ SDD is not wrong. It's incomplete. AID is SDD + Discovery + Feedback Loops + Two
 
 ### Adopting Incrementally
 
-You don't need to use all eleven phases from day one:
+You don't need to use all eight phases from day one:
 
 - **Start with Detail + Implement.** If you already have specs, just formalize your task decomposition and agent execution.
 - **Add Review.** Introduce the grading system and spec-anchored review.

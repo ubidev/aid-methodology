@@ -165,7 +165,7 @@ After the PR is merged:
 2. **Tag/release** — if this delivery is a release milestone.
 3. **Notify stakeholders** — share the delivery summary.
 4. **Plan next delivery** — if more deliveries remain in the spec.
-5. **Trigger aid-track** — begin production monitoring.
+5. **Trigger aid-monitor** — begin production monitoring.
 
 ## Quality Checklist
 
@@ -190,7 +190,7 @@ The delivery summary and KB updates are especially important — they capture th
 ## Related Phases
 
 - **Previous:** [Test](../aid-execute/) — TEST-REPORT.md must have PASS verdict
-- **Next:** [Track](../aid-track/) — production monitoring begins
+- **Next:** [Track](../aid-monitor/) — production monitoring begins
 - **Feedback to:** Any phase if final verification reveals issues
 
 ## See Also

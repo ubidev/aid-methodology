@@ -15,8 +15,7 @@
 | `aid-execute` | 6. Implement | TASK → code with build verification |
 | `aid-execute` | 8. Test | Staging validation — E2E, integration, manual |
 | `aid-deploy` | 9. Deploy | Final verification, PR, KB updates |
-| `aid-track` | 10. Track | Production telemetry interpretation |
-| `aid-triage` | 11. Triage | Root cause analysis + classify findings → route to implement or discover |
+| `aid-monitor` | 8. Monitor | Orchestrator | Observe, classify, route production findings |
 
 ## Usage
 
@@ -27,7 +26,7 @@ Skills are loaded as context when matched by description. Cursor uses the `Task`
 ```
 Init → Discover → Interview → Specify → Plan → Detail → Implement → Review → Test → Deploy
   ↑                                                                                    │
-  └──────────────────────── feedback loops (GAP.md, IMPEDIMENT.md, TRACK-REPORT.md) ──┘
+  └──────────────────────── feedback loops (GAP.md, IMPEDIMENT.md, MONITOR-STATE.md) ──┘
 ```
 
 See the repo's [`skills/`](../../skills/README.md) directory for human-readable documentation with rationale and examples.

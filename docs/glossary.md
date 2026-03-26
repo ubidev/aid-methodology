@@ -6,11 +6,11 @@ Terms and concepts used throughout the AID methodology.
 
 ## Core Concepts
 
-**AID (AI-Integrated Development):** A structured methodology for building and maintaining software with AI agents. 9 phases, 4 groups. Human and AI co-execute every phase.
+**AID (AI-Integrated Development):** A structured methodology for building and maintaining software with AI agents. 8 phases, 4 groups. Human and AI co-execute every phase.
 
 **Knowledge Base (KB):** Up to 14 markdown documents that capture the living understanding of a project. The gravitational center of AID — not the spec, not the code. Updated continuously across phases.
 
-**Feedback Loop:** A formal pathway for a downstream phase to revise upstream artifacts. Produces an artifact (GAP.md, IMPEDIMENT.md, or TRIAGE.md) with a revision trail.
+**Feedback Loop:** A formal pathway for a downstream phase to revise upstream artifacts. Produces an artifact (GAP.md, IMPEDIMENT.md, or MONITOR-STATE.md) with a revision trail.
 
 **Phase Gate:** A human decision point between phases. The human reviews the phase output and approves advancement. "OK?" is the gate.
 
@@ -37,8 +37,8 @@ Terms and concepts used throughout the AID methodology.
 | **Review** | Execute | REVIEW.md (grade A+ to F) |
 | **Test** | Execute | TEST-REPORT.md |
 | **Deploy** | Deliver | Delivery summary, KB update, PR |
-| **Track** | Deliver | TRACK-REPORT.md |
-| **Triage** | Deliver | TRIAGE.md (BUG → Implement / CR → Discover / Infrastructure / No Action) |
+| **Track** | Deliver | MONITOR-STATE.md |
+| **Triage** | Deliver | MONITOR-STATE.md (BUG → Implement / CR → Discover / Infrastructure / No Action) |
 
 ---
 
@@ -50,9 +50,9 @@ Terms and concepts used throughout the AID methodology.
 
 **IMPEDIMENT.md:** Filed when implementation discovers the plan or spec is wrong. Contains: what was assumed, what's true, proposed revision, and impact assessment.
 
-**TRIAGE.md:** Filed when production monitoring identifies an issue. Classifies as BUG (short path → Implement), CR (full cycle → Discover), Infrastructure (ops team), or No Action (monitor only). For bugs, includes root cause analysis, patch scope, and test requirements.
+**MONITOR-STATE.md:** Filed when production monitoring identifies an issue. Classifies as BUG (short path → Implement), CR (full cycle → Discover), Infrastructure (ops team), or No Action (monitor only). For bugs, includes root cause analysis, patch scope, and test requirements.
 
-**CORRECTION.md (Deprecated):** Formerly produced by the Correct phase for root cause analysis. Root cause analysis is now part of Triage and documented directly in TRIAGE.md.
+**CORRECTION.md (Deprecated):** Formerly produced by the Correct phase for root cause analysis. Root cause analysis is now part of Triage and documented directly in MONITOR-STATE.md.
 
 **Grading (A+ to F):** The review phase's quality scale. A+ (exemplary) through F (doesn't build). Evaluates spec compliance, architecture adherence, and convention conformance. Domain-specific quality checks (e.g., data accuracy thresholds) are defined per project in the SPEC.md.
 

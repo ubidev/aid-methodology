@@ -16,7 +16,7 @@ Critically, the Orchestrator enforces **human gates** — phase transitions requ
 |---------|---------|
 | **Pipeline start** | Determines the first phase (Discovery for brownfield, Interview for greenfield) |
 | **Phase transitions** | Routes output from one phase to the next, with human approval |
-| **Feedback routing** | Handles GAP.md, IMPEDIMENT.md, TRIAGE.md routing |
+| **Feedback routing** | Handles GAP.md, IMPEDIMENT.md, MONITOR-STATE.md routing |
 | **Specialist dispatch** | Decides when UX, Security, DevOps, etc. are needed |
 | **Parallel coordination** | Manages multi-agent execution for independent tasks |
 
@@ -60,7 +60,7 @@ The Orchestrator never writes code, never writes specs, never runs tests. It *co
 
 - **Human gates are sacred.** Phase transitions require explicit human approval. No auto-advancing.
 - **Context preparation.** Before dispatching an agent, the Orchestrator assembles the right context: relevant KB docs, spec sections, task files, constraints.
-- **Feedback routing.** GAP.md → appropriate handler (Interviewer for ambiguity, Researcher for KB gaps). IMPEDIMENT.md → Architect for spec revision. TRIAGE.md → Implement for bugs (short path), Discover for CRs.
+- **Feedback routing.** GAP.md → appropriate handler (Interviewer for ambiguity, Researcher for KB gaps). IMPEDIMENT.md → Architect for spec revision. MONITOR-STATE.md → Implement for bugs (short path), Discover for CRs.
 - **Never implements directly.** The Orchestrator's power is in *knowing who to call*, not in doing the work.
 - **Parallel awareness.** Tracks which tasks are independent, which have dependencies, and manages execution order accordingly.
 
@@ -73,8 +73,8 @@ The Orchestrator never writes code, never writes specs, never runs tests. It *co
 | GAP.md `type: ambiguity` | Architect → Interviewer | Spec ambiguity, may need stakeholder input |
 | GAP.md `type: contradiction` | Human decision | Conflicting constraints, human resolves |
 | IMPEDIMENT.md | Architect | Spec vs. reality mismatch |
-| TRIAGE.md `classification: BUG` | Developer (short bug path) | Triage includes root cause analysis; route directly to Implement |
-| TRIAGE.md `classification: CR` | Discover (new cycle) | Full lifecycle for change requests |
+| MONITOR-STATE.md `classification: BUG` | Developer (short bug path) | Monitor includes root cause analysis; route directly to Implement |
+| MONITOR-STATE.md `classification: CR` | Discover (new cycle) | Full lifecycle for change requests |
 
 ## Escalation
 

@@ -17,7 +17,7 @@ Skills are located in `.claude/skills/` (shared across all tools):
 - `/aid-interview` — Gather requirements → create tasks + features
 - `/aid-specify` — Technical refinement per feature
 - `/aid-plan` → `/aid-detail` → `/aid-execute` → `/aid-deploy`
-- `/aid-track` → `/aid-triage` (production monitoring)
+- `/aid-monitor` → `/aid-monitor` (production monitoring)
 
 ## Rules
 1. One piece. One agent. One verification. Then next.

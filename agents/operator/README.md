@@ -23,7 +23,7 @@ Typically invoked by the **Orchestrator** after code passes the Critic's quality
 - **Pull Requests** — with structured descriptions referencing TASK, SPEC, and delivery context
 - **Delivery summaries** — what was shipped, what it does, what was tested
 - **KB updates** — post-delivery Knowledge Base amendments
-- **TRACK-REPORT.md** triggers — sets up monitoring expectations for the Track phase
+- **MONITOR-STATE.md** triggers — sets up monitoring expectations for the Track phase
 
 ## How It Differs from Similar Agents
 

@@ -1,9 +1,9 @@
 # Correction — {Bug ID or Title}
 
-> **Deprecated:** The Correct phase has been merged into Triage. Root cause analysis, patch scope, and test requirements are now documented directly in TRIAGE.md. This template is retained for reference only.
+> **Deprecated:** The Correct phase has been merged into Triage. Root cause analysis, patch scope, and test requirements are now documented directly in MONITOR-STATE.md. This template is retained for reference only.
 
 ## Source
-**Triage:** {reference to TRIAGE.md}
+**Triage:** {reference to MONITOR-STATE.md}
 **Bug:** {one-line summary of the bug}
 **Severity:** {from triage: Critical | High | Medium | Low}
 

@@ -15,7 +15,7 @@ When the spec says one thing but the code says another, the Developer doesn't si
 | Phase | Purpose |
 |-------|---------|
 | **Implement** | Primary code implementation from TASK files |
-| **Implement (bug fix)** | Bug fixes guided by TRIAGE.md root cause analysis (from the Triage → Implement flow) |
+| **Implement (bug fix)** | Bug fixes guided by MONITOR-STATE.md root cause analysis (from the Monitor → Implement flow) |
 
 Typically invoked by the **Orchestrator** when tasks are ready for implementation. May run in parallel for independent tasks.
 
@@ -50,7 +50,7 @@ The Developer is the execution engine. It doesn't decide *what* to build (Archit
 
 - *"Implement task-003: Add pagination to the user list API."* → Developer reads the task, implements, runs build
 - *"The task says to use the UserRepository but it doesn't exist."* → Developer creates IMPEDIMENT.md
-- *"TRIAGE.md says the date parsing bug is in `utils/parse.ts` line 47."* → Developer fixes the specific bug
+- *"MONITOR-STATE.md says the date parsing bug is in `utils/parse.ts` line 47."* → Developer fixes the specific bug
 - *"Implement three independent tasks in parallel."* → Orchestrator spawns three Developer instances
 
 ## Key Behaviors

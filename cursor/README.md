@@ -50,8 +50,8 @@ Skills are the full AID phase instructions. Cursor loads them based on relevance
 | `aid-execute` | Implement | Execute tasks with KB context, mandatory build verification |
 | `aid-execute` | Test | Staging validation — E2E, integration, manual testing |
 | `aid-deploy` | Deploy | Final verification, PR creation, delivery summary, KB updates |
-| `aid-track` | Track | Production telemetry interpretation → `TRACK-REPORT.md` |
-| `aid-triage` | Triage | Classify findings (BUG/CR/Infra), root cause analysis, routing |
+| `aid-monitor` | Track | Production telemetry interpretation → `MONITOR-STATE.md` |
+| `aid-monitor` | Triage | Classify findings (BUG/CR/Infra), root cause analysis, routing |
 
 ### Phase Flow
 

@@ -42,8 +42,7 @@ Each skill represents one phase of the AID pipeline. These README files provide 
 | Skill | Phase | Purpose |
 |-------|-------|---------|
 | [aid-deploy](aid-deploy/README.md) | 7. Deploy | Final verification, PR creation, KB update, delivery summary |
-| [aid-track](aid-track/README.md) | 8. Track | Interpret production telemetry — not just collect, understand |
-| [aid-triage](aid-triage/README.md) | 9. Triage | Classify production findings, perform root cause analysis for bugs, and route (BUG → Execute, CR → Discover) |
+| [aid-monitor](aid-monitor/README.md) | 8. Monitor | Observe production, classify findings (BUG/CR/Infra/No Action), route actions |
 
 ---
 
@@ -60,7 +59,7 @@ Every project:
 
 ## Incremental Adoption
 
-You don't need all 9 phases from day one:
+You don't need all 8 phases from day one:
 
 1. **Start:** Detail + Execute (formalize task decomposition and agent execution)
 2. **Add:** Review (introduce grading and spec-anchored review)
@@ -69,4 +68,4 @@ You don't need all 9 phases from day one:
 5. **Add:** Discover (for next brownfield project)
 6. **Add:** Interview (for next client engagement)
 7. **Add:** Track + Triage (once shipping regularly — Triage includes root cause analysis for bugs)
-8. **Full pipeline:** All 9 phases with feedback loops
+8. **Full pipeline:** All 8 phases with feedback loops
