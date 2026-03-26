@@ -77,6 +77,16 @@ For each task in this deliverable:
 
 ---
 
+## Inputs
+
+- **PLAN.md** — deliverable definition, success criteria
+- **Feature SPECs** — acceptance criteria, NFRs for features in this deliverable
+- **Task files** — `tasks/task-NNN.md` for tasks in this deliverable
+- **KB via INDEX.md** — Read `.aid/knowledge/INDEX.md`, use summaries to pull
+  relevant docs (typically test-landscape, infrastructure — but let the INDEX guide you)
+
+---
+
 ## Process
 
 ### Step 1: Deploy to Staging

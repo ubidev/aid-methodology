@@ -18,7 +18,8 @@ Classify findings, map the fix for bugs, and route everything. The classificatio
 
 - `TRACK-REPORT.md` — findings from production
 - Feature SPECs: `.aid/{work}/features/*/SPEC.md` — expected behavior
-- `.aid/knowledge/` — system context
+- **KB via INDEX.md** — Read `.aid/knowledge/INDEX.md`, use summaries to pull
+  relevant docs for root cause analysis (typically module-map, architecture, security-model)
 - `.aid/{work}/tasks/task-{id}.md` files — acceptance criteria for affected features
 
 ## Process
@@ -52,7 +53,7 @@ Before routing, perform root cause analysis using the KB:
 1. **Reproduce the path.** Trace from TRIAGE evidence: endpoint → module → function.
 2. **Identify the fault.** What specific code is wrong? Missing validation? Wrong assumption? Race condition?
 3. **Understand why.** Spec ambiguous? Edge case missed? KB assumption wrong?
-4. **Assess impact.** Broken functionality, user count. Check module consumers (`.aid/knowledge/module-map.md`). Data integrity affected?
+4. **Assess impact.** Broken functionality, user count. Check module consumers (look up module-map via INDEX.md). Data integrity affected?
 5. **Define patch scope.** Exactly which files change and why. Minimal surface area — fix the bug, don't refactor.
 6. **Test requirements.** Fix verification test + regression tests + coverage gap.
 

@@ -20,7 +20,8 @@ Final verification, PR, delivery summary, documentation updates.
 - `.aid/{work}/PLAN.md` — deliverables and success criteria
 - REVIEW.md files, TEST-REPORT.md
 - Feature SPECs: `.aid/{work}/features/*/SPEC.md`
-- `.aid/knowledge/`
+- **KB via INDEX.md** — Read `.aid/knowledge/INDEX.md`, use summaries to pull
+  relevant docs for verifying conventions, updating architecture, etc.
 
 ## Prerequisites
 

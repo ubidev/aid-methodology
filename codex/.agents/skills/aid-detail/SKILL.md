@@ -74,7 +74,8 @@ Each deliverable follows the same cycle:
 
 - **PLAN.md** — deliverables, ordering, dependencies
 - **Feature SPECs** — all `features/*/SPEC.md` within the work
-- **KB (selective):** `architecture.md`, `module-map.md`, `coding-standards.md`
+- **KB via INDEX.md** — Read `.aid/knowledge/INDEX.md`, use summaries to pull
+  relevant docs (typically architecture, module-map, coding-standards — but let the INDEX guide you)
 
 ## The Rules
 

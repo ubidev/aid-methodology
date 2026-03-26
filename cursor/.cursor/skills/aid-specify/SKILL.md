@@ -118,12 +118,10 @@ Read ALL before making any proposal:
 
 1. **SPEC.md** — the feature's requirements (description, user stories, acceptance criteria)
 2. **REQUIREMENTS.md** — full requirements for cross-reference
-3. **KB documents via INDEX.md:**
-   - Always: `architecture.md`, `technology-stack.md`, `coding-standards.md`,
-     `module-map.md`, `data-model.md`
-   - If relevant: `api-contracts.md`, `integration-map.md`, `security-model.md`,
-     `domain-glossary.md`, `test-landscape.md`, `infrastructure.md`,
-     `ui-architecture.md`
+3. **KB via INDEX.md** — Read `.aid/knowledge/INDEX.md` first. Use the summaries
+   to decide which KB docs are relevant to this feature, then load them.
+   At minimum you'll need architecture, coding-standards, and data-model for
+   most features, but let the INDEX guide you — don't guess.
    - **Greenfield:** If KB docs are init placeholders (`❌ Pending`), treat as empty.
      Propose from scratch; decisions will seed KB during Write step.
 4. **Codebase** — `Grep`/`Glob` to explore relevant source code. Skip for greenfield.

@@ -87,7 +87,8 @@ Each deliverable follows the same cycle:
 
 - **All feature SPECs** — requirements, tech spec, priority, acceptance criteria
 - **REQUIREMENTS.md** — scope boundaries, overall priority
-- **KB (selective):** `architecture.md`, `module-map.md`, `tech-debt.md`
+- **KB via INDEX.md** — Read `.aid/knowledge/INDEX.md`, use summaries to pull
+  relevant docs (typically architecture, module-map, tech-debt — but let the INDEX guide you)
 - **Known Issues** — `.aid/{work}/known-issues.md` (if exists). Issues registered
   by Specify that block or affect features. Plan may create a fix-first deliverable
   or sequence features to address issues before dependent work.

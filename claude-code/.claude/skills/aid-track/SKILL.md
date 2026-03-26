@@ -19,7 +19,7 @@ Track interprets, it doesn't just collect. "Error rate increased 340% after depl
 
 ## Inputs
 
-Any combination of: error tracking (Sentry, AppInsights, CloudWatch), issue trackers, CI/CD results, APM, test trends, user feedback. Plus `.aid/knowledge/` for baseline context.
+Any combination of: error tracking (Sentry, AppInsights, CloudWatch), issue trackers, CI/CD results, APM, test trends, user feedback. Plus **KB via INDEX.md** — read `.aid/knowledge/INDEX.md` to find baseline context (architecture, infrastructure, test-landscape, etc.).
 
 ## Process
 
