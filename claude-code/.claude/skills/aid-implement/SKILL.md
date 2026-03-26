@@ -101,13 +101,13 @@ If dirty → **STOP.** Ask user to commit or stash first.
 - `.aid/{work}/tasks/task-NNN.md` — primary prompt
 - Feature SPEC: `.aid/{work}/features/{feature}/SPEC.md` — Technical Specification
   sections from the task's Source feature
-- `.aid/knowledge/INDEX.md` — agent's KB map for self-service
+- `.aid/knowledge/INDEX.md` — KB index for self-service lookup
 - `.aid/knowledge/coding-standards.md` — mandatory
 - `.aid/knowledge/architecture.md` — mandatory
-- `.aid/knowledge/technology-stack.md` — mandatory (build + lint commands)
-- `.aid/knowledge/test-landscape.md` — mandatory (test commands + patterns)
 
-**Load if task scope touches:**
+**Load from INDEX.md based on task scope** (read INDEX, pull what's relevant):
+- `technology-stack.md` — build commands, lint commands, dev tooling
+- `test-landscape.md` — test commands, test patterns, coverage
 - `data-model.md` — DB migrations, schema changes
 - `api-contracts.md` — API endpoints
 - `integration-map.md` — external service calls
@@ -126,9 +126,8 @@ Spawn a coding agent with assembled context:
 1. Task content (full task-NNN.md)
 2. Feature SPEC Technical Specification sections
 3. Coding standards + architecture (always)
-4. 1-3 additional KB docs based on task scope
-5. INDEX.md for self-service KB access
-6. known-issues.md if relevant
+4. INDEX.md — use it to find and load KB docs relevant to the task scope
+5. known-issues.md if relevant
 
 **Agent rules:**
 ```
@@ -147,10 +146,10 @@ RULES:
 - Match interface contracts from feature SPEC
 - Write unit tests for all new code AND update existing tests affected by changes
 - Before reporting done, verify ALL THREE gates pass using the **exact commands
-  from the KB** (do NOT guess — look them up):
-  1. **Build** — run the build command from `technology-stack.md` § Build Commands
-  2. **Lint** — run the lint command from `technology-stack.md` § Lint Commands
-  3. **Unit tests** — run the test command from `test-landscape.md` § Test Commands
+  from the KB** (look them up via INDEX.md — do NOT guess):
+  1. **Build** — find and run the project's build command
+  2. **Lint** — find and run the project's lint command
+  3. **Unit tests** — find and run the project's test command
 - If you find a contradiction between SPEC and codebase → STOP and report
   as IMPEDIMENT. Do NOT silently work around it.
 - Commit messages: "task-NNN: {description}"
@@ -172,8 +171,7 @@ Spawn a **separate reviewer agent** (clean context, no implementation knowledge)
 - Feature SPEC — expected behavior
 - coding-standards.md — convention reference
 - architecture.md — pattern reference
-- technology-stack.md — build + lint commands
-- test-landscape.md — test commands + patterns
+- INDEX.md — for looking up additional KB docs as needed
 
 **Reviewer checks:**
 
@@ -185,9 +183,8 @@ Spawn a **separate reviewer agent** (clean context, no implementation knowledge)
    no deep nesting, no magic numbers? YAGNI — no over-engineering?
 5. **Test Coverage** — unit tests for new code? Existing tests updated?
    Edge cases covered? Tests actually test behavior, not implementation details?
-6. **Build Health** — run the exact commands from KB docs (`technology-stack.md`
-   § Build Commands, § Lint Commands; `test-landscape.md` § Test Commands).
-   Build clean? Lint clean? All tests green?
+6. **Build Health** — find and run the project's build, lint, and test commands
+   (look up via INDEX.md if not already loaded). Build clean? Lint clean? All tests green?
 
 **Issue Classification:**
 

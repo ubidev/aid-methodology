@@ -422,14 +422,14 @@ If your task touches an area covered here, read the relevant document first.
 | project-structure.md | {2-3 line summary of repo structure, key directories, detected tech} |
 | external-sources.md | {2-3 line summary of external documentation sources, or "none provided"} |
 | architecture.md | {2-3 line summary of patterns found and structure} |
-| technology-stack.md | {2-3 line summary of stack} |
+| technology-stack.md | {2-3 line summary of stack — mention that it contains build + lint commands} |
 | module-map.md | {2-3 line summary of modules} |
 | coding-standards.md | {2-3 line summary of key conventions} |
 | data-model.md | {2-3 line summary of data model} |
 | api-contracts.md | {2-3 line summary of API surface} |
 | integration-map.md | {2-3 line summary of integrations} |
 | domain-glossary.md | {2-3 line summary of key terms} |
-| test-landscape.md | {2-3 line summary of test coverage} |
+| test-landscape.md | {2-3 line summary of test coverage — mention that it contains test commands} |
 | security-model.md | {2-3 line summary of security posture} |
 | tech-debt.md | {2-3 line summary of debt and risk} |
 | infrastructure.md | {2-3 line summary of infrastructure} |
