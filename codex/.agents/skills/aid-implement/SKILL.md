@@ -64,7 +64,7 @@ Read `task-NNN.md`. It has 4 sections:
 - **Scope** — files/endpoints/migrations/config to create or modify
 - **Acceptance Criteria** — concrete, testable conditions
 
-### Check 3: Branch Isolation
+### Check 4: Branch Isolation
 
 **One branch per delivery. All tasks in a delivery share the same branch.**
 
@@ -80,7 +80,7 @@ Read `task-NNN.md`. It has 4 sections:
 ⚠️ **Before creating a new branch:** verify working tree is clean.
 If dirty → **STOP.** Ask user to commit or stash first.
 
-### Check 4: Determine State
+### Check 5: Determine State
 
 | Condition | State |
 |-----------|-------|
@@ -127,18 +127,31 @@ Spawn a coding agent with assembled context:
 **Agent rules:**
 ```
 RULES:
+- YAGNI — implement exactly what the task specifies. Nothing more.
+  No "while I'm here" extras, no speculative abstractions, no future-proofing.
 - Follow coding-standards.md exactly (naming, patterns, error handling)
+- Write clean code regardless of what coding-standards.md covers:
+  · Meaningful names (variables, methods, classes) — self-documenting
+  · Small methods — single responsibility, one level of abstraction
+  · No deep nesting — extract early returns, guard clauses
+  · DRY — but don't over-abstract; duplication is better than wrong abstraction
+  · Clear error handling — no silent swallows, no generic catches
+  · Minimal comments — code explains itself; comments explain WHY, not WHAT
+  · No magic numbers or strings — use named constants
 - Match interface contracts from feature SPEC
-- Write unit tests for all new code (test files are part of Scope)
-- Run the build and ALL tests before reporting done
+- Write unit tests for all new code AND update existing tests affected by changes
+- Before reporting done, verify ALL THREE pass:
+  1. Build (zero errors, zero warnings)
+  2. Linting (zero violations)
+  3. All unit tests (new and existing)
 - If you find a contradiction between SPEC and codebase → STOP and report
   as IMPEDIMENT. Do NOT silently work around it.
 - Commit messages: "task-NNN: {description}"
 ```
 
-**When agent reports done:** verify build + tests pass. If they don't,
-send agent back to fix. Only proceed to Review when build is green
-and all tests pass.
+**When agent reports done:** verify build + lint + ALL unit tests pass.
+If any fail, send agent back to fix. Only proceed to Review when all
+three gates are green.
 
 ---
 
@@ -159,7 +172,12 @@ Spawn a **separate reviewer agent** (clean context, no implementation knowledge)
 1. **Specification Compliance** — every acceptance criterion met?
 2. **Architecture Compliance** — patterns, module boundaries, dependency direction?
 3. **Convention Compliance** — naming, error handling, logging, file organization?
-4. **Test Coverage** — unit tests for new code? Edge cases?
+4. **Code Quality** — clean code independent of project conventions?
+   Small methods? Meaningful names? Single responsibility? No god classes,
+   no deep nesting, no magic numbers? YAGNI — no over-engineering?
+5. **Test Coverage** — unit tests for new code? Existing tests updated?
+   Edge cases covered? Tests actually test behavior, not implementation details?
+6. **Build Health** — build clean? Lint clean? All tests green?
 
 **Issue Classification:**
 
@@ -316,9 +334,12 @@ Branch is merged only after `/aid-test` passes.
 
 - [ ] On correct delivery branch (`aid/delivery-NNN`)
 - [ ] Agent received task + feature SPEC + INDEX.md + relevant KB docs
+- [ ] YAGNI — no code beyond what the task specifies
+- [ ] Clean code — small methods, meaningful names, no deep nesting, no magic numbers
 - [ ] Build passes (zero errors, zero warnings)
-- [ ] All tests pass (new and existing)
-- [ ] Unit tests written for new code
+- [ ] Lint passes (zero violations)
+- [ ] All unit tests pass (new and existing)
+- [ ] Unit tests written for new code AND existing tests updated where affected
 - [ ] Files changed match task Scope
 - [ ] Reviewer graded ≥ A- (separate agent, clean context)
 - [ ] No silent workarounds — impediments documented
