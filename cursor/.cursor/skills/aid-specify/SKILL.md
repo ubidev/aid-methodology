@@ -418,9 +418,29 @@ Created from `../templates/known-issues.md` on first issue found.
 **Excluded** (scope creep):
 - Coding standard violations → already in `coding-standards.md` (KB)
 - Code smells / long methods → general tech debt, not actionable per-feature
-- Missing test coverage → handled by acceptance criteria on the feature/task
-- Performance concerns → handled by acceptance criteria on the feature/task
 - Tech debt not touching this feature → stays in `tech-debt.md` (KB)
+
+---
+
+## Feature-Specific Quality Gates
+
+REQUIREMENTS.md §6 defines the **project baseline** for unit tests and linting.
+Specify may add **feature-specific requirements** on top of that baseline.
+
+During the Discussion Loop, when proposing sections that involve complex logic,
+edge cases, or critical paths, explicitly discuss:
+
+- **Test requirements beyond baseline** — "This auth flow has 5 edge cases
+  (expired token, revoked user, concurrent refresh, etc.) — each needs an
+  explicit test beyond the coverage minimum."
+- **Feature-specific lint rules** — "This module handles user input — stricter
+  lint rules for input validation apply (e.g., no raw string concatenation
+  in SQL queries)."
+
+Write these in the relevant SPEC.md section (e.g., within Security Specs, Feature Flow,
+or a dedicated "Quality Requirements" subsection if multiple apply).
+
+These flow down to `/aid-detail` where they become concrete acceptance criteria on tasks.
 
 **Cross-reference with KB:** Before registering, check `tech-debt.md`. If already
 catalogued, add a reference (`See tech-debt.md #TD-NNN`) instead of duplicating.

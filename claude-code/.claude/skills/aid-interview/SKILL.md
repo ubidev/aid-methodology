@@ -218,6 +218,17 @@ Read INTERVIEW-STATE.md Section Status table. For each section:
    ```
    Only update REQUIREMENTS.md after the user responds.
 
+   **Quality gates inference:** When working on §6 Non-Functional Requirements, proactively
+   ask about these project-level baselines (if not already covered):
+   - **Unit test minimum** — coverage target for new code? (e.g., "all public methods",
+     "80% line coverage", "critical paths only")
+   - **Linting standard** — which linter and ruleset? (e.g., "ESLint + Airbnb", "Checkstyle
+     with Sun conventions", "default analyzer warnings-as-errors")
+   - **Build policy** — zero warnings required? Specific compiler flags?
+
+   These become the project baseline. `/aid-specify` may add feature-specific requirements
+   on top, and `/aid-detail` concretizes them per task.
+
    **UI-aware inference:** If `.aid/knowledge/ui-architecture.md` exists and has real content
    (not "backend-only"), proactively ask about these topics when working on §6 Non-Functional
    Requirements (if not already covered):

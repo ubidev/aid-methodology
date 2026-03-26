@@ -65,7 +65,7 @@ Each deliverable follows the same cycle:
 1. Check for `.aid/{work}/PLAN.md`
 2. If missing → **STOP.** "No PLAN.md found. Run `/aid-plan` first."
 
-### Check 3: Detect State
+### Check 4: Detect State
 
 - `tasks/` empty or missing → **FIRST RUN** (Step 1)
 - `tasks/` has files → **REVIEW** (enter loop at step 4)
@@ -98,10 +98,22 @@ Each deliverable follows the same cycle:
 **Acceptance Criteria:**
 - [ ] Criterion 1 — concrete, testable
 - [ ] Criterion 2 — concrete, testable
+- [ ] Unit tests for all new public methods/endpoints
 - [ ] All existing tests still pass
+- [ ] Build passes (zero errors, zero warnings)
+- [ ] Lint passes (zero violations)
 ```
 
 Four sections. Nothing else.
+
+**Quality gate cascade:** Every task inherits:
+1. **Project baseline** from REQUIREMENTS.md §6 (unit test minimum, linting standard)
+2. **Feature-specific requirements** from the SPEC.md quality sections (if any)
+
+Include these in Acceptance Criteria when writing tasks. Don't repeat the
+full baseline — reference it: "All §6 quality gates pass." Add feature-specific
+criteria explicitly when the SPEC calls for them (e.g., "explicit tests for
+all 5 auth edge cases per SPEC").
 
 ---
 
