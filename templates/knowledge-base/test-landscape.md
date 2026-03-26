@@ -85,7 +85,7 @@
 
 ## Known Test Gaps
 
-> Areas with insufficient test coverage — important for aid-implement to know what to add.
+> Areas with insufficient test coverage — important for aid-execute to know what to add.
 
 | Area | Gap | Risk | Recommendation |
 |------|-----|------|----------------|

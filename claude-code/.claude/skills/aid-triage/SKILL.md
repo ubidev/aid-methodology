@@ -2,7 +2,7 @@
 name: aid-triage
 description: >
   Classify production findings as BUG, Change Request, Infrastructure, or No Action.
-  For bugs: perform root cause analysis and map the patch. Routes bugs to aid-implement
+  For bugs: perform root cause analysis and map the patch. Routes bugs to aid-execute
   (short path), CRs to aid-discover (new cycle). Use when TRACK-REPORT.md has findings
   above severity thresholds.
 allowed-tools: Read, Glob, Grep, Bash
@@ -31,9 +31,9 @@ Per finding above threshold: observed symptoms, supporting evidence, impact.
 
 ```
 Does code do what the feature SPEC says?
-├── NO → BUG (spec right, code wrong) → root cause analysis → aid-implement
+├── NO → BUG (spec right, code wrong) → root cause analysis → aid-execute
 ├── YES, spec doesn't cover this case →
-│     Obvious fix? → BUG (spec gap) → root cause analysis → aid-implement
+│     Obvious fix? → BUG (spec gap) → root cause analysis → aid-execute
 │     Needs requirements input? → CHANGE REQUEST → aid-discover
 ├── YES, spec is now wrong → CHANGE REQUEST → aid-discover
 ├── NOT CODE → INFRASTRUCTURE → escalate to ops
@@ -59,10 +59,10 @@ Before routing, perform root cause analysis using the KB:
 
 Root cause = one sentence: "The `PaymentService.Process()` method doesn't validate null `currency` field, which spec says must default to USD."
 
-If root cause analysis is complex, produce `CORRECTION.md` as the task spec for aid-implement.
+If root cause analysis is complex, produce `CORRECTION.md` as the task spec for aid-execute.
 
 ### 5. Route
-- **BUG → aid-implement** (short path: implement → review → test → deploy)
+- **BUG → aid-execute** (short path: implement → review → test → deploy)
 - **CR → aid-discover** (full cycle or targeted)
 - **Infrastructure → ops** (outside AID)
 - **No Action → close** (document justification)

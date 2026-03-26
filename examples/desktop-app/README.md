@@ -38,8 +38,8 @@ This project demonstrates the **Plan→Detail→Implement→Review→Test→Depl
 
 ### Quality Gates
 
-- **Review (built into aid-implement):** Every delivery reviewed before merge. Graded A+ to F. P1/P2 issues fixed inline, P3+ documented.
-- **Test (aid-test):** Three-tier E2E testing:
+- **Review (built into aid-execute):** Every delivery reviewed before merge. Graded A+ to F. P1/P2 issues fixed inline, P3+ documented.
+- **Test (aid-execute):** Three-tier E2E testing:
   - **Mock:** All services mocked, CI-safe, fast (~80 tests)
   - **Integration:** Real data services + filesystem, hardware mocked (~67 tests)
   - **Full:** Real models, requires hardware (`[Trait("Requires", "Whisper")]`)

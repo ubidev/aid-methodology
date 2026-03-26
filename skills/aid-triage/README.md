@@ -31,11 +31,11 @@ Apply this decision tree:
 Does the code do what SPEC.md says it should?
 ├── NO → BUG
 │     The spec is right. The code is wrong.
-│     Route to aid-implement (short path).
+│     Route to aid-execute (short path).
 │
 ├── YES, but the spec doesn't cover this case → BUG (spec gap)
 │     The spec didn't specify edge case behavior.
-│     If the correct behavior is obvious → aid-implement.
+│     If the correct behavior is obvious → aid-execute.
 │     If the correct behavior needs requirements input → CR.
 │
 ├── YES, and the spec is now wrong → CHANGE REQUEST
@@ -65,7 +65,7 @@ Does the code do what SPEC.md says it should?
 
 Based on classification:
 
-**BUG → aid-implement (short path)**
+**BUG → aid-execute (short path)**
 Triage performs root cause analysis and documents it in TRIAGE.md. Then the bug routes directly to Implement → Review → Test → Deploy. Five phases total. No re-specification, no re-planning.
 
 **Change Request → aid-discover (new cycle)**
@@ -123,8 +123,8 @@ See [Triage Template](../../templates/feedback-artifacts/TRIAGE.md) for the full
 
 ## Triggers
 
-### → aid-implement (Short Bug Path)
-When classification is BUG, perform root cause analysis, produce TRIAGE.md (including root cause, patch scope, and test requirements), and hand off to `aid-implement` for the fix.
+### → aid-execute (Short Bug Path)
+When classification is BUG, perform root cause analysis, produce TRIAGE.md (including root cause, patch scope, and test requirements), and hand off to `aid-execute` for the fix.
 
 ### → aid-discover (New Cycle)
 When classification is Change Request, produce TRIAGE.md and route to `aid-discover` as a new project cycle. The CR becomes the input to discovery (or interview, for greenfield).
@@ -148,7 +148,7 @@ Triage is the classification, root cause analysis, and routing decision that pre
 ## Related Phases
 
 - **Previous:** [Track](../aid-track/) — provides TRACK-REPORT.md with findings
-- **Routes to:** [Implement](../aid-implement/) for bugs (short path), [Discover](../aid-discover/) for change requests
+- **Routes to:** [Implement](../aid-execute/) for bugs (short path), [Discover](../aid-discover/) for change requests
 
 ## See Also
 

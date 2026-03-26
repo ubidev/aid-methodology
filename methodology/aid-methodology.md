@@ -383,58 +383,40 @@ The interview has six states, advancing one per run:
 
 ---
 
-#### Phase 6: Implement (`aid-implement`)
+#### Phase 6: Execute (`aid-execute`)
 
-**Purpose:** Execute a task using an AI coding agent, with full context from the Knowledge Base.
+**Purpose:** Execute tasks based on their type. Not just coding — every task has a type that
+determines what the agent does and how the reviewer evaluates it.
 
-**Input:** `task-{id}.md` + per-feature `SPEC.md` (referenced by the task's Source field) + `.aid/knowledge/INDEX.md` + relevant KB documents.
+**Task Types:**
+- **RESEARCH** — investigate, compare options, document findings
+- **DESIGN** — mockups, wireframes, UI prototypes, interaction flows
+- **IMPLEMENT** — write code + unit tests
+- **TEST** — integration, E2E, UI, load tests
+- **DOCUMENT** — ADRs, API docs, runbooks, diagrams
+- **MIGRATE** — data migration scripts, schema changes
+- **REFACTOR** — restructure code without changing behavior
+- **CONFIGURE** — config files, CI/CD, environment setup
 
-**Process:**
-1. Load task spec as the primary prompt.
-2. Load the feature's SPEC.md + KB INDEX.md + coding standards + architecture as context.
-3. Spawn coding agent with this context. The agent can read additional KB documents on demand using the INDEX as a map.
-4. Agent implements the task, creating/modifying files and adding tests.
-5. **Build verification is mandatory.** "Done" means green build, not "I wrote some code."
+**Input:** `task-{id}.md` (with Type field) + per-feature `SPEC.md` + `.aid/knowledge/INDEX.md`.
 
-**Multi-agent parallel execution:** When the detail plan identifies independent tasks, multiple agents can execute simultaneously. Each gets its own branch. The orchestrator merges results.
+**Process (universal loop, all types):**
+1. Read task type and load relevant KB docs via INDEX.md.
+2. Execute according to type-specific rules (code, tests, research, design, etc.).
+3. Verify relevant gates pass (build, lint, tests — as applicable to the type).
+4. Dispatch separate reviewer agent (clean context) with type-specific review criteria.
+5. Grade using deterministic rubric. Present all issues to user.
+6. Fix CODE issues automatically. Route TASK/SPEC/KB issues as loopbacks.
+7. Loop until grade ≥ minimum. Circuit breaker after 3 cycles.
 
-**Impediment protocol:** When the agent discovers assumptions don't hold, it generates an `IMPEDIMENT.md` rather than silently working around the problem. Silent workarounds are how tech debt is born.
+**Branch isolation:** One branch per delivery (`aid/delivery-NNN`). All tasks in a
+delivery share the branch. RESEARCH and DOCUMENT tasks that produce only `.aid/`
+artifacts may skip branching.
 
-**Output:** Code changes + tests on a feature branch. Build green. Test green.
+**Impediment protocol:** When the agent discovers assumptions don't hold, it generates
+`IMPEDIMENT.md` rather than silently working around the problem.
 
-Review is built into `aid-implement`. After the coding agent finishes, a separate
-reviewer agent (clean context) grades the implementation A+ to F, tags issues
-by source (CODE/TASK/SPEC/KB), and auto-fixes P1/P2 CODE issues. The loop
-continues until grade ≥ A-. Circuit breaker after 3 cycles.
-
-**Branch isolation:** One branch per delivery (`aid/delivery-NNN`). All tasks in
-a delivery accumulate on the same branch. Branch merges only after testing passes.
-
-#### Phase 7: Test (`aid-test`)
-
-**Purpose:** Dynamic validation in staging — E2E tests, integration tests, manual testing.
-
-**Input:** Reviewed code (grade A- or above) + `DELIVERY-{id}.md` + per-feature SPECs.
-
-**Process:**
-1. Deploy to staging environment.
-2. Run full automated test suite (unit, integration, E2E).
-3. Validate user story acceptance criteria in staging.
-4. Test non-functional requirements (performance, concurrency, error handling).
-5. Manual testing where automation isn't feasible.
-
-**The gate between review and deploy.** Review catches what code *looks like*. Test catches what code *does*. Both gates are necessary.
-
-**Verdict:**
-- **PASS** — All tests pass, all acceptance criteria verified.
-- **PASS WITH NOTES** — All critical tests pass, minor issues documented.
-- **FAIL** — Critical issues found. Deploy blocked.
-
-**Output:** `TEST-REPORT.md` — test results, coverage, verdict.
-
-**Feedback loops:**
-- Test failure → aid-implement (fix the bug, then re-review, re-test).
-- Test reveals spec gap → aid-specify (revise spec, update tasks, re-implement).
+**Output:** Artifacts appropriate to the task type. Grade ≥ minimum. Review history in STATE.md.
 
 ---
 
@@ -444,7 +426,7 @@ a delivery accumulate on the same branch. Branch merges only after testing passe
 
 ---
 
-#### Phase 8: Deploy (`aid-deploy`)
+#### Phase 7: Deploy (`aid-deploy`)
 
 **Purpose:** Package, verify, and ship the completed delivery to production.
 
@@ -463,7 +445,7 @@ a delivery accumulate on the same branch. Branch merges only after testing passe
 - KB updated with any new discoveries.
 - Delivery summary for stakeholder communication.
 
-#### Phase 9: Track (`aid-track`)
+#### Phase 8: Track (`aid-track`)
 
 **Purpose:** Monitor production. Interpret telemetry, error logs, issue trackers, and performance metrics.
 
@@ -483,14 +465,14 @@ a delivery accumulate on the same branch. Branch merges only after testing passe
 
 **When to trigger:** On deployment, on schedule, on alert threshold, or on-demand.
 
-#### Phase 10: Triage (`aid-triage`)
+#### Phase 9: Triage (`aid-triage`)
 
 **Purpose:** Classify what Track found. For bugs: perform root cause analysis and map the fix. Route everything to the right path.
 
 **Input:** `TRACK-REPORT.md` + `.aid/knowledge/` + per-feature SPECs.
 
 **Classification:**
-- **BUG** — Code doesn't match spec. Perform root cause analysis, then route to aid-implement (short path).
+- **BUG** — Code doesn't match spec. Perform root cause analysis, then route to aid-execute (short path).
 - **Change Request** — Spec is wrong or incomplete. Route to aid-discover (new cycle).
 - **Infrastructure** — Not a code issue. Escalate to ops.
 - **No Action** — False positive, expected behavior, or below threshold.
@@ -559,7 +541,7 @@ The pipeline is sequential by default. But real engineering isn't linear. Assump
 
 **Trigger:** Tests fail due to implementation bugs discovered in staging.
 
-**Protocol:** Failures documented in TEST-REPORT.md → route back to `/aid-implement` for fix → `/aid-test` (re-run).
+**Protocol:** Failures documented in TEST-REPORT.md → route back to `/aid-execute` for fix → `/aid-execute` (re-run).
 
 #### Post-Production Loops (9-11)
 
@@ -592,7 +574,7 @@ Every change to an upstream artifact is tracked at the bottom of the artifact:
 |-----|------|--------|-------------|
 | 1.0 | Mar 1 | aid-specify | Initial spec |
 | 1.1 | Mar 5 | GAP-001 (aid-plan) | Added latency requirements |
-| 1.2 | Mar 8 | IMP-003 (aid-implement) | Changed sync model |
+| 1.2 | Mar 8 | IMP-003 (aid-execute) | Changed sync model |
 ```
 
 ### Feedback Loop Artifacts
@@ -613,7 +595,7 @@ Every change to an upstream artifact is tracked at the bottom of the artifact:
 
 ```markdown
 # IMPEDIMENT: IMP-003
-**Source:** aid-implement, task-F3a
+**Source:** aid-execute, task-F3a
 **Type:** wrong-assumption | missing-dependency | architecture-conflict | kb-gap
 **Description:** RecordingService is synchronous, not async as KB states.
 **KB Impact:** architecture.md needs revision
@@ -915,7 +897,7 @@ Ship to Test | Rework (minor) | Rework (major) | Re-implement
 {Why this classification. Reference feature SPEC for expected behavior.}
 
 ## Routing
-- **BUG →** aid-implement (short path: implement → review → test → deploy)
+- **BUG →** aid-execute (short path: implement → review → test → deploy)
 - **CR →** aid-discover (new cycle)
 - **Infrastructure →** ops escalation
 - **No Action →** closed with justification
@@ -994,7 +976,7 @@ Ship to Test | Rework (minor) | Rework (major) | Re-implement
    ┌─ IMPLEMENTATION ──────┤
    │            ┌───────────┤
    │            │           ▼
-   │            │     aid-implement ◄── IMPEDIMENT
+   │            │     aid-execute ◄── IMPEDIMENT
    │            │      → code + tests
    │            │           │
    │            │           ▼
@@ -1002,7 +984,7 @@ Ship to Test | Rework (minor) | Rework (major) | Re-implement
    │            │      → REVIEW.md
    │            │           │
    │            │           ▼
-   │            │     aid-test ◄─────── test failure → fix
+   │            │     aid-execute ◄─────── test failure → fix
    │            │      → TEST-REPORT.md
    └────────────┤──────────┤
                 │          │
@@ -1025,7 +1007,7 @@ Ship to Test | Rework (minor) | Rework (major) | Re-implement
                 │ BUG ↓      CR ↓
                 │    │          │
                 └────┘          └──→ aid-discover (new cycle)
-   (back to aid-implement)
+   (back to aid-execute)
 
  ─── ANY PHASE ──→ aid-discover (targeted) ──→ .aid/knowledge/* ──→ resume
 ```
@@ -1153,9 +1135,9 @@ SDD is not wrong. It's incomplete. AID is SDD + Discovery + Feedback Loops + Two
 4. Run `aid-specify` with REQUIREMENTS.md + KB as input.
 5. Run `aid-plan` to define the roadmap.
 6. Run `aid-detail` to decompose into tasks.
-7. Run `aid-implement` for each task.
-8. Review is built into `aid-implement` (code → review → fix → done).
-9. Run `aid-test` to validate in staging.
+7. Run `aid-execute` for each task.
+8. Review is built into `aid-execute` (code → review → fix → done).
+9. Run `aid-execute` to validate in staging.
 10. Run `aid-deploy` to package and ship.
 
 ### Starting a New Project (Greenfield)

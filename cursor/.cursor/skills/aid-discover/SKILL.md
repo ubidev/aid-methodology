@@ -919,7 +919,7 @@ module boundaries, data flow (entry→processing→persistence), DI registration
 Must have: languages with versions, frameworks with versions (from actual config files),
 databases, package managers, build tools, runtime, dev tooling.
 Must have: **Build Commands** section with exact build command(s), **Lint Commands** section
-with exact lint command(s). These are critical for aid-implement — agents need runnable
+with exact lint command(s). These are critical for aid-execute — agents need runnable
 commands, not just tool names.
 **Red flags**: "⚠️ Version TBD" on things extractable from pom.xml/package.json/manifests.
 Missing or vague Build/Lint Commands (e.g., just "Maven" without `mvn clean package`).
@@ -957,7 +957,7 @@ product names with explanations.
 Must have: frameworks, test types, coverage metrics/goals, CI integration, which modules
 have real tests vs placeholders, test gaps with severity.
 Must have: **Test Commands** section with exact commands to run all unit tests, per-module
-tests, and coverage reports. These are critical for aid-implement — agents need runnable
+tests, and coverage reports. These are critical for aid-execute — agents need runnable
 commands, not just framework names.
 **Red flags**: Too short. Missing per-module coverage assessment. Missing or vague Test
 Commands (e.g., just "JUnit" without `mvn test`).

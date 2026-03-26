@@ -99,5 +99,5 @@
 
 | Rev | Date | Source | Description |
 |-----|------|--------|-------------|
-| 1.0 | {date} | aid-test | Initial test report |
+| 1.0 | {date} | aid-execute | Initial test report |
 ```

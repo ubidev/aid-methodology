@@ -15,7 +15,7 @@ cp path/to/aid-methodology/cursor/AGENTS.md   AGENTS.md
 
 This gives you:
 - `.cursor/rules/` — Always-on rules (methodology workflow, code review standards)
-- `.cursor/skills/` — 12 phase skills (invoked on demand by the agent)
+- `.cursor/skills/` — 10 phase skills (invoked on demand by the agent)
 - `.cursor/agents/` — 19 specialist agents (dispatched via Task tool when available)
 - `AGENTS.md` — Project context for AI agents (edit with your project details)
 
@@ -47,8 +47,8 @@ Skills are the full AID phase instructions. Cursor loads them based on relevance
 | `aid-specify` | Specify | Requirements → formal `SPEC.md` grounded in KB |
 | `aid-plan` | Plan | High-level roadmap → `PLAN.md` (MVP, modules, deliverables) |
 | `aid-detail` | Detail | Decompose plan → user stories, `task-{id}.md` files, execution waves |
-| `aid-implement` | Implement | Execute tasks with KB context, mandatory build verification |
-| `aid-test` | Test | Staging validation — E2E, integration, manual testing |
+| `aid-execute` | Implement | Execute tasks with KB context, mandatory build verification |
+| `aid-execute` | Test | Staging validation — E2E, integration, manual testing |
 | `aid-deploy` | Deploy | Final verification, PR creation, delivery summary, KB updates |
 | `aid-track` | Track | Production telemetry interpretation → `TRACK-REPORT.md` |
 | `aid-triage` | Triage | Classify findings (BUG/CR/Infra), root cause analysis, routing |
@@ -104,7 +104,7 @@ Core pipeline agents for specific responsibilities across all AID phases.
 2. Edit `AGENTS.md` with your project description, build commands, and conventions
 3. Run Discovery: tell Cursor "run aid-discover" to generate the Knowledge Base
 4. Cursor automatically applies the always-on rules on every conversation
-5. Invoke phase skills as needed: "run aid-interview", "run aid-implement", etc.
+5. Invoke phase skills as needed: "run aid-interview", "run aid-execute", etc.
 
 ## Notes
 

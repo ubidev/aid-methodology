@@ -15,7 +15,7 @@ cp path/to/aid-methodology/codex/AGENTS.md  AGENTS.md
 ```
 
 This gives you:
-- `.agents/skills/aid-{phase}/SKILL.md` — Phase instructions in AgentSkills format (12 skills)
+- `.agents/skills/aid-{phase}/SKILL.md` — Phase instructions in AgentSkills format (10 skills)
 - `.codex/agents/{name}.toml` — Agent definitions in Codex TOML format (19 agents)
 - `AGENTS.md` — Project context for AI agents (edit with your project details)
 
@@ -57,7 +57,7 @@ This gives you:
 
 ## Skills
 
-12 phase skills (Phase 0 Init through Phase 11 Triage). See [`.agents/skills/README.md`](.agents/skills/README.md) for the full list.
+10 phase skills (Phase 0 Init through Phase 9 Triage). See [`.agents/skills/README.md`](.agents/skills/README.md) for the full list.
 Skills live in `.agents/skills/` — Codex reads skills from this directory.
 
 ## Usage

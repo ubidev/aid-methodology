@@ -21,7 +21,7 @@ Before starting deployment:
 
 - [ ] All tasks in the delivery are status "Complete."
 - [ ] All tasks passed review with grade A- or above.
-- [ ] Testing phase (aid-test) passed — TEST-REPORT.md is green.
+- [ ] Testing phase (aid-execute) passed — TEST-REPORT.md is green.
 - [ ] No open IMPEDIMENT.md files blocking this delivery.
 - [ ] No open GAP.md files blocking this delivery.
 
@@ -51,7 +51,7 @@ If final verification fails:
 2. Determine if it's a regression (existing test broke) or integration issue (tasks conflict).
 3. Fix on the feature branch.
 4. Re-run full verification.
-5. If the fix is non-trivial, loop back to aid-implement for the fix.
+5. If the fix is non-trivial, loop back to aid-execute for the fix.
 
 ### Step 2: Delivery Summary
 
@@ -85,7 +85,7 @@ Generate a summary of what this delivery contains:
 ## KB Updates During Delivery
 | Document | Change | Source |
 |----------|--------|--------|
-| coding-standards.md | Added FluentValidation convention | aid-implement |
+| coding-standards.md | Added FluentValidation convention | aid-execute |
 
 ## Known Issues
 {Any P3+ issues deferred to next delivery}
@@ -189,7 +189,7 @@ The delivery summary and KB updates are especially important — they capture th
 
 ## Related Phases
 
-- **Previous:** [Test](../aid-test/) — TEST-REPORT.md must have PASS verdict
+- **Previous:** [Test](../aid-execute/) — TEST-REPORT.md must have PASS verdict
 - **Next:** [Track](../aid-track/) — production monitoring begins
 - **Feedback to:** Any phase if final verification reveals issues
 

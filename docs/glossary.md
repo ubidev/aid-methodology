@@ -6,7 +6,7 @@ Terms and concepts used throughout the AID methodology.
 
 ## Core Concepts
 
-**AID (AI-Integrated Development):** A structured methodology for building and maintaining software with AI agents. 11 phases, 4 groups, 11 feedback loops. Human and AI co-execute every phase.
+**AID (AI-Integrated Development):** A structured methodology for building and maintaining software with AI agents. 9 phases, 4 groups. Human and AI co-execute every phase.
 
 **Knowledge Base (KB):** Up to 14 markdown documents that capture the living understanding of a project. The gravitational center of AID — not the spec, not the code. Updated continuously across phases.
 

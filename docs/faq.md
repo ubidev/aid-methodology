@@ -11,7 +11,7 @@ SDD covers spec→code. AID covers problem→production→maintenance. AID conta
 ### Is this just Waterfall rebranded?
 Yes — and that's the point. Waterfall's phases were sound. Waterfall failed because humans were too slow to execute them with rigor. Agile solved that by dropping the rigor. AI changes the economics: discovery takes hours not weeks, going back costs tokens not sprints. The rigor becomes viable again.
 
-### Do I need all 11 phases?
+### Do I need all 9 phases?
 No. Use what applies:
 - **Greenfield project with clear requirements?** Skip Discover, start at Interview.
 - **Quick bug fix?** Skip to Triage→Implement→Review→Test→Deploy (the short bug path).
@@ -30,7 +30,7 @@ Any agent that can read files and write code: Claude Code, OpenAI Codex, Cursor,
 ### How do I use the skills?
 Load the relevant SKILL.md as system context or initial prompt for your AI agent. For example:
 - Starting a new feature? Load `aid-specify/SKILL.md` and give the agent your requirements.
-- Reviewing a PR? Review is built into `aid-implement` — run `/aid-implement task-NNN` and it will code, review, and fix.
+- Reviewing a PR? Review is built into `aid-execute` — run `/aid-execute task-NNN` and it will code, review, and fix.
 
 ### Can I use AID with a team, not just solo?
 Yes. The Knowledge Base and formal artifacts (SPEC.md, GAP.md, IMPEDIMENT.md) are designed for team collaboration. Multiple people can work on different phases simultaneously. The artifacts are the coordination mechanism.

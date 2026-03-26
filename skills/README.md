@@ -29,22 +29,21 @@ Each skill represents one phase of the AID pipeline. These README files provide 
 | Skill | Phase | Purpose |
 |-------|-------|---------|
 | [aid-plan](aid-plan/README.md) | 4. Plan | Sequence features into deliverables — each one a functional MVP |
-| [aid-detail](aid-detail/README.md) | 5. Detail | Decompose the plan into user stories, tasks, and execution waves |
+| [aid-detail](aid-detail/README.md) | 5. Detail | Decompose deliverables into small, sequential, typed tasks |
 
 ### Group 3: Execute
 
 | Skill | Phase | Purpose |
 |-------|-------|---------|
-| [aid-implement](aid-implement/README.md) | 6. Implement | Execute a task by spawning a coding agent with full KB context |
-| [aid-test](aid-test/README.md) | 8. Test | Staging validation — E2E, integration, manual testing |
+| [aid-execute](aid-execute/README.md) | 6. Execute | Type-aware task execution (RESEARCH, DESIGN, IMPLEMENT, TEST, DOCUMENT, MIGRATE, REFACTOR, CONFIGURE) with built-in review |
 
 ### Group 4: Deliver
 
 | Skill | Phase | Purpose |
 |-------|-------|---------|
-| [aid-deploy](aid-deploy/README.md) | 9. Deploy | Final verification, PR creation, KB update, delivery summary |
-| [aid-track](aid-track/README.md) | 10. Track | Interpret production telemetry — not just collect, understand |
-| [aid-triage](aid-triage/README.md) | 11. Triage | Classify production findings, perform root cause analysis for bugs, and route (BUG → Implement, CR → Discover) |
+| [aid-deploy](aid-deploy/README.md) | 7. Deploy | Final verification, PR creation, KB update, delivery summary |
+| [aid-track](aid-track/README.md) | 8. Track | Interpret production telemetry — not just collect, understand |
+| [aid-triage](aid-triage/README.md) | 9. Triage | Classify production findings, perform root cause analysis for bugs, and route (BUG → Execute, CR → Discover) |
 
 ---
 
@@ -61,13 +60,13 @@ Every project:
 
 ## Incremental Adoption
 
-You don't need all 11 phases from day one:
+You don't need all 9 phases from day one:
 
-1. **Start:** Detail + Implement (formalize task decomposition and agent execution)
+1. **Start:** Detail + Execute (formalize task decomposition and agent execution)
 2. **Add:** Review (introduce grading and spec-anchored review)
 3. **Add:** Test (staging validation gate)
 4. **Add:** Plan (separate strategy from tactics)
 5. **Add:** Discover (for next brownfield project)
 6. **Add:** Interview (for next client engagement)
 7. **Add:** Track + Triage (once shipping regularly — Triage includes root cause analysis for bugs)
-8. **Full pipeline:** All 11 phases with feedback loops
+8. **Full pipeline:** All 9 phases with feedback loops

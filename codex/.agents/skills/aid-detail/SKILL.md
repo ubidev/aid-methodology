@@ -1,8 +1,9 @@
 ---
 name: aid-detail
 description: >
-  Break deliverables into small, sequential, testable tasks — each one a PR.
-  The ultimate breakdown. Use when PLAN.md is complete and you need executable tasks.
+  Break deliverables into small, sequential, typed tasks — each one a PR.
+  The ultimate breakdown. Detects task types (RESEARCH, DESIGN, IMPLEMENT, TEST,
+  DOCUMENT, MIGRATE, REFACTOR, CONFIGURE) from SPEC signals. One type per task.
 allowed-tools: Read, Glob, Grep, Write, Edit, Bash
 context: fork
 agent: architect
@@ -85,28 +86,71 @@ Each deliverable follows the same cycle:
 3. **Each task = one PR.** Human reviews and merges before next task starts.
 4. **No new decisions.** Everything is already in PLAN + SPECs. Detail just slices.
 
+## Task Types
+
+Every task has exactly ONE type. Never mix types in a single task.
+
+| Type | What it produces | When Detail creates it |
+|------|-----------------|----------------------|
+| **RESEARCH** | Findings document, comparison, recommendation | Feature has `Spike Needed` in STATE.md, or unknowns need investigation |
+| **DESIGN** | Mockups, wireframes, interaction flows | Feature has UI Specs in SPEC.md |
+| **IMPLEMENT** | Code + unit tests | Feature has Data Model / Feature Flow / Layers in SPEC.md |
+| **TEST** | Integration/E2E/UI/load tests + results | Feature has integration points or testable acceptance criteria |
+| **DOCUMENT** | ADRs, API docs, runbooks, diagrams | Significant architectural decision or complex setup |
+| **MIGRATE** | Migration scripts + rollback + runbook | Feature has data model changes affecting existing data |
+| **REFACTOR** | Restructured code, same behavior | Feature requires restructuring before implementation |
+| **CONFIGURE** | Config files, CI/CD, infra-as-code | Feature requires environment or infrastructure setup |
+
+### Type Detection Rules
+
+When proposing tasks, the agent reads the feature SPEC and automatically detects types:
+
+1. **Spike Needed** in feature STATE.md → RESEARCH task first
+2. **UI Specs** section in SPEC.md → DESIGN task before IMPLEMENT
+3. **Data Model / Feature Flow / Layers & Components** → IMPLEMENT task(s)
+4. **Integration points / acceptance criteria** → TEST task(s) after IMPLEMENT
+5. **Major architectural decision** → DOCUMENT task (ADR)
+6. **Data model changes to existing tables/collections** → MIGRATE task before IMPLEMENT
+7. **Code restructuring needed before feature work** → REFACTOR task first
+8. **Environment/config setup required** → CONFIGURE task early in sequence
+
+### Type Separation Rule
+
+**One task = one type. No exceptions.**
+
+If the agent proposes a task that mixes types, it must split:
+- ❌ "Build login form + write E2E tests" → split into IMPLEMENT + TEST
+- ❌ "Research auth + implement auth" → split into RESEARCH + IMPLEMENT
+- ❌ "Migrate schema + update code" → split into MIGRATE + IMPLEMENT
+
+### Natural Ordering Within a Delivery
+
+Default sequence (the agent proposes this, user can reorder):
+
+```
+RESEARCH → DESIGN → CONFIGURE → MIGRATE → REFACTOR → IMPLEMENT → TEST → DOCUMENT
+```
+
+Not rigid. Not all types appear in every delivery. The user adjusts during discussion.
+
 ## Task File Format
 
 ```markdown
 # task-{id}: {Title}
 
+**Type:** RESEARCH | DESIGN | IMPLEMENT | TEST | DOCUMENT | MIGRATE | REFACTOR | CONFIGURE
+
 **Source:** feature-NNN-{name} → delivery-{x}
 
 **Scope:**
-- `path/to/File.java` (create)
-- `path/to/OtherFile.java` (modify)
-- `test/path/to/FileTest.java` (create)
+- {what to produce or modify — depends on type}
 
 **Acceptance Criteria:**
 - [ ] Criterion 1 — concrete, testable
 - [ ] Criterion 2 — concrete, testable
-- [ ] Unit tests for all new public methods/endpoints
-- [ ] All existing tests still pass
-- [ ] Build passes (zero errors, zero warnings)
-- [ ] Lint passes (zero violations)
 ```
 
-Four sections. Nothing else.
+Five sections. Nothing else.
 
 **Quality gate cascade:** Every task inherits:
 1. **Project baseline** from REQUIREMENTS.md §6 (unit test minimum, linting standard)
@@ -116,6 +160,16 @@ Include these in Acceptance Criteria when writing tasks. Don't repeat the
 full baseline — reference it: "All §6 quality gates pass." Add feature-specific
 criteria explicitly when the SPEC calls for them (e.g., "explicit tests for
 all 5 auth edge cases per SPEC").
+
+**Type-specific default criteria:** The agent adds these unless the task explicitly overrides:
+- IMPLEMENT: "Unit tests for all new public methods/endpoints" + "All existing tests still pass" + "Build passes"
+- TEST: "Tests are deterministic" + "Clean setup/teardown" + "All acceptance criteria from source feature covered"
+- MIGRATE: "Migration is reversible" + "Migration is idempotent" + "Data integrity verified"
+- REFACTOR: "All tests pass before AND after" + "No behavior change"
+- CONFIGURE: "Configuration is idempotent" + "No plaintext secrets"
+- RESEARCH: "At least 2 alternatives compared" + "Sources cited" + "Actionable recommendation"
+- DESIGN: "Design system tokens used" + "Responsive behavior shown (if applicable)"
+- DOCUMENT: "Accuracy verified against current codebase"
 
 ---
 
@@ -131,15 +185,24 @@ Propose a sequential task breakdown:
 
 I'm proposing {n} tasks:
 
-1. **task-001: {title}**
+1. **task-001: {title}** [RESEARCH]
    Scope: {brief description}
    Criteria: {brief summary}
 
-2. **task-002: {title}**
+2. **task-002: {title}** [DESIGN]
+   Scope: {brief description}
+   Criteria: {brief summary}
+
+3. **task-003: {title}** [IMPLEMENT]
+   Scope: {brief description}
+   Criteria: {brief summary}
+
+4. **task-004: {title}** [TEST]
    Scope: {brief description}
    Criteria: {brief summary}
 
 What do you think? We can discuss:
+- **Type** — should any task be a different type? Am I mixing types?
 - **Size** — is any task too big or too small?
 - **Scope** — should something move between tasks?
 - **Sequence** — is the order right?
@@ -149,12 +212,15 @@ What do you think? We can discuss:
 ### Step 2: Discuss
 
 The developer may:
+- **Retype** → "task-002 should be MIGRATE not IMPLEMENT"
 - **Split** → "task-002 is too big, separate the migration from the model"
-- **Merge** → "003 and 004 are tiny, combine them"
+- **Merge** → "003 and 004 are tiny, combine them" (only if SAME type)
 - **Reorder** → "swap 002 and 003 — need the service first"
 - **Scope change** → "task-001 should also include the config file"
 - **Criteria change** → "add index creation to task-001's criteria"
 - **Approve** → "looks good"
+
+⚠️ **Merge rule:** only merge tasks of the same type. Never merge across types.
 
 Respond to each concern, re-present affected tasks. Loop until approved.
 
@@ -253,11 +319,14 @@ Update task files, create new ones, delete orphans, renumber if needed.
 ## Quality Checklist
 
 - [ ] Every deliverable in PLAN.md has corresponding tasks
+- [ ] Every task has exactly ONE type (no mixing)
 - [ ] Every task traces to a feature SPEC and deliverable
 - [ ] Every task has concrete, testable acceptance criteria
 - [ ] Every task has an explicit scope boundary
 - [ ] Tasks are sequential within each deliverable
 - [ ] Each task is small enough for one agent session
-- [ ] "All existing tests still pass" is in every task's criteria
+- [ ] Type-specific default criteria included where applicable
+- [ ] RESEARCH/DESIGN tasks come before their dependent IMPLEMENT tasks
+- [ ] TEST tasks come after their dependent IMPLEMENT tasks
 - [ ] Each deliverable's tasks were reviewed after writing (step 4)
 - [ ] All task files in `.aid/{work}/tasks/`

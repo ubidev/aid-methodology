@@ -41,5 +41,5 @@ Specialist agents are available in .cursor/agents/ (Task tool is experimental â€
 This project uses the [AID methodology](https://github.com/AndreVianna/aid-methodology).
 
 - Knowledge Base: .aid/knowledge/INDEX.md (generated during Discovery phase)
-- Methodology: 11 phases across 4 stages (Define, Map, Execute, Deliver)
+- Methodology: 9 phases across 4 stages (Define, Map, Execute, Deliver)
 - Every phase produces verifiable artifacts with quality gates

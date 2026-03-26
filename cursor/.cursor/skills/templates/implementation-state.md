@@ -2,6 +2,7 @@
 
 **Status:** Pending
 **Task:** {task-NNN}
+**Type:** {RESEARCH | DESIGN | IMPLEMENT | TEST | DOCUMENT | MIGRATE | REFACTOR | CONFIGURE}
 **Feature:** {feature-NNN-name}
 **Delivery:** {delivery-NNN}
 **Minimum Grade:** {from DISCOVERY-STATE.md}

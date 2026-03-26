@@ -90,7 +90,7 @@ You now have a Knowledge Base, configured skills, and agents ready to go. Every 
 
 | Resource | Purpose |
 |----------|---------|
-| [`skills/`](skills/README.md) | Human-readable documentation for all 12 skills (1 setup + 11 phases) |
+| [`skills/`](skills/README.md) | Human-readable documentation for all 10 skills (1 setup + 9 phases) |
 | [`agents/`](agents/README.md) | Human-readable documentation for all 13 agent roles |
 
 **Want templates for your project artifacts?**
@@ -132,15 +132,14 @@ examples/
 ### Group 3: Execute
 | Phase | Skill | What It Does |
 |-------|-------|-------------|
-| 6. Implement | `aid-implement` | Code + built-in review (A+ to F grading); branch per delivery; loop until A- |
-| 7. Test | `aid-test` | Staging validation — E2E, integration, manual; the gate before deploy  |
+| 6. Execute | `aid-execute` | Type-aware task execution (RESEARCH, DESIGN, IMPLEMENT, TEST, DOCUMENT, MIGRATE, REFACTOR, CONFIGURE) with built-in review loop and deterministic grading |
 
 ### Group 4: Deliver
 | Phase | Skill | What It Does |
 |-------|-------|-------------|
-| 8. Deploy | `aid-deploy` | Final verification, PR creation, KB update, delivery summary |
-| 9. Track | `aid-track` | Interprets production telemetry — doesn't just collect, understands |
-| 10. Triage | `aid-triage` | Classifies findings, performs root cause analysis for bugs, and routes (BUG → Implement, CR → Discover) |
+| 7. Deploy | `aid-deploy` | Final verification, PR creation, KB update, delivery summary |
+| 8. Track | `aid-track` | Interprets production telemetry — doesn't just collect, understands |
+| 9. Triage | `aid-triage` | Classifies findings, performs root cause analysis for bugs, and routes (BUG → Execute, CR → Discover) |
 
 ---
 
@@ -156,8 +155,8 @@ Agents are **specialties**, not phases. One agent may handle multiple phases. Th
 | **Researcher** | Investigation, KB generation, analysis | Discover, Track | opus |
 | **Interviewer** | Adaptive dialogue, requirements gathering | Interview | opus |
 | **Architect** | Design: specs, plans, task decomposition | Specify, Plan, Detail | opus |
-| **Developer** | Code implementation (only agent that writes code) | Implement | opus |
-| **Critic** | Quality evaluation, grading (A+ to F) | Review, Test | opus |
+| **Developer** | Task execution across all types (code, tests, research, docs) | Execute | opus |
+| **Critic** | Quality evaluation, grading (A+ to F) | Execute (review step) | opus |
 | **Operator** | Deployment, PR creation, release management | Deploy | opus |
 
 ### Specialist Agents
@@ -189,7 +188,7 @@ Spec-Driven Development is a good idea. AID contains it and goes further.
 | **Requirements** | Assumed to exist | Adaptive interview, one question at a time |
 | **Planning depth** | Single spec | Two-level: Plan (strategy) → Detail (tactics) |
 | **Feedback loops** | Linear: spec → code → done | 11 formal loops (8 dev + 3 post-production) |
-| **Post-delivery** | Not addressed | Track → Triage → Implement (bugs) / Discover (CRs) |
+| **Post-delivery** | Not addressed | Track → Triage → Execute (bugs) / Discover (CRs) |
 
 SDD says: *the spec drives development*.
 AID says: *understanding drives the spec, and the spec drives development, and production drives the next understanding.*
@@ -206,9 +205,9 @@ Every loop produces a formal artifact (GAP.md, IMPEDIMENT.md, or TRIAGE.md) with
 
 **Key loops:**
 - Any phase → Discovery (targeted KB update)
-- Implement → IMPEDIMENT.md (reality check, explicit escalation)
-- Track → Triage → Implement (short bug path: 5 phases)
-- Track → Triage → Discover (CR full cycle: 11 phases)
+- Execute → IMPEDIMENT.md (reality check, explicit escalation)
+- Track → Triage → Execute (short bug path: 4 phases)
+- Track → Triage → Discover (CR full cycle: 9 phases)
 
 ---
 
@@ -223,7 +222,7 @@ aid-methodology/
 │   ├── aid-methodology.md             ← Complete V3 methodology document
 │   └── images/                        ← Pipeline, comparison, feedback loop diagrams
 ├── skills/                            ← Human-readable phase documentation
-│   ├── README.md                      ← Overview of all 12 skills (aid-init + 11 phases)
+│   ├── README.md                      ← Overview of all 10 skills (aid-init + 9 phases)
 │   └── aid-{skill}/README.md          ← Rich docs per skill
 ├── agents/                            ← Human-readable agent documentation
 │   ├── README.md                      ← Overview of all 13 agents

@@ -14,7 +14,7 @@ cp path/to/aid-methodology/claude-code/CLAUDE.md   CLAUDE.md
 ```
 
 This gives you:
-- `.claude/skills/aid-{phase}/SKILL.md` — Phase instructions in AgentSkills format (11 skills)
+- `.claude/skills/aid-{phase}/SKILL.md` — Phase instructions in AgentSkills format (10 skills)
 - `.claude/agents/{name}.md` — Agent definitions in Claude Code format (13 agents)
 - `CLAUDE.md` — Claude Code project configuration (edit with your project details)
 
@@ -45,7 +45,7 @@ This gives you:
 
 ## Skills
 
-11 phase skills, one per AID phase. See [`.claude/skills/README.md`](.claude/skills/README.md) for the full list.
+9 phase skills, one per AID phase. See [`.claude/skills/README.md`](.claude/skills/README.md) for the full list.
 
 ## Usage
 
