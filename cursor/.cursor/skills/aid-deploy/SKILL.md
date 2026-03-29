@@ -199,6 +199,7 @@ Check if implementation revealed anything that should update the Knowledge Base:
 For each KB update needed:
 → Write a Q&A entry to `.aid/knowledge/DISCOVERY-STATE.md` § Pending Q&A
 → The next aid-discover run will process these
+- New features shipped → add to feature-inventory.md (route through DISCOVERY-STATE Q&A with category: Features)
 
 ⚠️ Do NOT directly edit KB docs from deploy — route through Discovery.
 

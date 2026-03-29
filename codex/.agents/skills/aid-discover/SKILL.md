@@ -29,7 +29,6 @@ Exit. Do not proceed.
 
 If it exists but has `**Grade:** Not Started`, that's expected — init ran, discovery hasn't.
 
-
 ## Arguments
 
 | Argument | Effect |
@@ -54,7 +53,8 @@ Read the filesystem to determine which mode to enter:
 ```
 State 1: Missing or empty KB docs                     → GENERATE mode
 State 2: All docs populated, no GRADE file             → REVIEW mode
-State 3: GRADE file, grade < min, has Pending Q&A      → Q&A mode
+State 3: GRADE file, (grade < min AND has Pending Q&A)
+         OR has Pending Q&A with Impact: Required       → Q&A mode
 State 4: GRADE file, grade < min, no Pending Q&A       → FIX mode
 State 5: GRADE file, grade >= min, not user-approved    → APPROVAL mode
 State 6: GRADE file, grade >= min, user-approved        → DONE
@@ -62,29 +62,30 @@ State 6: GRADE file, grade >= min, user-approved        → DONE
 
 **Detection logic:**
 
-1. Check `.aid/knowledge/` for the 15 expected documents:
+1. Check `.aid/knowledge/` for the 16 expected documents:
    ```
    project-structure.md, external-sources.md,
    architecture.md, technology-stack.md, module-map.md, coding-standards.md, data-model.md,
    api-contracts.md, integration-map.md, domain-glossary.md, test-landscape.md,
    security-model.md, tech-debt.md, infrastructure.md,
-   ui-architecture.md
+   ui-architecture.md, feature-inventory.md
    ```
 2. A document is "populated" only if it contains real content — NOT just the init template
    (files containing only `❌ Pending` are treated as missing). If any are missing or
    unpopulated → **GENERATE**
-3. If all 15 are populated and `.aid/knowledge/DISCOVERY-STATE.md` has `**Grade:** Pending` or
+3. If all 16 are populated and `.aid/knowledge/DISCOVERY-STATE.md` has `**Grade:** Pending` or
    `**Grade:** Not Started` → **REVIEW**
-4. If all 15 are populated but `.aid/knowledge/DISCOVERY-STATE.md` does not exist → **REVIEW** (legacy)
+4. If all 16 are populated but `.aid/knowledge/DISCOVERY-STATE.md` does not exist → **REVIEW** (legacy)
 5. If `.aid/knowledge/DISCOVERY-STATE.md` exists with a grade other than Pending:
    - Read the current overall grade and minimum grade
    - If `--grade` was provided, update the minimum grade in the file
    - Compare current grade against minimum (use grade ordering below)
+   - Read DISCOVERY-STATE.md `## Q&A` section for entries with `**Status:** Pending`
+   - If any Pending entry has `**Impact:** Required` → **Q&A** (regardless of grade)
    - If current grade < minimum:
-     - Read DISCOVERY-STATE.md `## Q&A` section for entries with `**Status:** Pending`
      - If Pending entries exist → **Q&A**
      - If no Pending entries → **FIX**
-   - If current grade >= minimum:
+   - If current grade >= minimum AND no Required Pending Q&A:
      - Check DISCOVERY-STATE.md for `**User Approved:** yes`
      - If approved → **DONE**
      - If not approved → **APPROVAL**
@@ -109,9 +110,9 @@ Scan `.aid/knowledge/` for existing files. A document counts as "exists" only if
 A file with only the init template header (containing `❌ Pending`) is treated as MISSING
 and will be regenerated.
 
-Print: `[0/15] Checking existing KB...`
+Print: `[0/16] Checking existing KB...`
 
-If ALL 15 documents have real content and no `--reset` was requested, report KB is complete
+If ALL 16 documents have real content and no `--reset` was requested, report KB is complete
 and skip directly to Step 6 (README.md and INDEX.md regeneration).
 
 ---
@@ -342,7 +343,7 @@ If you see "N local agents still running" in the status bar, you are NOT done. W
 
 ---
 
-### Verify All 15 Files
+### Verify All 16 Files
 
 **Only after ALL agents have completed**, check which files exist:
 
@@ -351,13 +352,13 @@ for f in project-structure.md external-sources.md \
   architecture.md technology-stack.md module-map.md coding-standards.md \
   data-model.md api-contracts.md integration-map.md domain-glossary.md \
   test-landscape.md security-model.md tech-debt.md infrastructure.md \
-  ui-architecture.md; do
+  ui-architecture.md feature-inventory.md; do
   [ -f ".aid/knowledge/$f" ] && echo "✅ $f" || echo "❌ $f MISSING"
 done
 ```
 
 **If any files are missing:** Re-dispatch ONLY the specific agent responsible for the missing files.
-Wait for that agent to complete. Verify again. Repeat until all 15 exist.
+Wait for that agent to complete. Verify again. Repeat until all 16 exist.
 
 **Agent-to-file mapping for re-dispatch:**
 | Agent | Files |
@@ -402,6 +403,7 @@ reading across all previously produced KB documents.
 | tech-debt.md | ✅ Complete | |
 | infrastructure.md | ✅ Complete | |
 | ui-architecture.md | ✅ Complete | |
+| feature-inventory.md | ⚠️ Pending Q&A | Populated after user provides feature list |
 
 ## Revision History
 
@@ -434,9 +436,14 @@ If your task touches an area covered here, read the relevant document first.
 | tech-debt.md | {2-3 line summary of debt and risk} |
 | infrastructure.md | {2-3 line summary of infrastructure} |
 | ui-architecture.md | {2-3 line summary of UI architecture, or "backend-only — no frontend"} |
+| feature-inventory.md | {2-3 line summary of features listed, or "Pending — awaiting user input via Q&A"} |
 ```
 
 Regenerate INDEX.md on every discovery run (full or targeted).
+
+**.aid/knowledge/feature-inventory.md** — copy the template from `../templates/feature-inventory.md`.
+This file is populated during the Q&A → FIX cycle (not during GENERATE), but must exist
+for the state machine to count all 16 documents as present.
 
 ---
 
@@ -473,6 +480,25 @@ would lose that metadata.
   - **Question:** {the actual question}
   ```
 
+**Required Questions:**
+
+After consolidating subagent questions, inject the following Required Q&A entry
+if not already present:
+
+- **Category:** Features
+- **Impact:** Required
+- **Status:** Pending
+- **Context:** The feature inventory cannot be generated without user input.
+- **Suggested:** {If the scout or other agents identified likely features from routes,
+  controllers, or UI screens, list them here as a starting point. Otherwise "—"}
+- **Question:** (adapt to project type from DISCOVERY-STATE.md)
+  - Web app / SaaS: "What are the main features or capabilities users can access in this application?"
+  - API / Backend service: "What are the main services or capabilities this system provides to its consumers?"
+  - Library / SDK: "What are the main capabilities or modules this library offers?"
+  - Mobile app: "What are the main features or screens in this app?"
+  - CLI tool: "What are the main commands or workflows this tool supports?"
+  - If project type is unclear: "What are the main features or capabilities of this system?"
+
 Print: `[DISCOVERY-STATE] Updated with {N} Q&A questions. Grade: Pending.`
 
 ---
@@ -496,9 +522,9 @@ If a field cannot be determined, leave it as `(not found — see DISCOVERY-STATE
 
 ### Step 8: Final Verification
 
-List all 15 expected KB documents. Check each exists. Report any missing.
+List all 16 expected KB documents. Check each exists. Report any missing.
 
-Print: `[15/15] Generation complete — Knowledge Base ready. Run /aid-discover again to review.`
+Print: `[16/16] Generation complete — Knowledge Base ready. Run /aid-discover again to review.`
 
 If any documents are missing, report them and offer to re-dispatch the responsible subagent.
 
@@ -506,7 +532,7 @@ If any documents are missing, report them and offer to re-dispatch the responsib
 
 ## Mode: REVIEW
 
-All 15 KB documents exist. Grade them.
+All 16 KB documents exist. Grade them.
 
 ### Step 1: Dispatch the Reviewer
 
@@ -561,7 +587,7 @@ Prompt to pass to the subagent:
 >      generic statements that could apply to any project?
 >
 > 6. **Meta-document integrity** — INDEX.md, README.md, and CLAUDE.md are
->    derived from the 15 primary documents.
+>    derived from the 16 primary documents.
 >    - Do their summaries and values accurately reflect the current primary doc content?
 >    - Is placeholder text or template markers still present?
 >    - Are questions marked Pending in the Q&A section of DISCOVERY-STATE.md actually still unanswerable from the repository?
@@ -590,7 +616,7 @@ Wait for completion.
 ### Step 2: Post-Process DISCOVERY-STATE.md
 
 Read `.aid/knowledge/DISCOVERY-STATE.md`. Verify it contains:
-- [ ] Grade for every document (15 KB docs + CLAUDE.md + INDEX.md + README.md)
+- [ ] Grade for every document (16 KB docs + CLAUDE.md + INDEX.md + README.md)
 - [ ] Specific issues with severity levels ([CRITICAL], [HIGH], [MEDIUM], [MINOR])
 - [ ] Verification spot-checks (minimum 10)
 - [ ] Overall grade and recommendation
@@ -714,6 +740,14 @@ Review History table.
 **IMPORTANT:** Answered Q&A entries in DISCOVERY-STATE.md are fix items too. Treat them with the
 same priority as review findings. Cross-reference findings and answers — they often complement
 each other (the finding says WHERE something is weak, the answer says WHAT to put there).
+
+**Feature Inventory Generation:** When processing Q&A answers with **Category: Features**:
+1. Cross-reference the user's feature list with: `api-contracts.md`, `module-map.md`,
+   `domain-glossary.md`, `ui-architecture.md`, `data-model.md`
+2. Generate/update `.aid/knowledge/feature-inventory.md` with an enriched table
+3. Each feature row: sequential #, feature name, description, Status (Active), key modules
+   from module-map, key endpoints from api-contracts, data entities from data-model
+4. Mark the Features Q&A entry as Applied to: `feature-inventory.md`
 
 ---
 
@@ -845,6 +879,7 @@ When a GAP.md or IMPEDIMENT.md triggers re-discovery of a specific area:
    - `module-map.md`, `coding-standards.md`, `data-model.md` → dispatch discovery-analyst
    - `api-contracts.md`, `integration-map.md`, `domain-glossary.md` → dispatch discovery-integrator
    - `test-landscape.md`, `security-model.md`, `tech-debt.md`, `infrastructure.md` → dispatch discovery-quality
+   - `feature-inventory.md` → route through DISCOVERY-STATE Q&A with Category: Features
 3. Dispatch ONLY the relevant subagent for the area that needs updating
 4. Regenerate README.md and INDEX.md (orchestrator does this directly)
 5. Update `.aid/knowledge/README.md` revision history with the targeted update
@@ -862,6 +897,7 @@ When a GAP.md or IMPEDIMENT.md triggers re-discovery of a specific area:
 - [ ] external-sources.md documents all external sources (or states none were provided)
 - [ ] README.md reflects completeness status and revision history
 - [ ] INDEX.md generated with 2-3 line summaries of every KB document
+- [ ] feature-inventory.md exists (template or populated after Q&A)
 - [ ] CLAUDE.md placeholders filled with discovered data
 - [ ] All issues in DISCOVERY-STATE.md have severity: [CRITICAL], [HIGH], or [MEDIUM]
 - [ ] Minimum 10 spot-checks in DISCOVERY-STATE.md
@@ -979,6 +1015,11 @@ build & bundle (bundler, code splitting, lazy loading).
 If backend-only: explicitly states "No frontend detected."
 **Red flags**: Lists frameworks without explaining patterns. Missing component tree.
 Missing state management data flow. No accessibility section.
+
+### feature-inventory.md
+Must list ALL features identified by the user. Each feature has description, status, modules,
+endpoints, data entities. Red flag: features without module mapping, features with placeholder
+descriptions, features obviously missing from user's original list.
 
 ### external-sources.md
 Must have: list of all external documentation sources provided by the user (if any), with

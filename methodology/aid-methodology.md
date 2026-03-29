@@ -125,6 +125,7 @@ The Knowledge Base (`.aid/knowledge/`) is the gravitational center of the entire
 ├── security-model.md      # Auth/authz, secrets management, compliance requirements
 ├── tech-debt.md           # Known debt items with file refs, risk ratings, remediation
 ├── infrastructure.md      # Hosting, networking, environments, deployment model
+├── feature-inventory.md   # User-provided feature list enriched with module/endpoint/data mapping
 └── additional-info.md     # Structured Q&A: gaps, assumptions, and clarifications
 ```
 
@@ -588,7 +589,7 @@ Every change to an upstream artifact is tracked at the bottom of the artifact:
 
 | Artifact | Location | Produced By | Consumed By | Lifecycle |
 |----------|----------|------------|-------------|-----------|
-| Knowledge Base (15 docs) | `.aid/knowledge/` | Discover | All phases | Living — updated throughout project |
+| Knowledge Base (16 docs) | `.aid/knowledge/` | Discover | All phases | Living — updated throughout project |
 | INDEX.md | `.aid/knowledge/` | Discover | All phases | Regenerated on every discovery run |
 | REQUIREMENTS.md | `.aid/{work}/` | Interview | Specify, Plan | Frozen after approval (rev-tracked) |
 | INTERVIEW-STATE.md | `.aid/{work}/` | Interview | Interview (resume) | Process tracking |

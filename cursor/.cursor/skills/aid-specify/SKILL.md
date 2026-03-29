@@ -122,6 +122,8 @@ Read ALL before making any proposal:
    to decide which KB docs are relevant to this feature, then load them.
    At minimum you'll need architecture, coding-standards, and data-model for
    most features, but let the INDEX guide you — don't guess.
+   - Check `feature-inventory.md` to understand existing features and how the
+     new feature relates to them.
    - **Greenfield:** If KB docs are init placeholders (`❌ Pending`), treat as empty.
      Propose from scratch; decisions will seed KB during Write step.
 4. **Codebase** — `Grep`/`Glob` to explore relevant source code. Skip for greenfield.

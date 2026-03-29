@@ -23,7 +23,7 @@ workspace, and determines the workflow path. Run this once before any other AID 
   .aid/
     knowledge/
       DISCOVERY-STATE.md
-      (...15 KB docs, INDEX.md, README.md)
+      (...16 KB docs, INDEX.md, README.md)
 ```
 
 Works and features are created later by `/aid-interview`.
@@ -115,7 +115,7 @@ Parse and validate the grade. Store it.
 
 ## Step 2: Scaffold Knowledge Base
 
-Create `.aid/knowledge/` directory and all 15 KB document templates.
+Create `.aid/knowledge/` directory and all 16 KB document templates.
 
 ### For Brownfield Projects
 
@@ -131,7 +131,7 @@ Create each file with a header indicating it's pending discovery:
 *This document will be populated by `/aid-discover`.*
 ```
 
-The 15 documents:
+The 16 documents:
 
 | File | Title |
 |------|-------|
@@ -150,6 +150,7 @@ The 15 documents:
 | `tech-debt.md` | Tech Debt |
 | `infrastructure.md` | Infrastructure |
 | `ui-architecture.md` | UI Architecture |
+| `feature-inventory.md` | Feature Inventory |
 
 **Special case — external-sources.md:** If the user provided external paths in Q4, write
 them into the file immediately:
@@ -187,7 +188,7 @@ Create each file with a header indicating it will be filled during interview/spe
 *This document will be populated as requirements are gathered and specifications are written.*
 ```
 
-**Greenfield documents are the same 15 files.** Some will remain sparse (e.g., tech-debt.md
+**Greenfield documents are the same 16 files.** Some will remain sparse (e.g., tech-debt.md
 for a new project), and that's expected. The reviewer in later phases understands this.
 
 ---
@@ -228,6 +229,7 @@ for a new project), and that's expected. The reviewer in later phases understand
 | security-model.md | ❌ Pending | aid-discover |
 | tech-debt.md | ❌ Pending | aid-discover |
 | infrastructure.md | ❌ Pending | aid-discover |
+| feature-inventory.md | ❌ Pending | aid-discover |
 
 ## Revision History
 
@@ -260,6 +262,7 @@ If your task touches an area covered here, read the relevant document first.
 | security-model.md | Pending discovery |
 | tech-debt.md | Pending discovery |
 | infrastructure.md | Pending discovery |
+| feature-inventory.md | Pending discovery |
 ```
 
 ### .aid/knowledge/DISCOVERY-STATE.md
@@ -341,7 +344,7 @@ Print a summary of everything created:
   External:    {N paths / None}
 
   Created:
-    knowledge/    (15 KB documents + README + INDEX + DISCOVERY-STATE)
+    knowledge/    (16 KB documents + README + INDEX + DISCOVERY-STATE)
     CLAUDE.md                   {created / updated / unchanged}
     .gitignore                  {created / updated / unchanged}
 
@@ -364,9 +367,9 @@ Print a summary of everything created:
 
 ## Quality Checklist
 
-- [ ] `.aid/knowledge/` created with all 15 KB templates
+- [ ] `.aid/knowledge/` created with all 16 KB templates
 - [ ] README.md has correct project type, name, and completeness table
-- [ ] INDEX.md has all 15 documents listed
+- [ ] INDEX.md has all 16 documents listed
 - [ ] DISCOVERY-STATE.md has correct minimum grade and project type
 - [ ] External paths (if any) verified accessible and recorded
 - [ ] CLAUDE.md has workspace reference and AID placeholders (created or appended)

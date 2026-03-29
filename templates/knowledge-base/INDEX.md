@@ -21,6 +21,7 @@ If your task touches an area covered here, **read the relevant document first**.
 | security-model.md | {2-3 line summary: auth/authz approach, secrets management, compliance} |
 | tech-debt.md | {2-3 line summary: number of items, highest-risk areas, remediation status} |
 | infrastructure.md | {2-3 line summary: hosting, environments, deployment model} |
+| feature-inventory.md | {2-3 line summary: number of features, coverage status, or "Pending — awaiting user input via Q&A"} |
 | additional-info.md | {2-3 line summary: number of Q&A entries, key areas needing clarification, pending vs answered} |
 
 > **Note:** Not every document exists for every project. Remove rows for documents not generated.

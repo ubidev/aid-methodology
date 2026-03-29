@@ -67,7 +67,7 @@ Start your assessment fresh every time.
 ## What You Review
 
 Read ALL of these:
-1. All documents in `.aid/knowledge/` (15 primary KB docs)
+1. All documents in `.aid/knowledge/` (16 primary KB docs)
 2. `.aid/knowledge/INDEX.md`
 3. `.aid/knowledge/README.md`
 4. `CLAUDE.md` (project root)
@@ -253,6 +253,11 @@ If backend-only: explicitly states "No frontend detected."
 Missing state management data flow. No accessibility section. Styling method without
 conventions. "React" without version or architecture patterns.
 
+### feature-inventory.md
+Must list ALL features identified by the user. Each feature has description, status, modules,
+endpoints, data entities. Red flag: features without module mapping, features with placeholder
+descriptions, features obviously missing from user's original list.
+
 ### additional-info.md
 Must have: questions in structured Q&A format — each with unique ID (Q{N}), category tag,
 impact level (High/Medium/Low), status (Pending/Answered/Skipped), context explaining why
@@ -278,7 +283,7 @@ conventions from code, architecture summary, KB reference. No remaining `(pendin
 
 ## Meta-Document Consistency (MANDATORY)
 
-These 4 documents are derived from the 15 primary KB docs. **ALWAYS verify them against the primary docs' current content, even if they have no issues of their own.** Review in this order:
+These 4 documents are derived from the 16 primary KB docs. **ALWAYS verify them against the primary docs' current content, even if they have no issues of their own.** Review in this order:
 
 1. **additional-info.md** — Are all Pending questions still genuinely unanswerable from code? Did any primary doc already resolve one? A question marked Pending when the answer is in the codebase = [MEDIUM]. Are impact levels reasonable? Is the Q&A format correct (ID, category, impact, status, context, suggested)?
 2. **INDEX.md** — Does every summary match the actual document content? A stale summary (e.g., says "versions TBD" when they've been resolved) = [HIGH].
@@ -328,6 +333,7 @@ Write the complete review to `.aid/knowledge/DISCOVERY-STATE.md` using the templ
 | tech-debt.md | {grade} | {status} | {issues} |
 | infrastructure.md | {grade} | {status} | {issues} |
 | ui-architecture.md | {grade} | {status} | {issues} |
+| feature-inventory.md | {grade} | {status} | {issues} |
 | additional-info.md | {grade} | {status} | {issues} |
 | INDEX.md | {grade} | {status} | {issues} |
 | README.md | {grade} | {status} | {issues} |

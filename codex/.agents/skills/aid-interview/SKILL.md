@@ -200,7 +200,9 @@ Read INTERVIEW-STATE.md Section Status table. For each section:
 **Priority order:**
 
 1. **Infer from KB** — If a Pending/Partial section can be answered from KB documents,
-   **do NOT fill it silently.** Ask with a suggested answer and source reference:
+   **do NOT fill it silently.** When `feature-inventory.md` has content, use it to
+   understand what already exists and probe for interactions/dependencies with the new work.
+   Ask with a suggested answer and source reference:
    ```
    [From: .aid/knowledge/{source-document}.md]
 

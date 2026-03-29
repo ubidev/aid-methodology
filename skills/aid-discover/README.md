@@ -174,7 +174,7 @@ Create `.aid/knowledge/README.md` with completeness tracking:
 
 ## Output
 
-A `.aid/knowledge/` directory containing the relevant subset of these 15 documents (plus a README.md index):
+A `.aid/knowledge/` directory containing the relevant subset of these 16 documents (plus a README.md index):
 
 | Document | Always? | Description |
 |----------|---------|-------------|
@@ -192,6 +192,7 @@ A `.aid/knowledge/` directory containing the relevant subset of these 15 documen
 | tech-debt.md | Yes | Known debt with risk ratings |
 | infrastructure.md | If infra is visible | Hosting, deployment |
 | ui-architecture.md | If frontend exists | Component tree, state management, design system, routing, a11y, styling |
+| feature-inventory.md | After Q&A | User-provided feature list enriched with module, endpoint, and data entity mapping |
 | additional-info.md | Yes | Structured Q&A — gaps, assumptions, clarifications with impact tracking |
 
 ## Targeted Discovery (Re-entry)
