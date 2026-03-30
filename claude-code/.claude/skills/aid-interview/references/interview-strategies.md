@@ -32,8 +32,8 @@ and how to design effective questions.
      with Sun conventions", "default analyzer warnings-as-errors")
    - **Build policy** — zero warnings required? Specific compiler flags?
 
-   These become the project baseline. `/aid:specify` may add feature-specific requirements
-   on top, and `/aid:detail` concretizes them per task.
+   These become the project baseline. `/aid-specify` may add feature-specific requirements
+   on top, and `/aid-detail` concretizes them per task.
 
    **UI-aware inference:** If `.aid/knowledge/ui-architecture.md` exists and has real content
    (not "backend-only"), proactively ask about these topics when working on §6 Non-Functional

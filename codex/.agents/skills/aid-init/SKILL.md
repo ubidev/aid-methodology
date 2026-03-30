@@ -285,29 +285,29 @@ Check if `CLAUDE.md` exists in the project root.
 ```markdown
 # {Project Name}
 
-<!-- AID:DISCOVER project-description -->
+<!-- AID-DISCOVER project-description -->
 {One-line description from Q3}
-<!-- /AID:DISCOVER -->
+<!-- /AID-DISCOVER -->
 
 ## Project Overview
-<!-- AID:DISCOVER project-overview -->
+<!-- AID-DISCOVER project-overview -->
 (pending discovery)
-<!-- /AID:DISCOVER -->
+<!-- /AID-DISCOVER -->
 
 ## Build & Test
-<!-- AID:DISCOVER build-test -->
+<!-- AID-DISCOVER build-test -->
 (pending discovery)
-<!-- /AID:DISCOVER -->
+<!-- /AID-DISCOVER -->
 
 ## Code Conventions
-<!-- AID:DISCOVER code-conventions -->
+<!-- AID-DISCOVER code-conventions -->
 (pending discovery)
-<!-- /AID:DISCOVER -->
+<!-- /AID-DISCOVER -->
 
 ## Architecture
-<!-- AID:DISCOVER architecture -->
+<!-- AID-DISCOVER architecture -->
 (pending discovery)
-<!-- /AID:DISCOVER -->
+<!-- /AID-DISCOVER -->
 
 ## AID Workspace
 
@@ -315,7 +315,7 @@ The `.aid/` directory contains the Knowledge Base and work artifacts.
 Read `.aid/knowledge/INDEX.md` to find what you need.
 ```
 
-- **If it already exists:** Do NOT overwrite. Check for `<!-- AID:DISCOVER -->` placeholders.
+- **If it already exists:** Do NOT overwrite. Check for `<!-- AID-DISCOVER -->` placeholders.
   If none exist, append an "AID Workspace" section at the end pointing to
   `.aid/knowledge/INDEX.md`.
   Print: `[Init] CLAUDE.md exists — appended workspace reference.`

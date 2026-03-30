@@ -55,13 +55,13 @@ For each approved feature, create `features/feature-{NNN}-{name}/SPEC.md` using 
 template from `../../../templates/feature.md`. Fill in:
 
 - **Title:** feature name (human-readable)
-- **Change Log:** `| {today} | Feature identified from REQUIREMENTS.md {source sections} | /aid:interview |`
+- **Change Log:** `| {today} | Feature identified from REQUIREMENTS.md {source sections} | /aid-interview |`
 - **Source:** relevant REQUIREMENTS.md section references
 - **Description:** synthesized from §5 in stakeholder language
 - **User Stories:** extracted or synthesized from REQUIREMENTS.md, using user types from §3
 - **Priority:** from §10 or context (Must / Should / Could)
 - **Acceptance Criteria:** from §9 mapped to this feature, or synthesized from §5
-- **Technical Specification:** leave as template placeholder (added by /aid:specify)
+- **Technical Specification:** leave as template placeholder (added by /aid-specify)
 
 ## Step 5: Update Meta-Documents
 
@@ -78,5 +78,5 @@ Print:
 
 Next steps:
 - Review the feature SPEC.md files if desired
-- Run /aid:specify {work}/feature-001 to begin technical specification
+- Run /aid-specify {work}/feature-001 to begin technical specification
 ```

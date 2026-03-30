@@ -1,7 +1,7 @@
 # CLAUDE.md
 
 ## Project
-<!-- AID:DISCOVER — Replace with project name and one-line description -->
+<!-- AID-DISCOVER — Replace with project name and one-line description -->
 (pending discovery)
 
 ## Knowledge Base
@@ -26,5 +26,5 @@ Specialist agents are available in .claude/agents/.
 - Do NOT modify files outside the project root
 
 ## Conventions
-<!-- AID:DISCOVER — Replace with key conventions summary (naming, patterns, structure) -->
+<!-- AID-DISCOVER — Replace with key conventions summary (naming, patterns, structure) -->
 - See .aid/knowledge/coding-standards.md for project-specific conventions

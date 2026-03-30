@@ -46,7 +46,7 @@ edge cases, or critical paths, explicitly discuss:
 Write these in the relevant SPEC.md section (e.g., within Security Specs, Feature Flow,
 or a dedicated "Quality Requirements" subsection if multiple apply).
 
-These flow down to `/aid:detail` where they become concrete acceptance criteria on tasks.
+These flow down to `/aid-detail` where they become concrete acceptance criteria on tasks.
 
 **Cross-reference with KB:** Before registering, check `tech-debt.md`. If already
 catalogued, add a reference (`See tech-debt.md #TD-NNN`) instead of duplicating.

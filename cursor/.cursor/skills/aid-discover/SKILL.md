@@ -517,7 +517,7 @@ Print: `[DISCOVERY-STATE] Updated with {N} Q&A questions. Grade: Pending.`
 
 ### Step 7: Update Project Config Files
 
-Scan the project root for `CLAUDE.md`. Replace any `<!-- AID:DISCOVER ... -->`
+Scan the project root for `CLAUDE.md`. Replace any `<!-- AID-DISCOVER ... -->`
 placeholders with real data from the analysis:
 
 - **Project description** — project name and one-line description
@@ -526,7 +526,7 @@ placeholders with real data from the analysis:
 - **Code Conventions** — key naming patterns, formatting rules, idioms found in code
 - **Architecture** — high-level summary (layers, modules, entry points)
 
-Keep the `<!-- AID:DISCOVER ... -->` comment above each section so future re-discoveries can update them.
+Keep the `<!-- AID-DISCOVER ... -->` comment above each section so future re-discoveries can update them.
 Replace only the `(pending discovery)` placeholder lines with real content.
 If a field cannot be determined, leave it as `(not found — see DISCOVERY-STATE.md Q&A)`.
 

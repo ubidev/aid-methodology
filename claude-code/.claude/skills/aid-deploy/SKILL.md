@@ -17,7 +17,7 @@ Package completed deliveries into a release.
 ## Argument-Hint
 
 ```
-/aid:deploy work-NNN
+/aid-deploy work-NNN
 ```
 
 Required: work ID. If only one work exists, auto-select it.

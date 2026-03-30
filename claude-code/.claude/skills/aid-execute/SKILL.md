@@ -139,7 +139,7 @@ Read `task-NNN-STATE.md` if it exists.
 
 ## Re-run (Status: Done)
 
-When the task is already `Done` and the user runs `/aid:execute task-NNN` again:
+When the task is already `Done` and the user runs `/aid-execute task-NNN` again:
 
 1. Ask: _"This task is marked Done. Do you want to reopen it for review?
    Is there something specific you want to re-examine?"_
@@ -225,8 +225,8 @@ Issues found:
 Grade below minimum. Next steps:
 - CODE issues (#1, #3): I'll fix these automatically.
 - TASK issues (#2): This needs a task update. {explain}
-- SPEC issues: Would require re-running /aid:specify.
-- KB issues: Would require re-running /aid:discover.
+- SPEC issues: Would require re-running /aid-specify.
+- KB issues: Would require re-running /aid-discover.
 
 Proceed with auto-fix of CODE issues?
 ```
@@ -240,8 +240,8 @@ Proceed with auto-fix of CODE issues?
 
 **Non-CODE issues (TASK, SPEC, KB):**
 - **TASK** → Present to user with suggestion. User updates task, re-run.
-- **SPEC** → Write Q&A to feature STATE.md → suggest `/aid:specify`
-- **KB** → Write Q&A to DISCOVERY-STATE.md → suggest `/aid:discover`
+- **SPEC** → Write Q&A to feature STATE.md → suggest `/aid-specify`
+- **KB** → Write Q&A to DISCOVERY-STATE.md → suggest `/aid-discover`
 
 Mark non-CODE issues as `Loopback` in STATE.md with target phase.
 
@@ -287,9 +287,9 @@ If the agent encounters something it can't resolve:
 Write to `.aid/{work}/IMPEDIMENT-task-NNN.md`.
 
 Resolution by type:
-- **kb-gap** → targeted `/aid:discover` → update KB → retry
-- **architecture-conflict** → `/aid:specify` for the feature
-- **missing-dependency** → `/aid:detail` (might need another task first)
+- **kb-gap** → targeted `/aid-discover` → update KB → retry
+- **architecture-conflict** → `/aid-specify` for the feature
+- **missing-dependency** → `/aid-detail` (might need another task first)
 - **wrong-assumption** → update task or SPEC, retry
 
 After resolving: delete IMPEDIMENT file, retry from Step 1.
@@ -303,12 +303,12 @@ Independent tasks (listed in the "Can Be Done In Parallel" table) can run concur
 
 ```
 create branch aid/delivery-001
-  → /aid:execute task-001 [RESEARCH]      ← investigate → review → ✅
-  → /aid:execute task-002 [DESIGN]        ← mockup → review → ✅
-  → /aid:execute task-003 [IMPLEMENT]  ┐
-  → /aid:execute task-004 [IMPLEMENT]  ┘  ← parallel (both depend on task-002)
-  → /aid:execute task-005 [TEST]          ← waits for task-003 + task-004
-  → /aid:execute task-006 [DOCUMENT]      ← ADR → review → ✅
+  → /aid-execute task-001 [RESEARCH]      ← investigate → review → ✅
+  → /aid-execute task-002 [DESIGN]        ← mockup → review → ✅
+  → /aid-execute task-003 [IMPLEMENT]  ┐
+  → /aid-execute task-004 [IMPLEMENT]  ┘  ← parallel (both depend on task-002)
+  → /aid-execute task-005 [TEST]          ← waits for task-003 + task-004
+  → /aid-execute task-006 [DOCUMENT]      ← ADR → review → ✅
   → merge to main
 ```
 

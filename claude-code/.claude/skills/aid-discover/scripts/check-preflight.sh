@@ -19,13 +19,13 @@ KB_DIR="${1:-.aid/knowledge}"
 
 # Check 1: Verify Init Has Run
 if [ ! -f "$KB_DIR/DISCOVERY-STATE.md" ]; then
-  echo "⚠️ Knowledge Base not initialized. Run /aid:init first to set up the project."
+  echo "⚠️ Knowledge Base not initialized. Run /aid-init first to set up the project."
   exit 1
 fi
 
 # Check that DISCOVERY-STATE.md is not empty
 if [ ! -s "$KB_DIR/DISCOVERY-STATE.md" ]; then
-  echo "⚠️ DISCOVERY-STATE.md is empty. Run /aid:init first to set up the project."
+  echo "⚠️ DISCOVERY-STATE.md is empty. Run /aid-init first to set up the project."
   exit 1
 fi
 
@@ -37,7 +37,7 @@ echo "✅ DISCOVERY-STATE.md exists."
 # also verify visually via the Claude Code interface.
 if [ "${CLAUDE_MODE:-}" = "plan" ]; then
   echo "❌ Plan Mode detected. Discovery needs to write files."
-  echo "   Press Shift+Tab to switch out of Plan Mode, then re-run /aid:discover."
+  echo "   Press Shift+Tab to switch out of Plan Mode, then re-run /aid-discover."
   exit 2
 fi
 

@@ -26,7 +26,7 @@ workspace, and determines the workflow path. Run this once before any other AID 
       (...16 KB docs, INDEX.md, README.md)
 ```
 
-Works and features are created later by `/aid:interview`.
+Works and features are created later by `/aid-interview`.
 
 ---
 
@@ -154,7 +154,7 @@ Create each file with a header indicating it's pending discovery:
 > **Status:** ❌ Pending Discovery
 > **Last Updated:** —
 
-*This document will be populated by `/aid:discover`.*
+*This document will be populated by `/aid-discover`.*
 ```
 
 The 16 documents:
@@ -195,7 +195,7 @@ them into the file immediately:
 | 1 | /path/to/docs | directory | ✅ | 23 files |
 | 2 | /path/to/spec.pdf | file | ✅ | |
 
-*Content analysis will be performed by `/aid:discover` (discovery-scout).*
+*Content analysis will be performed by `/aid-discover` (discovery-scout).*
 ```
 
 If no external paths: write the standard "no external documentation" message.
@@ -311,29 +311,29 @@ Check if `CLAUDE.md` exists in the project root.
 ```markdown
 # {Project Name}
 
-<!-- AID:DISCOVER project-description -->
+<!-- AID-DISCOVER project-description -->
 {One-line description from Q3}
-<!-- /AID:DISCOVER -->
+<!-- /AID-DISCOVER -->
 
 ## Project Overview
-<!-- AID:DISCOVER project-overview -->
+<!-- AID-DISCOVER project-overview -->
 (pending discovery)
-<!-- /AID:DISCOVER -->
+<!-- /AID-DISCOVER -->
 
 ## Build & Test
-<!-- AID:DISCOVER build-test -->
+<!-- AID-DISCOVER build-test -->
 (pending discovery)
-<!-- /AID:DISCOVER -->
+<!-- /AID-DISCOVER -->
 
 ## Code Conventions
-<!-- AID:DISCOVER code-conventions -->
+<!-- AID-DISCOVER code-conventions -->
 (pending discovery)
-<!-- /AID:DISCOVER -->
+<!-- /AID-DISCOVER -->
 
 ## Architecture
-<!-- AID:DISCOVER architecture -->
+<!-- AID-DISCOVER architecture -->
 (pending discovery)
-<!-- /AID:DISCOVER -->
+<!-- /AID-DISCOVER -->
 
 ## AID Workspace
 
@@ -341,7 +341,7 @@ The `.aid/` directory contains the Knowledge Base and work artifacts.
 Read `.aid/knowledge/INDEX.md` to find what you need.
 ```
 
-- **If it already exists:** Do NOT overwrite. Check for `<!-- AID:DISCOVER -->` placeholders.
+- **If it already exists:** Do NOT overwrite. Check for `<!-- AID-DISCOVER -->` placeholders.
   If none exist, append an "AID Workspace" section at the end pointing to
   `.aid/knowledge/INDEX.md`.
   Print: `[Init] CLAUDE.md exists — appended workspace reference.`
@@ -375,8 +375,8 @@ Print a summary of everything created:
     .gitignore                  {created / updated / unchanged}
 
   Next step:
-    {Brownfield: "Run /aid:discover to analyze the codebase and populate the Knowledge Base."}
-    {Greenfield: "Run /aid:interview to gather requirements and start building the specification."}
+    {Brownfield: "Run /aid-discover to analyze the codebase and populate the Knowledge Base."}
+    {Greenfield: "Run /aid-interview to gather requirements and start building the specification."}
 ```
 
 ---

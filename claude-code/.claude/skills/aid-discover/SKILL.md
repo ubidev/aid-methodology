@@ -1,7 +1,7 @@
 ---
 name: discover
 description: >
-  Brownfield project discovery with built-in quality gate. Run `/aid:init` first to scaffold
+  Brownfield project discovery with built-in quality gate. Run `/aid-init` first to scaffold
   the KB. Analyzes all repository content (code, configuration, and documentation) to populate
   KB documents. Reviews, collects user input, fixes issues, and gets user approval — one step
   per run. State-machine: GENERATE → REVIEW → Q&A → FIX → APPROVAL → DONE.
@@ -15,7 +15,7 @@ Analyze an existing project repository — all code, configuration, and document
 produce a structured `.aid/knowledge/` directory by orchestrating 5 specialized discovery subagents.
 Includes a built-in quality gate that reviews, grades, and fixes KB documents.
 
-**State machine — each `/aid:discover` run does ONE step and exits.**
+**State machine — each `/aid-discover` run does ONE step and exits.**
 
 ## ⚠️ Pre-flight Checks
 
@@ -23,7 +23,7 @@ Run `scripts/check-preflight.sh .aid/knowledge/` to verify:
 1. `.aid/knowledge/DISCOVERY-STATE.md` exists (init has run)
 2. Not in Plan Mode (subagents need write access)
 
-If Check 1 fails: `⚠️ Knowledge Base not initialized. Run /aid:init first to set up the project.` — Exit.
+If Check 1 fails: `⚠️ Knowledge Base not initialized. Run /aid-init first to set up the project.` — Exit.
 If Check 2 fails: Tell user to press `Shift+Tab` to exit Plan Mode, then re-run.
 
 ## Arguments
@@ -156,7 +156,7 @@ Populated during Q&A → FIX cycle, but must exist for state machine.
 
 ### Step 6b: Update DISCOVERY-STATE.md with Q&A
 
-**⚠️ Do NOT recreate this file.** It was created by `/aid:init` with metadata. Update only:
+**⚠️ Do NOT recreate this file.** It was created by `/aid-init` with metadata. Update only:
 
 1. Read `.aid/knowledge/.scout-questions.tmp` (from scout)
 2. Read all KB documents for flagged questions/uncertainties/TODOs
@@ -184,14 +184,14 @@ Print: `[DISCOVERY-STATE] Updated with {N} Q&A questions. Grade: Pending.`
 
 ### Step 7: Update Project Config Files
 
-Scan for `CLAUDE.md`. Replace `<!-- AID:DISCOVER ... -->` placeholders with real data:
+Scan for `CLAUDE.md`. Replace `<!-- AID-DISCOVER ... -->` placeholders with real data:
 project description, overview, build/test commands, conventions, architecture summary.
 Keep the comment markers for future re-discoveries.
 
 ### Step 8: Final Verification
 
 Run `scripts/verify-kb.sh .aid/knowledge/` one final time.
-Print: `[16/16] Generation complete — Knowledge Base ready. Run /aid:discover again to review.`
+Print: `[16/16] Generation complete — Knowledge Base ready. Run /aid-discover again to review.`
 
 ---
 
@@ -226,7 +226,7 @@ Verify DISCOVERY-STATE.md contains:
 
 Set Minimum Grade (from `--grade` or default `A`). Add first Review History entry.
 
-Print: `[Review 2/2] Review complete. Grade: {overall}. Minimum: {min}. Run /aid:discover again to {fix issues|proceed}.`
+Print: `[Review 2/2] Review complete. Grade: {overall}. Minimum: {min}. Run /aid-discover again to {fix issues|proceed}.`
 
 ---
 
@@ -268,7 +268,7 @@ Suggested: {suggested answer, if present}
 ### Step 4: Continue or Exit
 
 Repeat for all Pending. When done:
-Print: `[Q&A] Complete. {answered} answered, {skipped} skipped. Run /aid:discover again to fix.`
+Print: `[Q&A] Complete. {answered} answered, {skipped} skipped. Run /aid-discover again to fix.`
 
 ---
 
@@ -324,7 +324,7 @@ Wait for completion.
 
 Read new DISCOVERY-STATE.md. Verify Review History preserved (append, not replace).
 
-Print: `[Fix 3/3] Complete. Grade: {old} → {new}. Run /aid:discover again to {fix remaining issues|proceed}.`
+Print: `[Fix 3/3] Complete. Grade: {old} → {new}. Run /aid-discover again to {fix remaining issues|proceed}.`
 
 ---
 
@@ -353,7 +353,7 @@ Please review .aid/knowledge/ and let us know if there is anything else to consi
 - **[1] Approved:** Add `**User Approved:** yes` to DISCOVERY-STATE.md. Add Review History entry.
   Print: `✅ Discovery complete. Grade: {grade}. KB approved and ready for the Interview phase.`
 - **[2] Consideration:** Add as new Q&A entry (Category: `User Feedback`, Impact: `High`, Status: `Pending`).
-  Print: `[Approval] Consideration recorded as Q{N}. Run /aid:discover again to address it.`
+  Print: `[Approval] Consideration recorded as Q{N}. Run /aid-discover again to address it.`
 
 ---
 

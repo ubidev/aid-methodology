@@ -76,7 +76,7 @@ For each finding, add a Q&A entry in INTERVIEW-STATE.md `## Pending Q&A`:
 
 **Question:** {text}
 **Context:** {why this matters, what evidence was found}
-**Source:** /aid:interview (cross-reference)
+**Source:** /aid-interview (cross-reference)
 **Suggested:** {answer if inferrable from KB/code, or "—"}
 **Status:** Pending
 ```
@@ -94,4 +94,4 @@ After all questions answered:
 
 1. Add Review History entry in INTERVIEW-STATE.md
 2. Add Change Log entry in REQUIREMENTS.md
-3. Print: `✅ Cross-reference complete. Run /aid:interview again to verify.`
+3. Print: `✅ Cross-reference complete. Run /aid-interview again to verify.`

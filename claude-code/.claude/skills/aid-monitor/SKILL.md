@@ -17,7 +17,7 @@ Monitor production. Detect what's wrong. Route it to where it gets fixed.
 ## Argument-Hint
 
 ```
-/aid:monitor work-NNN
+/aid-monitor work-NNN
 ```
 
 Required: work ID. If only one work exists, auto-select it.
