@@ -40,7 +40,7 @@ Fix is a separate step. Reviewer NEVER fixes — only grades and lists issues.
 
 ## Grading
 
-Read `../templates/grading-rubric.md` for the universal grading scale.
+Read `../../templates/grading-rubric.md` for the universal grading scale.
 Read minimum grade from `.aid/knowledge/DISCOVERY-STATE.md` field `**Minimum Grade:**`.
 
 ## Workspace
@@ -165,7 +165,7 @@ KB docs are relevant to this task, then load them. Let the INDEX guide you.
 
 ## Step 1: EXECUTE (Do the Work)
 
-Create `task-NNN-STATE.md` from template (`../templates/implementation-state.md`).
+Create `task-NNN-STATE.md` from template (`../../templates/implementation-state.md`).
 Set Status to `In Progress`.
 
 Dispatch a coding/working agent with assembled context.
@@ -287,7 +287,7 @@ Dispatch a **separate reviewer agent** with clean context (no execution knowledg
 - task-NNN.md — acceptance criteria and scope
 - Feature SPEC — expected behavior
 - KB docs via INDEX.md (as relevant to the type)
-- Grading rubric (`../templates/grading-rubric.md`)
+- Grading rubric (`../../templates/grading-rubric.md`)
 
 **Reviewer classifies every issue with a severity and a source:**
 

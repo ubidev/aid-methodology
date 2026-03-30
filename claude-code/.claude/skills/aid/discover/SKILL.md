@@ -453,7 +453,7 @@ If your task touches an area covered here, read the relevant document first.
 
 Regenerate INDEX.md on every discovery run (full or targeted).
 
-**.aid/knowledge/feature-inventory.md** — copy the template from `../templates/feature-inventory.md`.
+**.aid/knowledge/feature-inventory.md** — copy the template from `../../../templates/feature-inventory.md`.
 This file is populated during the Q&A → FIX cycle (not during GENERATE), but must exist
 for the state machine to count all 16 documents as present.
 
@@ -604,7 +604,7 @@ Prompt to pass to the subagent:
 >    - Is placeholder text or template markers still present?
 >    - Are questions marked Pending in the Q&A section of DISCOVERY-STATE.md actually still unanswerable from the repository?
 >
-> **Grading:** Use the universal rubric (read `../templates/grading-rubric.md`).
+> **Grading:** Use the universal rubric (read `../../../templates/grading-rubric.md`).
 > Classify every issue as [MINOR], [LOW], [MEDIUM], [HIGH], or [CRITICAL].
 > Grade is CALCULATED from worst issue severity + quantity. Worst issue dominates.
 > A+ = zero issues. F = missing/empty/non-functional.

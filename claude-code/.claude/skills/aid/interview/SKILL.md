@@ -150,12 +150,12 @@ If no KB exists, that's fine — this is a greenfield project.
 
 ### 1b. Create INTERVIEW-STATE.md
 
-Copy the template from `../templates/interview-state.md` to
+Copy the template from `../../../templates/interview-state.md` to
 `.aid/{work}/INTERVIEW-STATE.md`.
 
 ### 1c. Create REQUIREMENTS.md scaffold
 
-Copy the template from `../templates/requirements.md` to
+Copy the template from `../../../templates/requirements.md` to
 `.aid/{work}/REQUIREMENTS.md`.
 Add the first Change Log entry: `| {today} | Initial interview started | /aid-interview |`
 
@@ -448,7 +448,7 @@ Does this decomposition look right?
 Create `features/` directory inside the work folder if it doesn't exist.
 
 For each approved feature, create `features/feature-{NNN}-{name}/SPEC.md` using the
-template from `../templates/feature.md`. Fill in:
+template from `../../../templates/feature.md`. Fill in:
 
 - **Title:** feature name (human-readable)
 - **Change Log:** `| {today} | Feature identified from REQUIREMENTS.md {source sections} | /aid-interview |`
@@ -513,7 +513,7 @@ For each section of REQUIREMENTS.md, check against KB:
 
 ### 6c. Grade
 
-Use the universal rubric (`../templates/grading-rubric.md`). Classify each finding
+Use the universal rubric (`../../../templates/grading-rubric.md`). Classify each finding
 by severity (Minor/Low/Medium/High/Critical). Grade is calculated — worst issue dominates.
 
 Compare to minimum grade from `.aid/knowledge/DISCOVERY-STATE.md`.
