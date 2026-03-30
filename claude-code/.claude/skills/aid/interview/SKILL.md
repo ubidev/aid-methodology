@@ -18,13 +18,13 @@ immediately.
 **Workspace structure:**
 ```
 .aid/
-  knowledge/           ← shared KB (populated by /aid-discover)
+  knowledge/           ← shared KB (populated by /aid:discover)
   work-001-name/       ← one work = one interview cycle
     INTERVIEW-STATE.md ← process (section status, Q&A, grade, review history)
     REQUIREMENTS.md    ← product (clean document, only project information)
     features/          ← product (one folder per feature, created after approval)
       feature-001-name/
-        SPEC.md        ← product (technical specification, added by /aid-specify)
+        SPEC.md        ← product (technical specification, added by /aid:specify)
         STATE.md       ← process (specification state)
 ```
 
@@ -32,7 +32,7 @@ immediately.
 **Subsequent runs (before approval):** Resume interview for incomplete sections.
 **After approval:** Feature decomposition from functional requirements.
 **After features created:** Cross-reference REQUIREMENTS.md against KB, grade, ask questions.
-**Loopback:** Process Q&A injected by downstream phases (e.g., `/aid-specify`).
+**Loopback:** Process Q&A injected by downstream phases (e.g., `/aid:specify`).
 
 ## ⚠️ Pre-flight Checks
 
@@ -40,7 +40,7 @@ immediately.
 
 Check if `.aid/` directory exists. If it doesn't:
 ```
-⚠️ AID workspace not found. Run /aid-init first to set up the project.
+⚠️ AID workspace not found. Run /aid:init first to set up the project.
 ```
 Exit. Do not proceed.
 
@@ -157,7 +157,7 @@ Copy the template from `../../../templates/interview-state.md` to
 
 Copy the template from `../../../templates/requirements.md` to
 `.aid/{work}/REQUIREMENTS.md`.
-Add the first Change Log entry: `| {today} | Initial interview started | /aid-interview |`
+Add the first Change Log entry: `| {today} | Initial interview started | /aid:interview |`
 
 **Note:** Sections are empty — no placeholder markers. The INTERVIEW-STATE.md tracks
 which sections have been filled.
@@ -228,8 +228,8 @@ Read INTERVIEW-STATE.md Section Status table. For each section:
      with Sun conventions", "default analyzer warnings-as-errors")
    - **Build policy** — zero warnings required? Specific compiler flags?
 
-   These become the project baseline. `/aid-specify` may add feature-specific requirements
-   on top, and `/aid-detail` concretizes them per task.
+   These become the project baseline. `/aid:specify` may add feature-specific requirements
+   on top, and `/aid:detail` concretizes them per task.
 
    **UI-aware inference:** If `.aid/knowledge/ui-architecture.md` exists and has real content
    (not "backend-only"), proactively ask about these topics when working on §6 Non-Functional
@@ -278,7 +278,7 @@ INTERVIEW-STATE.md has entries in `## Pending Q&A` with `**Status:** Pending`.
 
 These may come from:
 - Cross-reference analysis (State 6)
-- Loopback from downstream phases (e.g., `/aid-specify` injected a question)
+- Loopback from downstream phases (e.g., `/aid:specify` injected a question)
 - Review findings
 
 ### Step 1: Load and Filter
@@ -306,7 +306,7 @@ For each Pending question:
 IQ{N}: [{Category}: {Impact}] {question text}
 
 Context: {why this matters}
-Source: {who injected this — /aid-specify feature-001, cross-reference, etc.}
+Source: {who injected this — /aid:specify feature-001, cross-reference, etc.}
 
 Suggested: {suggestion if present}
 
@@ -382,7 +382,7 @@ Is there anything else we should consider, or are the requirements ready?
 
 - **[1] Approved:**
   - Set `**Status:** Approved` in INTERVIEW-STATE.md
-  - Add Change Log entry in REQUIREMENTS.md: `| {today} | Interview complete — approved | /aid-interview |`
+  - Add Change Log entry in REQUIREMENTS.md: `| {today} | Interview complete — approved | /aid:interview |`
   - Add Review History entry in INTERVIEW-STATE.md
   - Update `.aid/knowledge/INDEX.md` and `.aid/knowledge/README.md`
     if they exist
@@ -451,13 +451,13 @@ For each approved feature, create `features/feature-{NNN}-{name}/SPEC.md` using 
 template from `../../../templates/feature.md`. Fill in:
 
 - **Title:** feature name (human-readable)
-- **Change Log:** `| {today} | Feature identified from REQUIREMENTS.md {source sections} | /aid-interview |`
+- **Change Log:** `| {today} | Feature identified from REQUIREMENTS.md {source sections} | /aid:interview |`
 - **Source:** relevant REQUIREMENTS.md section references
 - **Description:** synthesized from §5 in stakeholder language
 - **User Stories:** extracted or synthesized from REQUIREMENTS.md, using user types from §3
 - **Priority:** from §10 or context (Must / Should / Could)
 - **Acceptance Criteria:** from §9 mapped to this feature, or synthesized from §5
-- **Technical Specification:** leave as template placeholder (added by /aid-specify)
+- **Technical Specification:** leave as template placeholder (added by /aid:specify)
 
 ### Step 5: Update Meta-Documents
 
@@ -474,7 +474,7 @@ Print:
 
 Next steps:
 - Review the feature SPEC.md files if desired
-- Run /aid-specify {work}/feature-001 to begin technical specification
+- Run /aid:specify {work}/feature-001 to begin technical specification
 ```
 
 ---
@@ -550,7 +550,7 @@ For each finding, add a Q&A entry in INTERVIEW-STATE.md `## Pending Q&A`:
 
 **Question:** {text}
 **Context:** {why this matters, what evidence was found}
-**Source:** /aid-interview (cross-reference)
+**Source:** /aid:interview (cross-reference)
 **Suggested:** {answer if inferrable from KB/code, or "—"}
 **Status:** Pending
 ```
@@ -568,17 +568,17 @@ After all questions answered:
 
 1. Add Review History entry in INTERVIEW-STATE.md
 2. Add Change Log entry in REQUIREMENTS.md
-3. Print: `✅ Cross-reference complete. Run /aid-interview again to verify.`
+3. Print: `✅ Cross-reference complete. Run /aid:interview again to verify.`
 
 ---
 
 ## Targeted Interview (Loopback Re-entry)
 
-When a downstream phase (e.g., `/aid-specify`) needs clarification on requirements:
+When a downstream phase (e.g., `/aid:specify`) needs clarification on requirements:
 
 1. The calling phase writes Q&A entries directly to the work's INTERVIEW-STATE.md
    in the `## Pending Q&A` section
-2. Next `/aid-interview {work}` run detects Pending Q&A → enters State 2 (Q&A mode)
+2. Next `/aid:interview {work}` run detects Pending Q&A → enters State 2 (Q&A mode)
 3. Questions are presented to the user one at a time
 4. Answers are recorded in INTERVIEW-STATE.md and REQUIREMENTS.md
 5. Feature SPEC.md files are updated if the answer affects a specific feature
@@ -590,7 +590,7 @@ When a downstream phase (e.g., `/aid-specify`) needs clarification on requiremen
 
 **Question:** {question text}
 **Context:** {why this matters — what the downstream phase found}
-**Source:** {calling phase, e.g., /aid-specify work-001/feature-001}
+**Source:** {calling phase, e.g., /aid:specify work-001/feature-001}
 **Suggested:** {answer if inferrable, or "—"}
 **Status:** Pending
 ```

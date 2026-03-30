@@ -26,7 +26,7 @@ workspace, and determines the workflow path. Run this once before any other AID 
       (...16 KB docs, INDEX.md, README.md)
 ```
 
-Works and features are created later by `/aid-interview`.
+Works and features are created later by `/aid:interview`.
 
 ---
 
@@ -154,7 +154,7 @@ Create each file with a header indicating it's pending discovery:
 > **Status:** ❌ Pending Discovery
 > **Last Updated:** —
 
-*This document will be populated by `/aid-discover`.*
+*This document will be populated by `/aid:discover`.*
 ```
 
 The 16 documents:
@@ -195,7 +195,7 @@ them into the file immediately:
 | 1 | /path/to/docs | directory | ✅ | 23 files |
 | 2 | /path/to/spec.pdf | file | ✅ | |
 
-*Content analysis will be performed by `/aid-discover` (discovery-scout).*
+*Content analysis will be performed by `/aid:discover` (discovery-scout).*
 ```
 
 If no external paths: write the standard "no external documentation" message.
@@ -375,8 +375,8 @@ Print a summary of everything created:
     .gitignore                  {created / updated / unchanged}
 
   Next step:
-    {Brownfield: "Run /aid-discover to analyze the codebase and populate the Knowledge Base."}
-    {Greenfield: "Run /aid-interview to gather requirements and start building the specification."}
+    {Brownfield: "Run /aid:discover to analyze the codebase and populate the Knowledge Base."}
+    {Greenfield: "Run /aid:interview to gather requirements and start building the specification."}
 ```
 
 ---

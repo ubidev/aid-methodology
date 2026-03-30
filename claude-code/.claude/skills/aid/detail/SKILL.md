@@ -60,12 +60,12 @@ Each deliverable follows the same cycle:
 1. If arg provided → use that work directory
 2. If single work exists → auto-select
 3. If multiple works → list them, ask user to choose
-4. If no works → **STOP.** "No works found. Run `/aid-interview` first."
+4. If no works → **STOP.** "No works found. Run `/aid:interview` first."
 
 ### Check 2: Verify PLAN.md Exists
 
 1. Check for `.aid/{work}/PLAN.md`
-2. If missing → **STOP.** "No PLAN.md found. Run `/aid-plan` first."
+2. If missing → **STOP.** "No PLAN.md found. Run `/aid:plan` first."
 
 ### Check 3: Verify Not in Plan Mode
 
@@ -289,7 +289,7 @@ For each delivery, produce TWO tables:
 - If two tasks share the same dependencies but don't depend on each other → parallel
 - The parallel table lists groups of tasks that can safely run concurrently
 
-**This graph is what `/aid-execute` reads to determine task ordering and parallelism.**
+**This graph is what `/aid:execute` reads to determine task ordering and parallelism.**
 
 ### Step 6: Final Summary
 
@@ -352,7 +352,7 @@ Update task files, create new ones, delete orphans, renumber if needed.
 
 ## Feedback Loops
 
-- **→ Plan:** Plan too vague to decompose → return to `/aid-plan`
+- **→ Plan:** Plan too vague to decompose → return to `/aid:plan`
 - **→ Specify:** SPEC missing detail for scope → write Q&A to feature's `STATE.md`
 - **→ Discovery:** KB gap → write Q&A to `.aid/knowledge/DISCOVERY-STATE.md`
 

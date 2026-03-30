@@ -1,7 +1,7 @@
 ---
 name: aid-discover
 description: >
-  Brownfield project discovery with built-in quality gate. Run `/aid-init` first to scaffold
+  Brownfield project discovery with built-in quality gate. Run `/aid:init` first to scaffold
   the KB. Analyzes all repository content (code, configuration, and documentation) to populate
   KB documents. Reviews, collects user input, fixes issues, and gets user approval — one step
   per run. State-machine: GENERATE → REVIEW → Q&A → FIX → APPROVAL → DONE.
@@ -15,7 +15,7 @@ Analyze an existing project repository — all code, configuration, and document
 produce a structured `.aid/knowledge/` directory by orchestrating 5 specialized discovery subagents.
 Includes a built-in quality gate that reviews, grades, and fixes KB documents.
 
-**State machine — each `/aid-discover` run does ONE step and exits.**
+**State machine — each `/aid:discover` run does ONE step and exits.**
 
 ## ⚠️ Pre-flight Checks
 
@@ -23,7 +23,7 @@ Includes a built-in quality gate that reviews, grades, and fixes KB documents.
 
 Check if `.aid/knowledge/DISCOVERY-STATE.md` exists. If it doesn't:
 ```
-⚠️ Knowledge Base not initialized. Run /aid-init first to set up the project.
+⚠️ Knowledge Base not initialized. Run /aid:init first to set up the project.
 ```
 Exit. Do not proceed.
 
@@ -37,7 +37,7 @@ Plan Mode restricts all operations to read-only — subagents will NOT be able t
 
 **How to check:** Look at the permission indicator in your Claude Code interface (bottom of screen).
 - ✅ `Default` or `Auto-accept edits` → Proceed with discovery.
-- ❌ `Plan mode` → **STOP.** Tell the user: "Discovery needs to write files. Please press `Shift+Tab` to switch out of Plan Mode, then re-run `/aid-discover`."
+- ❌ `Plan mode` → **STOP.** Tell the user: "Discovery needs to write files. Please press `Shift+Tab` to switch out of Plan Mode, then re-run `/aid:discover`."
 
 **Do NOT proceed with discovery while in Plan Mode.** The subagents will analyze the repository but silently fail to write any files.
 
@@ -464,7 +464,7 @@ for the state machine to count all 16 documents as present.
 After README.md and INDEX.md are generated, **update** the existing
 `.aid/knowledge/DISCOVERY-STATE.md` with Q&A questions collected from the subagents.
 
-**⚠️ Do NOT recreate this file from the template.** It was created by `/aid-init` with
+**⚠️ Do NOT recreate this file from the template.** It was created by `/aid:init` with
 Minimum Grade, Project Type, and External Documentation from the user. Overwriting it
 would lose that metadata.
 
@@ -536,7 +536,7 @@ If a field cannot be determined, leave it as `(not found — see DISCOVERY-STATE
 
 List all 16 expected KB documents. Check each exists. Report any missing.
 
-Print: `[16/16] Generation complete — Knowledge Base ready. Run /aid-discover again to review.`
+Print: `[16/16] Generation complete — Knowledge Base ready. Run /aid:discover again to review.`
 
 If any documents are missing, report them and offer to re-dispatch the responsible subagent.
 
@@ -640,7 +640,7 @@ Set the Minimum Grade in the file:
 
 Add the first Review History entry.
 
-Print: `[Review 2/2] Review complete. Grade: {overall}. Minimum: {min}. Run /aid-discover again to {fix issues|proceed}.`
+Print: `[Review 2/2] Review complete. Grade: {overall}. Minimum: {min}. Run /aid:discover again to {fix issues|proceed}.`
 
 **Grade comparison:**
 - If overall grade >= minimum → Next run will enter APPROVAL mode (user sign-off)
@@ -711,7 +711,7 @@ After recording, move to the next Pending question. Repeat Steps 2-3.
 
 When all Pending questions have been addressed (answered or skipped):
 
-Print: `[Q&A] Complete. {answered} answered, {skipped} skipped. Run /aid-discover again to fix.`
+Print: `[Q&A] Complete. {answered} answered, {skipped} skipped. Run /aid:discover again to fix.`
 
 The next run will detect no Pending Q&A and enter FIX mode. The FIX will use the answers
 from DISCOVERY-STATE.md Q&A section to improve the KB documents.
@@ -811,7 +811,7 @@ Read the new DISCOVERY-STATE.md produced by the reviewer.
 2. If Review History is missing entries from before the re-review, add them back
 3. Ensure the new entry reflects this was a Fix + Re-review cycle
 
-Print: `[Fix 3/3] Complete. Grade: {old} → {new}. Run /aid-discover again to {fix remaining issues|proceed}.`
+Print: `[Fix 3/3] Complete. Grade: {old} → {new}. Run /aid:discover again to {fix remaining issues|proceed}.`
 
 **If the grade is still below minimum:** The next run will check for Pending Q&A entries first (→ Q&A mode) or proceed to FIX mode if none. This is expected — some fixes may introduce new issues or the reviewer may catch things the fixer missed. The cycle continues until the grade meets the minimum.
 
@@ -861,7 +861,7 @@ else we should consider.
     - `[User Feedback: High]` category and impact
     - `**Status:** Pending`
     - The user's text as the context
-  - Print: `[Approval] Consideration recorded as Q{N}. Run /aid-discover again to address it.`
+  - Print: `[Approval] Consideration recorded as Q{N}. Run /aid:discover again to address it.`
   - The next run will detect Pending Q&A and re-enter the cycle (Q&A or FIX depending on
     whether it needs user input or can be resolved from the repository).
 

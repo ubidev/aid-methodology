@@ -54,7 +54,7 @@ Every section follows the same cycle:
 If no feature path was provided, list available features across all works:
 
 ```
-Usage: /aid-specify work-001/feature-001
+Usage: /aid:specify work-001/feature-001
 
 Available features:
   work-001-user-auth/feature-001-login        [No STATE — not started]
@@ -73,7 +73,7 @@ Resolve the feature path using **prefix matching** (glob):
 - `feature-001` → match `.aid/{work}/features/feature-001-*/SPEC.md`
 - `work-001/feature-002` → match `.aid/work-001-*/features/feature-002-*/SPEC.md`
 
-**If zero matches:** Exit with instruction to run `/aid-interview` first.
+**If zero matches:** Exit with instruction to run `/aid:interview` first.
 **If multiple matches:** List them, ask user to be more specific. Exit.
 **If exactly one match:** Use that path. Print: `[Resolved: {full-path}]`
 
@@ -315,7 +315,7 @@ in coding-standards.md §3.2 (composite indices discouraged). Let me re-propose.
 - All sections Complete:
   - Set STATUS to `Ready` in STATE.md
   - Print summary with all completed sections
-  - `/aid-specify` on this feature now enters **REVIEW** (step 4 on all sections)
+  - `/aid:specify` on this feature now enters **REVIEW** (step 4 on all sections)
 
 ---
 
@@ -453,7 +453,7 @@ edge cases, or critical paths, explicitly discuss:
 Write these in the relevant SPEC.md section (e.g., within Security Specs, Feature Flow,
 or a dedicated "Quality Requirements" subsection if multiple apply).
 
-These flow down to `/aid-detail` where they become concrete acceptance criteria on tasks.
+These flow down to `/aid:detail` where they become concrete acceptance criteria on tasks.
 
 **Cross-reference with KB:** Before registering, check `tech-debt.md`. If already
 catalogued, add a reference (`See tech-debt.md #TD-NNN`) instead of duplicating.
