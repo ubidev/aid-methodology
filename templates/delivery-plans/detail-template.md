@@ -119,6 +119,38 @@ task-004, task-005 → task-006
 
 ---
 
+## Integration Contract
+
+> Every delivery must define how it integrates with the running application.
+> This prevents the class of bugs where isolated unit tests pass but the actual application is broken.
+
+### Scene Tree / Component Additions
+After this delivery, the application MUST contain these components (cumulative with prior deliveries):
+- {List all scene tree nodes, services, controllers, or modules this delivery adds}
+- {Include parent→child relationships}
+- {Note any visual components that must have actual visible content (meshes, sprites, UI elements)}
+
+### Bootstrap / Initialization Changes
+{How this delivery extends the application startup sequence. Reference the Initialization section in REQUIREMENTS.md if it exists.}
+- {New autoloads, services, or entry points}
+- {Signal connections established during initialization}
+- {Ownership transfers from previous deliveries (e.g., "System X now owns responsibility Y, replacing the temporary implementation from delivery-N")}
+- Or: "No changes — inherits from delivery-{N}"
+
+### Visual / Functional Smoke Test
+Run the application. A human (or automated smoke test) MUST observe:
+- [ ] {Observable behavior — what you see, hear, or can interact with}
+- [ ] {Include negative tests: "X does NOT happen"}
+- [ ] {Reference prior delivery smoke tests: "Everything from delivery-{N} still works"}
+
+### Dev Environment Requirements
+{Any environment setup needed to test this delivery that isn't already in place}
+- Or: "No additional requirements beyond delivery-{N}"
+
+> **Why this section exists:** Unit tests verify isolated system behavior. Integration Contracts verify that systems are actually wired together in the running application. Both are necessary.
+
+---
+
 ## Revision History
 
 | Rev | Date | Source | Description |
